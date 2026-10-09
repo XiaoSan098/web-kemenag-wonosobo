@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Resmi Kantor Kementerian Agama Kabupaten Wonosobo</title>
+  <meta name="description" content="Portal Layanan Terpadu Satu Pintu & Informasi Resmi Kantor Kementerian Agama Kabupaten Wonosobo. Tampilan ringkas berbasis ikon seksi & bidang.">
+  <meta name="keywords" content="Kemenag Wonosobo, Kementerian Agama Wonosobo, PTSP Kemenag Wonosobo, SIMKAH Wonosobo, Pendidikan Madrasah Wonosobo, Zakat Wakaf Wonosobo">
+  <meta name="author" content="Kantor Kementerian Agama Kabupaten Wonosobo">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Portal Layanan Resmi Kemenag Kabupaten Wonosobo">
+  <meta property="og:description" content="Akses layanan publik, rekomendasi, informasi madrasah, KUA, zakat wakaf, dan kontak resmi Kemenag Kab. Wonosobo secara cepat dan gratis.">
+  <meta property="og:image" content="assets/hero_banner.jpg">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon & Styles -->
+  <link rel="icon" type="image/png" href="assets/logo_kemenag.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Announcement Ticker -->
+  <div class="top-ticker">
+    <div class="ticker-wrapper">
+      <span class="ticker-badge">PENGUMUMAN</span>
+      <div class="ticker-content">
+        <span class="ticker-text">
+          ✨ Selamat datang di Portal Layanan Resmi Kantor Kementerian Agama Kabupaten Wonosobo • Klik ikon seksi untuk melihat Layanan, Berita, & Kontak WhatsApp • Layanan Gratis (Rp 0,-) ✨
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand-logo" id="brandLogo">
+        <img src="assets/logo_kemenag.png" alt="Logo Kemenag RI" class="kemenag-header-logo">
+        <div class="brand-info">
+          <h1>KEMENAG WONOSOBO</h1>
+          <p>Kementerian Agama Kabupaten Wonosobo</p>
+        </div>
+      </a>
+
+      <div class="nav-actions">
+        <button type="button" class="theme-toggle-btn" id="themeToggleBtn" title="Ganti Mode Gelap/Terang">
+          🌙
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Compact Hero Section -->
+  <section class="hero-section">
+    <div class="hero-card">
+      <div class="hero-text-content">
+        <div class="hero-tag">
+          <img src="assets/logo_kemenag.png" alt="Logo Kemenag" class="hero-logo-mini"> Portal Layanan Berbasis Ikon Seksi & Bidang
+        </div>
+        <h2 class="hero-title">
+          Pelayanan Agama & Pendidikan <span>Ringkas & Digital</span>
+        </h2>
+        <p class="hero-subtitle">
+          Pilih dan klik salah satu ikon seksi di bawah ini untuk membuka <strong>Menu Layanan</strong>, <strong>Berita & Media</strong>, serta <strong>Contact Person WhatsApp</strong> secara cepat.
+        </p>
+      </div>
+
+      <div class="hero-img-box">
+        <img src="assets/hero_banner.jpg" alt="Banner Resmi Kemenag Wonosobo">
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Title -->
+  <div class="section-title-wrapper">
+    <h2>Pilih Seksi & Bidang Layanan</h2>
+    <p>Klik ikon seksi di bawah ini untuk melihat detail Layanan, Berita, dan Kontak WA</p>
+  </div>
+
+  <!-- Compact Icon Tiles Grid Container -->
+  <section class="tiles-section">
+    <div class="icon-tiles-grid" id="iconTilesGrid">
+      <!-- Icon Tiles will be rendered dynamically by app.js -->
+    </div>
+  </section>
+
+  <!-- Interactive Modal System (3 Action Buttons: Layanan, Berita & Media, Contact WA) -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-container">
+      
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="modal-header-info">
+          <div class="modal-header-icon" id="modalIcon">
+            🏛️
+          </div>
+          <div class="modal-header-title">
+            <h2 id="modalTitle">Nama Seksi</h2>
+            <p id="modalSubtitle">Sub Kategori</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" id="modalCloseBtn" title="Tutup (Esc)">
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal 3 Action Buttons / Navigation Tabs -->
+      <div class="modal-nav-tabs">
+        <button class="modal-tab-btn active" data-tab="tabLayanan">
+          📄 Tombol Menu Layanan
+        </button>
+        <button class="modal-tab-btn" data-tab="tabBerita">
+          📰 Tombol Berita & Media
+        </button>
+        <button class="modal-tab-btn" data-tab="tabContact">
+          💬 Tombol Contact Person
+        </button>
+      </div>
+
+      <!-- Modal Body Content Panes -->
+      <div class="modal-body">
+        
+        <!-- Tab 1: Layanan List -->
+        <div class="modal-tab-pane active" id="tabPaneLayanan">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Tab 2: News List (Foto, Keterangan Detail & Tanggal/Waktu) -->
+        <div class="modal-tab-pane" id="tabPaneBerita">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Tab 3: Contact Person WA -->
+        <div class="modal-tab-pane" id="tabPaneContact">
+          <!-- Rendered by JS -->
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo-box">
+          <img src="assets/logo_kemenag.png" alt="Logo Kemenag RI" class="kemenag-footer-logo">
+          <h3>Kantor Kementerian Agama Kabupaten Wonosobo</h3>
+        </div>
+        <p>Mewujudkan Pelayanan Keagamaan dan Pendidikan Islam yang Berkualitas, Akuntabel, Transparan, dan Berintegritas di Kabupaten Wonosobo.</p>
+        <div class="footer-contact-list">
+          <p>📍 Jl. Tumenggung Jogonegoro No. 38, Jaraksari, Wonosobo, Jawa Tengah 56314</p>
+          <p>📞 Phone/PTSP: +62 812-3005-5633</p>
+          <p>✉️ Email: kabwonosobo@kemenag.go.id</p>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Tautan Seksi</h4>
+        <ul class="footer-links">
+          <li><a href="#" onclick="openModal('ptsp'); return false;">Loket PTSP Utama</a></li>
+          <li><a href="#" onclick="openModal('bimas'); return false;">Seksi Bimas Islam</a></li>
+          <li><a href="#" onclick="openModal('penmad'); return false;">Seksi Penmad Madrasah</a></li>
+          <li><a href="#" onclick="openModal('pais'); return false;">Seksi PAIS</a></li>
+          <li><a href="#" onclick="openModal('pontren'); return false;">Seksi PD Pontren</a></li>
+          <li><a href="#" onclick="openModal('zawa'); return false;">Penyelenggara Zawa</a></li>
+          <li><a href="#" onclick="openModal('syariah'); return false;">Penyelenggara Syariah</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Media Sosial Resmi</h4>
+        <p style="font-size: 0.82rem; color: #A6BEB0; margin-bottom: 10px;">Ikuti saluran media sosial resmi Kemenag Wonosobo:</p>
+        <div class="social-icons">
+          <a href="https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA" target="_blank" class="social-icon-btn" title="YouTube Kemenag Wonosobo">▶️</a>
+          <a href="https://www.facebook.com/kemenag.teras/" target="_blank" class="social-icon-btn" title="Facebook Kemenag Wonosobo">f</a>
+          <a href="https://x.com/KemenagWonosobo" target="_blank" class="social-icon-btn" title="Twitter / X Kemenag Wonosobo">𝕏</a>
+          <a href="https://jateng.kemenag.go.id/author/kabwonosobo/" target="_blank" class="social-icon-btn" title="Website Resmi Kemenag Jateng">🌐</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Kantor Kementerian Agama Kabupaten Wonosobo. Hak Cipta Dilindungi Undang-Undang.</p>
+    </div>
+  </footer>
+
+  <!-- Application Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
