@@ -4,7 +4,7 @@
  */
 
 // 4 BAGIAN LAYANAN DI DALAM SUBBAG TU
-const SUBBAG_TU_UNITS = [
+export const SUBBAG_TU_UNITS = [
   {
     id: 'ptsp',
     parentId: 'subbag-tu',
@@ -127,7 +127,7 @@ const SUBBAG_TU_UNITS = [
         thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ'
+        embedUrl: ''
       },
       {
         title: 'Reels: Alur Pengurusan Surat Rekomendasi 15 Menit Jadi di Loket PTSP',
@@ -230,7 +230,7 @@ const SUBBAG_TU_UNITS = [
         thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ'
+        embedUrl: ''
       }
     ]
   },
@@ -324,7 +324,7 @@ const SUBBAG_TU_UNITS = [
         thumbnail: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ'
+        embedUrl: ''
       }
     ]
   },
@@ -418,14 +418,14 @@ const SUBBAG_TU_UNITS = [
         thumbnail: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ'
+        embedUrl: ''
       }
     ]
   }
 ];
 
 // DAFTAR UNIT & SEKSI DI HALAMAN UTAMA
-const SEKSI_DATA = [
+export const SEKSI_DATA = [
   // 1. SUBBAG TATA USAHA (Memiliki 4 Tombol Layanan di dalamnya)
   {
     id: 'subbag-tu',
@@ -526,7 +526,7 @@ const SEKSI_DATA = [
         thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ'
+        embedUrl: ''
       }
     ]
   },
@@ -597,7 +597,7 @@ const SEKSI_DATA = [
         thumbnail: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ'
+        embedUrl: ''
       }
     ]
   },
@@ -668,7 +668,7 @@ const SEKSI_DATA = [
         thumbnail: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ'
+        embedUrl: ''
       }
     ]
   },
@@ -739,7 +739,7 @@ const SEKSI_DATA = [
         thumbnail: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ'
+        embedUrl: ''
       }
     ]
   },
@@ -810,7 +810,7 @@ const SEKSI_DATA = [
         thumbnail: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ'
+        embedUrl: ''
       }
     ]
   },
@@ -892,7 +892,7 @@ const SEKSI_DATA = [
         thumbnail: 'https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ'
+        embedUrl: ''
       }
     ]
   },
@@ -978,7 +978,7 @@ const SEKSI_DATA = [
         thumbnail: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ'
+        embedUrl: ''
       }
     ]
   },
@@ -1049,7 +1049,7 @@ const SEKSI_DATA = [
         thumbnail: 'https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ'
+        embedUrl: ''
       }
     ]
   },
@@ -1135,7 +1135,7 @@ const SEKSI_DATA = [
         thumbnail: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ'
+        embedUrl: ''
       }
     ]
   },
@@ -1227,14 +1227,14 @@ const SEKSI_DATA = [
         thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ'
+        embedUrl: ''
       }
     ]
   }
 ];
 
 // DATA KANAL MEDIA SOSIAL & KONTAK RESMI UNTUK POPUP
-const SOCIAL_MEDIA_CONTACTS = [
+export const SOCIAL_MEDIA_CONTACTS = [
   {
     id: 'youtube',
     name: 'YouTube',

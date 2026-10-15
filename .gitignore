@@ -1,1 +1,11 @@
 .DS_Store
+node_modules
+dist
+
+# Rahasia server (kata sandi admin, kredensial MySQL)
+.env
+
+# Berkas unggahan pengguna (data admin sendiri tinggal di MySQL)
+uploads/
+var/
+tmp-mysql-test.mjs
