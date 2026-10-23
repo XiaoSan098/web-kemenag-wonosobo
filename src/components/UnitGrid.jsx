@@ -1,6 +1,6 @@
 import {
   Building2, BookHeart, GraduationCap, BookOpenCheck, Landmark,
-  Coins, Compass, Cross, Newspaper, ChevronRight, Pencil
+  Coins, Compass, Cross, Newspaper, ChevronRight
 } from 'lucide-react'
 
 const ICONS = {
@@ -36,14 +36,6 @@ function UnitCard({ seksi, onOpen }) {
         </span>
         <ChevronRight size={16} className="unit-card-arrow" aria-hidden="true" />
       </button>
-      <a
-        href={`#/admin?id=${seksi.id}`}
-        className="unit-card-edit-btn"
-        title={`Edit tulisan & data ${seksi.title} di Admin`}
-        aria-label={`Edit data ${seksi.title}`}
-      >
-        <Pencil size={11} aria-hidden="true" /> Edit
-      </a>
     </div>
   )
 }
