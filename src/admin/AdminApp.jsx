@@ -13,7 +13,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   ArrowDown, ArrowLeft, ArrowUp, Database, Download, FileJson, KeyRound, LayoutDashboard,
   LogOut, Loader2, Plus, RotateCcw, Save, Share2, Trash2, Upload, Users,
-  Building2, Landmark, Globe, Lock, ChevronDown, WifiOff, Moon, Sun
+  Building2, Landmark, Globe, Lock, ChevronDown, WifiOff, Moon, Sun, Pencil,
+  Eye, EyeOff
 } from 'lucide-react'
 import { getData, resetData, saveData, useData } from '../store.js'
 import {
@@ -36,6 +37,17 @@ const TABS = [
   { id: 'tools', label: 'Cadangan Data', Icon: Database }
 ]
 
+function parseHashParams() {
+  const hash = window.location.hash || ''
+  const qIndex = hash.indexOf('?')
+  if (qIndex === -1) return {}
+  const params = new URLSearchParams(hash.slice(qIndex + 1))
+  return {
+    id: params.get('id'),
+    tab: params.get('tab')
+  }
+}
+
 function ThemeToggle({ theme, onToggle }) {
   const Icon = theme === 'dark' ? Sun : Moon
   const label = theme === 'dark' ? 'Mode terang' : 'Mode gelap'
@@ -50,6 +62,7 @@ function Gate({ onUnlock, serverUp, theme, onToggleTheme }) {
   const [pin, setPin] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const submit = async (e) => {
     e.preventDefault()
@@ -83,15 +96,26 @@ function Gate({ onUnlock, serverUp, theme, onToggleTheme }) {
         <span className="admin-gate-icon"><Lock size={22} /></span>
         <h1>Panel Admin Kemenag Wonosobo</h1>
         <p>Masuk memakai kata sandi operator untuk mengelola data situs.</p>
-        <input
-          className={`admin-input ${error ? 'admin-input--error' : ''}`}
-          type="password"
-          autoFocus
-          autoComplete="current-password"
-          placeholder="Kata sandi"
-          value={pin}
-          onChange={e => { setPin(e.target.value); setError('') }}
-        />
+        <div className="admin-password-wrap">
+          <input
+            className={`admin-input ${error ? 'admin-input--error' : ''}`}
+            type={showPassword ? 'text' : 'password'}
+            autoFocus
+            autoComplete="current-password"
+            placeholder="Kata sandi"
+            value={pin}
+            onChange={e => { setPin(e.target.value); setError('') }}
+          />
+          <button
+            type="button"
+            className="admin-password-toggle"
+            onClick={() => setShowPassword(!showPassword)}
+            aria-label={showPassword ? 'Sembunyikan sandi' : 'Lihat sandi'}
+            title={showPassword ? 'Sembunyikan sandi' : 'Lihat sandi'}
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
         {error && <p className="admin-error">{error}</p>}
         {serverUp === false && (
           <p className="admin-offline-note">
@@ -383,13 +407,55 @@ export default function AdminApp() {
   const [theme, setTheme] = useState(() => document.documentElement.getAttribute('data-theme') || 'light')
   const [session, setSession] = useState(() => restoreSession()) // 'server' | 'local' | null
   const [serverUp, setServerUp] = useState(null) // null = sedang diperiksa
-  const [tab, setTab] = useState('units')
-  const [activeUnitId, setActiveUnitId] = useState(null)
-  const [activeSeksiId, setActiveSeksiId] = useState(null)
+  const [tab, setTab] = useState(() => {
+    const { id, tab: t } = parseHashParams()
+    if (t) return t
+    if (id) {
+      const d = getData()
+      if (d.seksi?.some(s => s.id === id)) return 'seksi'
+      if (d.units?.some(u => u.id === id)) return 'units'
+    }
+    return 'units'
+  })
+  const [activeUnitId, setActiveUnitId] = useState(() => {
+    const { id } = parseHashParams()
+    if (id) {
+      const d = getData()
+      if (d.units?.some(u => u.id === id)) return id
+    }
+    return null
+  })
+  const [activeSeksiId, setActiveSeksiId] = useState(() => {
+    const { id } = parseHashParams()
+    if (id) {
+      const d = getData()
+      if (d.seksi?.some(s => s.id === id)) return id
+    }
+    return null
+  })
   const [draft, setDraft] = useState(() => getData())
   const [savedFlash, setSavedFlash] = useState(false)
   const [busy, setBusy] = useState(false)
   const [saveError, setSaveError] = useState('')
+
+  // Sinkronkan pilihan unit jika URL hash berubah (mis. tombol Edit di klik dari halaman lain)
+  useEffect(() => {
+    const handleHash = () => {
+      const { id, tab: t } = parseHashParams()
+      if (t) setTab(t)
+      if (id) {
+        if (draft.seksi?.some(s => s.id === id)) {
+          setTab('seksi')
+          setActiveSeksiId(id)
+        } else if (draft.units?.some(u => u.id === id)) {
+          setTab('units')
+          setActiveUnitId(id)
+        }
+      }
+    }
+    window.addEventListener('hashchange', handleHash)
+    return () => window.removeEventListener('hashchange', handleHash)
+  }, [draft])
 
   // Cek sekali apakah backend hidup, supaya gerbang masuk tahu mode mana
   // yang harus dipakai dan panel bisa memperingatkan sebelum operator menulis.
@@ -511,7 +577,7 @@ export default function AdminApp() {
         {tab === 'units' && (
           <div className="admin-col">
             <div className="admin-pick">
-              <label className="admin-field-label">Unit yang dikelola</label>
+              <label className="admin-field-label">Pilih Unit Subbag TU yang ingin diedit:</label>
               <div className="admin-pick-row">
                 {units.map(u => (
                   <button
@@ -520,12 +586,12 @@ export default function AdminApp() {
                     className={`admin-pick-btn ${activeUnitId === u.id ? 'active' : ''}`}
                     onClick={() => setActiveUnitId(u.id)}
                   >
-                    <LayoutDashboard size={14} /> {u.title}
+                    <Pencil size={13} /> {u.title}
                   </button>
                 ))}
               </div>
             </div>
-            {activeUnitId && (
+            {activeUnitId ? (
               <UnitEditor
                 unit={units.find(u => u.id === activeUnitId)}
                 onChange={next => setSection('units', units.map(u => u.id === next.id ? next : u))}
@@ -535,6 +601,12 @@ export default function AdminApp() {
                   setActiveUnitId(null)
                 }}
               />
+            ) : (
+              <div className="admin-empty-state">
+                <Pencil size={24} className="admin-empty-icon" />
+                <h4>Pilih Unit di Atas untuk Mengedit</h4>
+                <p>Klik salah satu tombol unit di atas untuk mengedit nama, deskripsi, layanan SOP, personil, atau fotonya.</p>
+              </div>
             )}
           </div>
         )}
@@ -542,7 +614,7 @@ export default function AdminApp() {
         {tab === 'seksi' && (
           <div className="admin-col">
             <div className="admin-pick">
-              <label className="admin-field-label">Seksi dari halaman kartu beranda</label>
+              <label className="admin-field-label">Pilih Seksi / Penyelenggara yang ingin diedit:</label>
               <div className="admin-pick-row">
                 {[sttUnit, ...seksiList].filter(Boolean).map(s => (
                   <button
@@ -551,12 +623,12 @@ export default function AdminApp() {
                     className={`admin-pick-btn ${activeSeksiId === s.id ? 'active' : ''}`}
                     onClick={() => setActiveSeksiId(s.id)}
                   >
-                    <Users size={14} /> {s.title}
+                    <Pencil size={13} /> {s.title}
                   </button>
                 ))}
               </div>
             </div>
-            {activeSeksiId && (
+            {activeSeksiId ? (
               <UnitEditor
                 unit={seksi.find(s => s.id === activeSeksiId)}
                 onChange={next => setSection('seksi', seksi.map(s => s.id === next.id ? next : s))}
@@ -566,6 +638,12 @@ export default function AdminApp() {
                   setActiveSeksiId(null)
                 }}
               />
+            ) : (
+              <div className="admin-empty-state">
+                <Pencil size={24} className="admin-empty-icon" />
+                <h4>Pilih Seksi di Atas untuk Mengedit</h4>
+                <p>Klik salah satu tombol seksi di atas (misal <strong>Seksi Bimas Islam</strong>) untuk mengedit teks judul, deskripsi, personil, SOP, dan dokumentasi.</p>
+              </div>
             )}
           </div>
         )}

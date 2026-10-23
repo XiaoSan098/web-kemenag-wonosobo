@@ -2,7 +2,7 @@ import { useState } from 'react'
 import {
   X, Users, FileText, Images, PlayCircle, Calendar, CheckCircle2,
   Timer, Download, Eye, Building2, BookHeart, GraduationCap,
-  BookOpenCheck, Landmark, Coins, Compass, Cross, Newspaper
+  BookOpenCheck, Landmark, Coins, Compass, Cross, Newspaper, Pencil
 } from 'lucide-react'
 import { findUnit, toRawPhone } from '../store.js'
 import { WhatsAppIcon } from '../icons.jsx'
@@ -214,9 +214,19 @@ export function UnitModal({ unitId, units = [], seksi = [], onClose, onOpenSop, 
             <h3>{heading}</h3>
             {unit.subtitle && <p>{unit.subtitle}</p>}
           </div>
-          <button type="button" className="icon-btn" onClick={onClose} aria-label="Tutup dialog">
-            <X size={18} />
-          </button>
+          <div className="modal-head-actions">
+            <a
+              href={`#/admin?id=${unit.id}`}
+              className="btn btn-outline btn-sm modal-edit-btn"
+              title="Edit tulisan / data unit ini di Panel Admin"
+              onClick={onClose}
+            >
+              <Pencil size={13} aria-hidden="true" /> Edit Unit
+            </a>
+            <button type="button" className="icon-btn" onClick={onClose} aria-label="Tutup dialog">
+              <X size={18} />
+            </button>
+          </div>
         </header>
 
         {isTu && (

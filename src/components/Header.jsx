@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MapPin, Clock, Moon, Sun } from 'lucide-react'
+import { MapPin, Clock, Moon, Sun, Lock } from 'lucide-react'
 
 function useTheme() {
   const [theme, setTheme] = useState(() => document.documentElement.getAttribute('data-theme') || 'light')
@@ -35,6 +35,13 @@ export function Header() {
           </a>
 
           <div className="header-actions">
+            <a
+              href="#/admin"
+              className="btn btn-outline btn-sm header-admin-btn"
+              title="Panel Admin untuk mengedit tulisan, SOP, foto & personil"
+            >
+              <Lock size={13} aria-hidden="true" /> Kelola / Edit Data
+            </a>
             <button
               type="button"
               className="icon-btn"

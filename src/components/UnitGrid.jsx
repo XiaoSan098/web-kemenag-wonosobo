@@ -1,6 +1,6 @@
 import {
   Building2, BookHeart, GraduationCap, BookOpenCheck, Landmark,
-  Coins, Compass, Cross, Newspaper, ChevronRight
+  Coins, Compass, Cross, Newspaper, ChevronRight, Pencil
 } from 'lucide-react'
 
 const ICONS = {
@@ -20,18 +20,31 @@ function UnitCard({ seksi, onOpen }) {
   const isTu = seksi.id === 'subbag-tu'
 
   return (
-    <button
-      type="button"
-      className={`unit-card ${isTu ? 'unit-card--featured' : ''}`}
-      onClick={() => onOpen(seksi.id)}
-    >
-      <span className="unit-card-icon"><Icon size={22} strokeWidth={1.8} aria-hidden="true" /></span>
-      <span className="unit-card-body">
-        <span className="unit-card-title">{seksi.title}</span>
-        <span className="unit-card-sub">{isTu ? 'PTSP · Perencanaan · Pelayanan · Keuangan' : seksi.subtitle}</span>
-      </span>
-      <ChevronRight size={16} className="unit-card-arrow" aria-hidden="true" />
-    </button>
+    <div className={`unit-card-wrap ${isTu ? 'unit-card--featured' : ''}`}>
+      <button
+        type="button"
+        className="unit-card"
+        onClick={() => onOpen(seksi.id)}
+      >
+        <span className="unit-card-icon"><Icon size={22} strokeWidth={1.8} aria-hidden="true" /></span>
+        <span className="unit-card-body">
+          <span className="unit-card-title">
+            {seksi.title}
+            {isTu && <span className="unit-card-badge">Induk Layanan</span>}
+          </span>
+          <span className="unit-card-sub">{isTu ? 'PTSP · Perencanaan · Pelayanan · Keuangan' : seksi.subtitle}</span>
+        </span>
+        <ChevronRight size={16} className="unit-card-arrow" aria-hidden="true" />
+      </button>
+      <a
+        href={`#/admin?id=${seksi.id}`}
+        className="unit-card-edit-btn"
+        title={`Edit tulisan & data ${seksi.title} di Admin`}
+        aria-label={`Edit data ${seksi.title}`}
+      >
+        <Pencil size={11} aria-hidden="true" /> Edit
+      </a>
+    </div>
   )
 }
 

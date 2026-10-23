@@ -32,7 +32,8 @@ const DB = {
   charset: 'utf8mb4',
   waitForConnections: true,
   connectionLimit: 10,
-  namedPlaceholders: false
+  namedPlaceholders: false,
+  ...(process.env.DB_SSL === 'true' ? { ssl: { minVersion: 'TLSv1.2', rejectUnauthorized: true } } : {})
 }
 
 export const pool = mysql.createPool(DB)

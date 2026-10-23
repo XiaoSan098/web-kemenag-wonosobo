@@ -193,6 +193,16 @@ button { font: inherit; color: inherit; }
 [data-theme="dark"] .brand-office { color: var(--green-100); }
 
 .header-actions { display: flex; align-items: center; gap: 10px; }
+.header-admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  text-decoration: none;
+  border-radius: 8px;
+}
 
 /* ---------- Hero ---------- */
 
@@ -247,6 +257,14 @@ button { font: inherit; color: inherit; }
   gap: 14px;
 }
 
+.unit-card-wrap {
+  position: relative;
+  display: flex;
+}
+.unit-card-wrap .unit-card {
+  width: 100%;
+}
+
 .unit-card {
   display: flex;
   align-items: center;
@@ -265,8 +283,36 @@ button { font: inherit; color: inherit; }
   transform: translateY(-2px);
 }
 
-.unit-card--featured { border-color: var(--gold-500); background: linear-gradient(0deg, var(--gold-100), var(--gold-100)); }
-[data-theme="dark"] .unit-card--featured { background: var(--surface); border-color: var(--gold-700); }
+
+.unit-card-edit-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  text-decoration: none;
+  opacity: 0.75;
+  transition: all 0.15s ease;
+  z-index: 2;
+}
+.unit-card-wrap:hover .unit-card-edit-btn {
+  opacity: 1;
+  border-color: var(--green-600);
+  color: var(--green-700);
+}
+.unit-card-edit-btn:hover {
+  background: var(--green-700) !important;
+  color: #fff !important;
+  border-color: var(--green-700) !important;
+}
 
 .unit-card-icon {
   display: inline-flex;
@@ -280,10 +326,30 @@ button { font: inherit; color: inherit; }
   border: 1px solid var(--green-100);
   flex: none;
 }
-.unit-card--featured .unit-card-icon { background: #fff; }
 
 .unit-card-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.unit-card-title { font-weight: 700; font-size: 0.95rem; }
+.unit-card-title {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.unit-card-badge {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--green-100);
+  color: var(--green-800);
+  vertical-align: middle;
+}
+[data-theme="dark"] .unit-card-badge {
+  background: var(--green-800);
+  color: #DCEDE2;
+}
 .unit-card-sub {
   font-size: 0.8rem;
   color: var(--text-3);
@@ -350,7 +416,39 @@ button { font: inherit; color: inherit; }
 .modal-head-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .modal-head-text h3 { font-size: 1.15rem; }
 .modal-head-text p { font-size: 0.82rem; color: var(--text-3); }
-.modal-head .icon-btn { margin-left: auto; }
+.modal-head .icon-btn { margin-left: 0; }
+
+.modal-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex: none;
+}
+.modal-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: var(--green-700);
+  border-color: var(--green-200);
+  background: var(--green-50);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+[data-theme="dark"] .modal-edit-btn {
+  color: #8FE3AE;
+  border-color: rgba(143, 227, 174, 0.25);
+  background: rgba(143, 227, 174, 0.08);
+}
+.modal-edit-btn:hover {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  color: #fff;
+}
 
 .modal-badge {
   align-self: flex-start;
@@ -358,10 +456,16 @@ button { font: inherit; color: inherit; }
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--gold-700);
-  background: var(--gold-100);
+  color: var(--green-700);
+  background: var(--green-50);
+  border: 1px solid var(--green-100);
   border-radius: 6px;
   padding: 2px 8px;
+}
+[data-theme="dark"] .modal-badge {
+  background: var(--green-100);
+  color: #DCEDE2;
+  border-color: rgba(143, 227, 174, 0.25);
 }
 
 /* Navigasi sub-unit Subbag TU */
@@ -832,6 +936,42 @@ button { font: inherit; color: inherit; }
 .admin-gate-card h1 { font-size: 1.1rem; }
 .admin-gate-card p { color: var(--text-2); font-size: 0.86rem; }
 .admin-gate-card .admin-input { text-align: center; font-size: 1rem; }
+.admin-password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.admin-password-wrap .admin-input {
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+  padding-right: 44px;
+  padding-left: 44px;
+}
+.admin-password-toggle {
+  position: absolute;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--text-3);
+  cursor: pointer;
+  border-radius: 7px;
+  transition: all 0.15s ease;
+}
+.admin-password-toggle:hover {
+  color: var(--green-700);
+  background: var(--green-50);
+}
+[data-theme="dark"] .admin-password-toggle:hover {
+  color: #8FE3AE;
+  background: rgba(143, 227, 174, 0.12);
+}
 .admin-gate-card .btn { justify-content: center; }
 .admin-gate-card .admin-theme-toggle { align-self: flex-end; color: var(--text-1); }
 .admin-back-home { margin-top: 6px; font-size: 0.82rem; color: var(--text-3); text-decoration: none; }
@@ -1079,3 +1219,32 @@ textarea.admin-input { resize: vertical; min-height: 64px; }
   .admin-topbar { padding: 10px 16px; }
   .admin-main { padding: 20px 16px 48px; }
 }
+
+.admin-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  background: var(--surface);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  margin-top: 14px;
+}
+.admin-empty-state .admin-empty-icon {
+  color: var(--green-600);
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+.admin-empty-state h4 {
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+  color: var(--text-1);
+}
+.admin-empty-state p {
+  font-size: 0.88rem;
+  color: var(--text-2);
+  max-width: 480px;
+}
+
