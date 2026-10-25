@@ -446,18 +446,127 @@ export const SUBBAG_TU_UNITS = [
         embedUrl: ''
       }
     ]
+  },
+
+  // 5. HUMAS (Hubungan Masyarakat)
+  {
+    id: 'humas',
+    parentId: 'subbag-tu',
+    title: 'Humas',
+    fullTitle: 'Humas & Informasi Publik',
+    subtitle: 'Bagian Subbag Tata Usaha Kemenag Wonosobo',
+    badge: 'Media & PPID',
+    icon: 'newspaper',
+    color: 'blue',
+    contact: {
+      officer: 'Tim Humas Kemenag Wonosobo',
+      role: 'Pelayanan Informasi Publik, Kerjasama Media & Berita Resmi',
+      phone: '+62 823-2680-5111',
+      rawPhone: '6282326805111',
+      hours: 'Senin - Jumat (07.30 - 16.00 WIB)'
+    },
+    structure: [
+      {
+        name: 'H. Imron Awaludin, S.Ag., M.S.I.',
+        role: 'Kepala Subbagian Tata Usaha (Kasubbag TU)',
+        nip: '19750412 200212 1 002',
+        photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+        badge: 'Pembina / Penanggung Jawab'
+      },
+      {
+        name: 'Muhammad Ilham, S.I.Kom',
+        role: 'Koordinator Pranata Humas Ahli / Pengelola Media Resmi',
+        nip: '19870412 201101 1 005',
+        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+        badge: 'Koordinator Humas'
+      },
+      {
+        name: 'Annisa Rahmawati, S.Sos',
+        role: 'Pranata Humas / Pengelola Konten Media Sosial & Berita',
+        nip: '19930718 201902 2 004',
+        photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
+        badge: 'Content Creator'
+      },
+      {
+        name: 'Dimas Aditya, S.Kom',
+        role: 'Desainer Grafis & Kameramen Dokumentasi Multimedia',
+        nip: '19960310 202203 1 003',
+        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
+        badge: 'Multimedia Editor'
+      }
+    ],
+    services: [
+      {
+        id: 'humas-1',
+        title: 'Layanan Permohonan Informasi Publik Resmi (PPID Terpadu)',
+        desc: 'Permohonan data statistik keagamaan, laporan publik, dan dokumen keterbukaan informasi publik (UU No. 14 Tahun 2008).',
+        syarat: [
+          'Formulir Permohonan Informasi PPID yang telah diisi',
+          'Fotokopi KTP Pemohon / KTM Mahasiswa untuk keperluan riset',
+          'Tujuan penggunaan data yang jelas dan sah'
+        ],
+        prosedur: 'Pengisian form PPID -> Verifikasi Tim PPID -> Penyerahan dokumen informasi dalam 1-3 hari kerja.',
+        waktu: '1 - 3 Hari Kerja',
+        biaya: 'Gratis (Rp 0,-)',
+        pdfName: 'SOP-Layanan-Informasi-Publik-PPID.pdf',
+        pdfCode: 'SOP/HUMAS/01/2026'
+      },
+      {
+        id: 'humas-2',
+        title: 'Fasilitasi Kerjasama Liputan Media Massa & Konferensi Pers',
+        desc: 'Pelayanan wawancara, peliputan kegiatan resmi pejabat kantor, dan penerbitan rilis pers resmi Kemenag Wonosobo.',
+        syarat: [
+          'Surat Tugas Wartawan / Kartu Pers Resmi Media',
+          'Daftar pertanyaan atau topik peliputan yang jelas'
+        ],
+        prosedur: 'Konfirmasi ke Meja Humas -> Penjadwalan wawancara pimpinan / rilis pers resmi.',
+        waktu: '1 Hari Kerja',
+        biaya: 'Gratis (Rp 0,-)',
+        pdfName: 'SOP-Kerjasama-Liputan-Media-Massa.pdf',
+        pdfCode: 'SOP/HUMAS/02/2026'
+      }
+    ],
+    photos: [
+      {
+        title: 'Kemenag Wonosobo Raih Penghargaan Pengelolaan Keterbukaan Informasi Publik Terbaik',
+        date: '06 Oktober 2026',
+        image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=700&q=80',
+        caption: 'Apresiasi komitmen transparansi dan kecepatan tanggap dalam melayani pertanyaan publik lewat media digital.',
+        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+      }
+    ],
+    videos: [
+      {
+        title: 'Behind The Scenes: Tim Humas Kemenag Wonosobo Menyapa Umat Lewat Konten Edukatif',
+        date: '01 Oktober 2026',
+        duration: '03:40',
+        thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=80',
+        platform: 'YouTube',
+        videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
+        embedUrl: ''
+      },
+      {
+        title: 'Kreativitas Publikasi Media Sosial Kemenag Wonosobo',
+        date: '20 September 2026',
+        duration: '01:20',
+        thumbnail: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=700&q=80',
+        platform: 'TikTok',
+        videoUrl: 'https://www.tiktok.com/@kemenagwonosobo',
+        embedUrl: ''
+      }
+    ]
   }
 ];
 
 // DAFTAR UNIT & SEKSI DI HALAMAN UTAMA
 export const SEKSI_DATA = [
-  // 1. SUBBAG TATA USAHA (Memiliki 4 Tombol Layanan di dalamnya)
+  // 1. SUBBAG TATA USAHA (Memiliki 5 Tombol Layanan di dalamnya)
   {
     id: 'subbag-tu',
     title: 'Subbag TU',
     fullTitle: 'Subbagian Tata Usaha',
-    subtitle: 'Membawahi 4 Layanan: PTSP, Perencanaan, Pelayanan, & Keuangan',
-    badge: '4 Layanan Utama',
+    subtitle: 'Membawahi 5 Layanan: PTSP, Perencanaan, Pelayanan, Keuangan, & Humas',
+    badge: '5 Layanan Utama',
     icon: 'building-2',
     color: 'emerald',
     isParentSubbag: true
@@ -1158,98 +1267,6 @@ export const SEKSI_DATA = [
         date: '18 September 2026',
         duration: '04:10',
         thumbnail: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=700&q=80',
-        platform: 'YouTube',
-        videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: ''
-      }
-    ]
-  },
-
-  // 11. HUMAS (Hubungan Masyarakat)
-  {
-    id: 'humas',
-    title: 'Humas',
-    fullTitle: 'Humas & Informasi Publik',
-    subtitle: 'Publikasi Berita, Media Sosial, PPID & Kerjasama Pers',
-    badge: 'Media & PPID',
-    icon: 'newspaper',
-    color: 'blue',
-    contact: {
-      officer: 'Tim Humas Kemenag Wonosobo',
-      role: 'Pelayanan Informasi Publik, Kerjasama Media & Berita Resmi',
-      phone: '+62 823-2680-5111',
-      rawPhone: '6282326805111',
-      hours: 'Senin - Jumat (07.30 - 16.00 WIB)'
-    },
-    structure: [
-      {
-        name: 'Muhammad Ilham, S.I.Kom',
-        role: 'Koordinator Pranata Humas Ahli / Pengelola Media Resmi',
-        nip: '19870412 201101 1 005',
-        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
-        badge: 'Koordinator Humas'
-      },
-      {
-        name: 'Annisa Rahmawati, S.Sos',
-        role: 'Pranata Humas / Pengelola Konten Media Sosial & Berita',
-        nip: '19930718 201902 2 004',
-        photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
-        badge: 'Content Creator'
-      },
-      {
-        name: 'Dimas Aditya, S.Kom',
-        role: 'Desainer Grafis & Kameramen Dokumentasi Multimedia',
-        nip: '19960310 202203 1 003',
-        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
-        badge: 'Multimedia Editor'
-      }
-    ],
-    services: [
-      {
-        id: 'humas-1',
-        title: 'Layanan Permohonan Informasi Publik Resmi (PPID Terpadu)',
-        desc: 'Permohonan data statistik keagamaan, laporan publik, dan dokumen keterbukaan informasi publik (UU No. 14 Tahun 2008).',
-        syarat: [
-          'Formulir Permohonan Informasi PPID yang telah diisi',
-          'Fotokopi KTP Pemohon / KTM Mahasiswa untuk keperluan riset',
-          'Tujuan penggunaan data yang jelas dan sah'
-        ],
-        prosedur: 'Pengisian form PPID -> Verifikasi Tim PPID -> Penyerahan dokumen informasi dalam 1-3 hari kerja.',
-        waktu: '1 - 3 Hari Kerja',
-        biaya: 'Gratis (Rp 0,-)',
-        pdfName: 'SOP-Layanan-Informasi-Publik-PPID.pdf',
-        pdfCode: 'SOP/HUMAS/01/2026'
-      },
-      {
-        id: 'humas-2',
-        title: 'Fasilitasi Kerjasama Liputan Media Massa & Konferensi Pers',
-        desc: 'Pelayanan wawancara, peliputan kegiatan resmi pejabat kantor, dan penerbitan rilis pers resmi Kemenag Wonosobo.',
-        syarat: [
-          'Surat Tugas Wartawan / Kartu Pers Resmi Media',
-          'Daftar pertanyaan atau topik peliputan yang jelas'
-        ],
-        prosedur: 'Konfirmasi ke Meja Humas -> Penjadwalan wawancara pimpinan / rilis pers resmi.',
-        waktu: '1 Hari Kerja',
-        biaya: 'Gratis (Rp 0,-)',
-        pdfName: 'SOP-Kerjasama-Liputan-Media-Massa.pdf',
-        pdfCode: 'SOP/HUMAS/02/2026'
-      }
-    ],
-    photos: [
-      {
-        title: 'Kemenag Wonosobo Raih Penghargaan Pengelolaan Keterbukaan Informasi Publik Terbaik',
-        date: '06 Oktober 2026',
-        image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=700&q=80',
-        caption: 'Apresiasi komitmen transparansi dan kecepatan tanggap dalam melayani pertanyaan publik lewat media digital.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
-      }
-    ],
-    videos: [
-      {
-        title: 'Behind The Scenes: Tim Humas Kemenag Wonosobo Menyapa Umat Lewat Konten Edukatif',
-        date: '01 Oktober 2026',
-        duration: '03:40',
-        thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
         embedUrl: ''

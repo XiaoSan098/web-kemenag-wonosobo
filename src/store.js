@@ -9,7 +9,7 @@
 import { useEffect, useState } from 'react'
 import { SUBBAG_TU_UNITS, SEKSI_DATA, SOCIAL_MEDIA_CONTACTS } from './data.js'
 
-const STORAGE_KEY = 'kew_wsb_data_v2'
+const STORAGE_KEY = 'kew_wsb_data_v3'
 const CHANGE_EVENT = 'kew-data-change'
 
 const DEFAULT_DATA = {
