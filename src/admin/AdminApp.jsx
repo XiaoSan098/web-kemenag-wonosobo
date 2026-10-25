@@ -86,7 +86,13 @@ function Gate({ onUnlock, theme, onToggleTheme }) {
     <div className="admin admin--gate">
       <form className="admin-gate-card" onSubmit={submit}>
         <ThemeToggle theme={theme} onToggle={onToggleTheme} />
-        <span className="admin-gate-icon"><Lock size={22} /></span>
+        <div className="admin-gate-logo-wrap">
+          <img
+            src="/logo_kemenag.png"
+            alt="Logo Kementerian Agama Republik Indonesia"
+            className="admin-gate-logo"
+          />
+        </div>
         <h1>Panel Admin Kemenag Wonosobo</h1>
         <p>Masuk memakai kata sandi operator untuk mengelola data situs.</p>
         <div className="admin-password-wrap">
@@ -519,7 +525,7 @@ export default function AdminApp() {
       <header className="admin-topbar">
         <a className="admin-home" href="#/"><ArrowLeft size={15} /> Situs Publik</a>
         <div className="admin-topbar-title">
-          <Globe size={18} />
+          <img src="/logo_kemenag.png" alt="" style={{ width: '22px', height: '22px', objectFit: 'contain' }} />
           <strong>Panel Admin · Kemenag Kab. Wonosobo</strong>
         </div>
         <div className="admin-topbar-actions">

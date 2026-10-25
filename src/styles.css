@@ -987,6 +987,18 @@ button { font: inherit; color: inherit; }
   padding: 30px 28px;
   text-align: center;
 }
+.admin-gate-logo-wrap {
+  margin: 0 auto 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.admin-gate-logo {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.08));
+}
 .admin-gate-icon {
   margin: 0 auto;
   display: inline-flex;
