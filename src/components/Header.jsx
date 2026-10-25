@@ -26,7 +26,7 @@ export function Header() {
 
       <header className="header">
         <div className="container header-inner">
-          <a className="brand" href="/">
+          <a className="brand" href="#/">
             <img className="brand-logo" src="/logo_kemenag.png" alt="Logo Kementerian Agama Republik Indonesia" />
             <span className="brand-text">
               <span className="brand-ministry">Kementerian Agama Republik Indonesia</span>
