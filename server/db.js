@@ -33,7 +33,12 @@ const DB = {
   waitForConnections: true,
   connectionLimit: 10,
   namedPlaceholders: false,
-  ...(process.env.DB_SSL === 'true' ? { ssl: { minVersion: 'TLSv1.2', rejectUnauthorized: true } } : {})
+  ...(process.env.DB_SSL === 'true' ? {
+    ssl: {
+      minVersion: 'TLSv1.2',
+      rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED === 'true'
+    }
+  } : {})
 }
 
 export const pool = mysql.createPool(DB)

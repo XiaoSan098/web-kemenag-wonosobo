@@ -56,9 +56,15 @@ const VIDEO_FIELDS = [
   { key: 'title', label: 'Judul Video' },
   { key: 'date', label: 'Tanggal' },
   { key: 'duration', label: 'Durasi (mis. 04:12)' },
-  { key: 'thumbnail', label: 'Thumbnail', type: 'file', accept: IMAGE_ACCEPT },
-  { key: 'platform', label: 'Platform', type: 'select', options: [['YouTube', 'YouTube'], ['Instagram', 'Instagram'], ['Lokal', 'Lokal (unggahan sendiri)']] },
-  { key: 'videoUrl', label: 'Berkas video / URL', type: 'file', accept: VIDEO_ACCEPT },
+  { key: 'thumbnail', label: 'Thumbnail / Cover', type: 'file', accept: IMAGE_ACCEPT },
+  { key: 'platform', label: 'Platform', type: 'select', options: [
+    ['YouTube', 'YouTube'],
+    ['Instagram', 'Instagram'],
+    ['TikTok', 'TikTok'],
+    ['Facebook', 'Facebook'],
+    ['Lokal', 'Lokal (unggahan sendiri)']
+  ] },
+  { key: 'videoUrl', label: 'URL Video / Berkas', type: 'file', accept: VIDEO_ACCEPT },
   { key: 'embedUrl', label: 'URL embed (opsional)' }
 ]
 

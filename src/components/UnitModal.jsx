@@ -165,18 +165,22 @@ function VideoTab({ unit }) {
             <div className="video-thumb">
               {local ? (
                 <video controls preload="metadata" poster={v.thumbnail} src={v.videoUrl} />
+              ) : v.videoUrl ? (
+                <a href={v.videoUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%', height: '100%' }}>
+                  <img src={v.thumbnail || '/placeholder-video.jpg'} alt={v.title} loading="lazy" />
+                </a>
               ) : (
-                <img src={v.thumbnail} alt={v.title} loading="lazy" />
+                <img src={v.thumbnail || '/placeholder-video.jpg'} alt={v.title} loading="lazy" />
               )}
-              {!local && <span className="video-platform">{v.platform}</span>}
+              {!local && v.platform && <span className="video-platform">{v.platform}</span>}
               {v.duration && !local && <span className="video-duration">{v.duration}</span>}
             </div>
             <div className="video-meta">
               <p className="video-title">{v.title}</p>
               <p className="video-date"><Calendar size={13} aria-hidden="true" /> {v.date}</p>
-              {!local && (
+              {!local && v.videoUrl && (
                 <a className="btn btn-ghost btn-sm" href={v.videoUrl} target="_blank" rel="noopener noreferrer">
-                  <PlayCircle size={15} /> Tonton di {v.platform === 'YouTube' ? 'YouTube' : 'Instagram'}
+                  <PlayCircle size={15} /> Tonton di {v.platform || 'Media Sosial'}
                 </a>
               )}
             </div>
