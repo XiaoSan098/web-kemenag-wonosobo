@@ -24,11 +24,8 @@ import {
 import { UnitEditor } from './UnitEditor.jsx'
 import { readBackup } from '../backup.js'
 
-// Gerbang masuk memakai kata sandi server (ADMIN_PASSWORD di .env).
-// PIN di bawah hanya jaring pengaman saat backend tidak aktif — mis. situs
-// diterbitkan sebagai hosting statis — supaya operator tetap bisa menyunting
-// data lokal di browsernya.
-const ADMIN_PIN = 'kemenag2026'
+// Kata sandi masuk panel admin
+const ADMIN_PIN = 'webkemenagwonosobo123'
 
 const TABS = [
   { id: 'units', label: 'Unit Subbag TU', Icon: Building2 },
@@ -58,7 +55,7 @@ function ThemeToggle({ theme, onToggle }) {
   )
 }
 
-function Gate({ onUnlock, serverUp, theme, onToggleTheme }) {
+function Gate({ onUnlock, theme, onToggleTheme }) {
   const [pin, setPin] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
@@ -71,18 +68,14 @@ function Gate({ onUnlock, serverUp, theme, onToggleTheme }) {
     setBusy(true)
     setError('')
     try {
-      await login(value) // kata sandi server → token admin disimpan
+      await login(value) // jika ada backend aktif
       onUnlock('server')
-    } catch (err) {
-      if (err.status === 401) {
-        setError('Kata sandi salah, coba lagi.')
-        setPin('')
-      } else if (value === ADMIN_PIN) {
-        // Backend tak terjangkau: lanjut menyunting salinan lokal browser.
+    } catch {
+      if (value === ADMIN_PIN) {
         markLocalSession()
         onUnlock('local')
       } else {
-        setError('Server tidak terjangkau. Masuk memakai PIN luring, atau jalankan server (npm run server).')
+        setError('Kata sandi salah, silakan periksa kembali.')
       }
     } finally {
       setBusy(false)
@@ -117,11 +110,6 @@ function Gate({ onUnlock, serverUp, theme, onToggleTheme }) {
           </button>
         </div>
         {error && <p className="admin-error">{error}</p>}
-        {serverUp === false && (
-          <p className="admin-offline-note">
-            <WifiOff size={14} /> Backend tidak aktif — menunggu PIN luring.
-          </p>
-        )}
         <button type="submit" className="btn btn-primary" disabled={busy}>
           {busy ? <Loader2 size={16} className="admin-spin" /> : <KeyRound size={16} />}
           {busy ? 'Memeriksa…' : 'Buka Panel'}
@@ -524,7 +512,7 @@ export default function AdminApp() {
     window.location.hash = '#/'
   }
 
-  if (!session) return <Gate onUnlock={setSession} serverUp={serverUp} theme={theme} onToggleTheme={toggleTheme} />
+  if (!session) return <Gate onUnlock={setSession} theme={theme} onToggleTheme={toggleTheme} />
 
   return (
     <div className="admin">
@@ -536,11 +524,9 @@ export default function AdminApp() {
         </div>
         <div className="admin-topbar-actions">
           <ThemeToggle theme={theme} onToggle={toggleTheme} />
-          {session === 'local' && (
-            <span className="admin-offline-chip" title="Backend tidak aktif">
-              <WifiOff size={13} /> Mode luring
-            </span>
-          )}
+          <span className="admin-offline-chip">
+            Editor Aktif
+          </span>
           {dirty && <span className="admin-dirty-chip">Perubahan belum disimpan</span>}
           <button type="button" className="btn btn-outline btn-sm" onClick={reload} disabled={!dirty || busy}>
             <RotateCcw size={14} /> Buang Perubahan
@@ -660,21 +646,7 @@ export default function AdminApp() {
         )}
 
         <footer className="admin-note">
-          {session === 'server' ? (
-            <>
-              Perubahan disimpan ke server (<code>server/data/db.json</code>) sehingga
-              langsung tampil untuk semua pengunjung. Berkas yang diunggah masuk ke
-              folder <code>uploads/</code>. Sebagai jaring pengaman, salinannya juga
-              disimpan di browser ini untuk akses luring.
-            </>
-          ) : (
-            <>
-              <strong>Mode luring:</strong> backend tidak aktif, jadi perubahan hanya
-              tersimpan di browser operator ini. Jalankan <code>npm run server</code> lalu
-              masuk lagi memakai kata sandi server agar tersimpan bersama. Sementara itu,
-              unduh JSON lewat menu <strong>Cadangan Data</strong> untuk cadangan manual.
-            </>
-          )}
+          Panel Editor Portal Kemenag Kabupaten Wonosobo. Gunakan menu <strong>Cadangan Data</strong> untuk mengunduh snapshot berkas JSON pembaruan data.
         </footer>
       </main>
     </div>
