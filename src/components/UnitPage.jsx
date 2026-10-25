@@ -333,19 +333,6 @@ export function UnitPage({ unitId, subId, units = [], seksi = [], onOpenSop, onO
           {tab === 'foto' && <FotoTab unit={unit} onOpenLightbox={onOpenLightbox} />}
           {tab === 'video' && <VideoTab unit={unit} />}
         </main>
-
-        {/* CTA Bawah */}
-        <div className="unit-page-bottom-cta">
-          <div className="unit-page-bottom-text">
-            <h3>Standar Pelayanan Bebas Biaya (Rp 0,-)</h3>
-            <p>Seluruh layanan keagamaan dan pendidikan di Kantor Kementerian Agama Kabupaten Wonosobo diselenggarakan secara transparan, profesional, dan akuntabel.</p>
-          </div>
-          <div className="unit-page-bottom-actions">
-            <a href="#/" className="btn btn-primary" onClick={(e) => { e.preventDefault(); onBack ? onBack() : (window.location.hash = '#/') }}>
-              <ArrowLeft size={16} /> Kembali ke Beranda
-            </a>
-          </div>
-        </div>
       </div>
     </div>
   )
