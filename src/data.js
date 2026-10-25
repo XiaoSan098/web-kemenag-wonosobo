@@ -25,7 +25,14 @@ export const SUBBAG_TU_UNITS = [
     // 1. STRUKTUR ORGANISASI (Foto, Nama, dan Jabatan)
     structure: [
       {
-        name: 'Drs. H. Imron Rosyadi, M.Pd.I',
+        name: 'H. Edi Sungkowo, S.Ag., M.Pd.I.',
+        role: 'Kepala Kantor Kementerian Agama Kab. Wonosobo',
+        nip: '19700312 199603 1 002',
+        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+        badge: 'Kepala Kantor'
+      },
+      {
+        name: 'H. Imron Awaludin, S.Ag., M.S.I.',
         role: 'Kepala Subbagian Tata Usaha (Kasubbag TU)',
         nip: '19750412 200212 1 002',
         photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
@@ -118,11 +125,11 @@ export const SUBBAG_TU_UNITS = [
         igUrl: 'https://www.instagram.com/kemenagwonosobo/'
       }
     ],
-    // 4. VIDEO (Link YouTube & Instagram)
+    // 4. VIDEO (Link YouTube, TikTok, Instagram & Facebook)
     videos: [
       {
-        title: 'Profil Layanan Terpadu Satu Pintu (PTSP) Kemenag Wonosobo 2026',
-        date: '05 Oktober 2026',
+        title: 'Profil Layanan Terpadu Satu Pintu (PTSP) Kemenag Wonosobo',
+        date: '10 Feb 2026',
         duration: '04:12',
         thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
@@ -130,12 +137,30 @@ export const SUBBAG_TU_UNITS = [
         embedUrl: ''
       },
       {
-        title: 'Reels: Alur Pengurusan Surat Rekomendasi 15 Menit Jadi di Loket PTSP',
-        date: '29 September 2026',
+        title: 'Reels: Alur Pengurusan Surat Rekomendasi di PTSP',
+        date: '29 Jan 2026',
         duration: '00:58',
         thumbnail: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=700&q=80',
         platform: 'Instagram',
         videoUrl: 'https://www.instagram.com/kemenagwonosobo/',
+        embedUrl: ''
+      },
+      {
+        title: 'Video Edukasi: Layanan Cepat & Bebas Pungli',
+        date: '15 Jan 2026',
+        duration: '01:15',
+        thumbnail: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=700&q=80',
+        platform: 'TikTok',
+        videoUrl: 'https://www.tiktok.com/@kemenagwonosobo',
+        embedUrl: ''
+      },
+      {
+        title: 'Publikasi Layanan Masyarakat Kemenag Wonosobo',
+        date: '05 Jan 2026',
+        duration: '02:30',
+        thumbnail: 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=700&q=80',
+        platform: 'Facebook',
+        videoUrl: 'https://www.facebook.com/kemenag.teras/',
         embedUrl: ''
       }
     ]
@@ -160,7 +185,7 @@ export const SUBBAG_TU_UNITS = [
     },
     structure: [
       {
-        name: 'Drs. H. Imron Rosyadi, M.Pd.I',
+        name: 'H. Imron Awaludin, S.Ag., M.S.I.',
         role: 'Kepala Subbagian Tata Usaha (Kasubbag TU)',
         nip: '19750412 200212 1 002',
         photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
@@ -254,7 +279,7 @@ export const SUBBAG_TU_UNITS = [
     },
     structure: [
       {
-        name: 'Drs. H. Imron Rosyadi, M.Pd.I',
+        name: 'H. Imron Awaludin, S.Ag., M.S.I.',
         role: 'Kepala Subbagian Tata Usaha (Kasubbag TU)',
         nip: '19750412 200212 1 002',
         photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
@@ -348,7 +373,7 @@ export const SUBBAG_TU_UNITS = [
     },
     structure: [
       {
-        name: 'Drs. H. Imron Rosyadi, M.Pd.I',
+        name: 'H. Imron Awaludin, S.Ag., M.S.I.',
         role: 'Kepala Subbagian Tata Usaha (Kasubbag TU)',
         nip: '19750412 200212 1 002',
         photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
@@ -456,7 +481,7 @@ export const SEKSI_DATA = [
     },
     structure: [
       {
-        name: 'H. Fakih Khusni, S.Ag., M.S.I',
+        name: 'H. Ahmad Fuadi, S.Ag., M.Pd.',
         role: 'Kepala Seksi Bimas Islam',
         nip: '19720510 199803 1 003',
         photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80',
