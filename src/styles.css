@@ -1126,6 +1126,48 @@ button { font: inherit; color: inherit; }
   font-weight: 600;
 }
 
+/* Banner Selamat Datang Admin */
+.admin-welcome-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+}
+.admin-welcome-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.admin-welcome-text h3 {
+  font-size: 1.15rem;
+  font-weight: 750;
+  color: var(--text-1);
+  margin-bottom: 4px;
+}
+.admin-welcome-text p {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  margin: 0;
+}
+.admin-welcome-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--green-50);
+  color: var(--green-700);
+  border: 1px solid var(--green-200);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+[data-theme="dark"] .admin-welcome-badge {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
 /* Tab menu */
 .admin-tabs {
   display: flex;

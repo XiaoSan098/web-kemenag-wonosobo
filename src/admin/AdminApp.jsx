@@ -513,6 +513,8 @@ export default function AdminApp() {
   const doImport = (parsed) => setDraft(parsed)
 
   const doLogout = async () => {
+    const yakin = window.confirm('Apakah Anda yakin ingin keluar dari Panel Admin Kemenag Wonosobo?')
+    if (!yakin) return
     await logout()
     setSession(null)
     window.location.hash = '#/'
@@ -546,6 +548,19 @@ export default function AdminApp() {
           </button>
         </div>
       </header>
+
+      {/* Ucapan Selamat Datang Admin */}
+      <div className="admin-welcome-bar">
+        <div className="container admin-welcome-inner">
+          <div className="admin-welcome-text">
+            <h3>Selamat Datang, Admin! 👋</h3>
+            <p>Kelola data pejabat, layanan/SOP, dokumentasi foto/video, dan kanal resmi Kemenag Wonosobo dengan mudah.</p>
+          </div>
+          <span className="admin-welcome-badge">
+            Admin Kemenag Terautentikasi
+          </span>
+        </div>
+      </div>
 
       {saveError && (
         <p className="admin-save-error" role="alert">{saveError}</p>
