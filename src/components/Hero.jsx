@@ -3,6 +3,12 @@ import { ArrowRight } from 'lucide-react'
 export function Hero() {
   return (
     <section className="hero">
+      {/* Background foto gedung Kantor Kemenag Wonosobo samar & elegan */}
+      <div className="hero-bg" aria-hidden="true">
+        <img src="/hero_banner.jpg" alt="" />
+        <div className="hero-overlay" />
+      </div>
+
       <div className="container hero-inner">
         <div className="hero-copy">
           <p className="hero-eyebrow">Portal Layanan Resmi</p>
@@ -20,10 +26,6 @@ export function Hero() {
             </a>
           </div>
         </div>
-
-        <figure className="hero-figure">
-          <img src="/hero_banner.jpg" alt="Kantor Kementerian Agama Kabupaten Wonosobo" />
-        </figure>
       </div>
     </section>
   )
