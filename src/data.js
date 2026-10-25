@@ -170,7 +170,7 @@ export const SUBBAG_TU_UNITS = [
     id: 'perencanaan',
     parentId: 'subbag-tu',
     title: 'Perencanaan',
-    fullTitle: 'Urusan Perencanaan & Data',
+    fullTitle: 'Perencanaan',
     subtitle: 'Bagian Subbag Tata Usaha Kemenag Wonosobo',
     badge: 'RKA-K/L & SAKIP',
     icon: 'compass',
