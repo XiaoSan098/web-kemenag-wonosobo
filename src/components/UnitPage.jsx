@@ -279,15 +279,12 @@ export function UnitPage({ unitId, subId, units = [], seksi = [], onOpenSop, onO
             </div>
           </div>
 
-          {unit.contact && (
+          {unit.contact?.hours && (
             <div className="unit-page-contact-card">
               <div className="unit-page-contact-hours">
                 <Timer size={15} aria-hidden="true" />
-                <span>{unit.contact.hours || 'Senin – Jumat (07.30 – 16.00 WIB)'}</span>
+                <span>Jam Pelayanan: <strong>{unit.contact.hours}</strong></span>
               </div>
-              <a className="btn btn-wa" href={waUrlFor(unit)} target="_blank" rel="noopener noreferrer">
-                <WhatsAppIcon size={16} /> Konsultasi / PTSP: {unit.contact.officer}
-              </a>
             </div>
           )}
         </header>
@@ -340,17 +337,12 @@ export function UnitPage({ unitId, subId, units = [], seksi = [], onOpenSop, onO
         {/* CTA Bawah */}
         <div className="unit-page-bottom-cta">
           <div className="unit-page-bottom-text">
-            <h3>Butuh Informasi atau Konsultasi Terkait {unit.title}?</h3>
-            <p>Petugas Kementerian Agama Kabupaten Wonosobo siap melayani Anda dengan ramah, cepat, dan bebas biaya (Rp 0,-).</p>
+            <h3>Standar Pelayanan Bebas Biaya (Rp 0,-)</h3>
+            <p>Seluruh layanan keagamaan dan pendidikan di Kantor Kementerian Agama Kabupaten Wonosobo diselenggarakan secara transparan, profesional, dan akuntabel.</p>
           </div>
           <div className="unit-page-bottom-actions">
-            {unit.contact && (
-              <a className="btn btn-wa" href={waUrlFor(unit)} target="_blank" rel="noopener noreferrer">
-                <WhatsAppIcon size={16} /> Hubungi Petugas via WhatsApp
-              </a>
-            )}
-            <a href="#/" className="btn btn-outline" onClick={(e) => { e.preventDefault(); onBack ? onBack() : (window.location.hash = '#/') }}>
-              <ArrowLeft size={16} /> Lihat Unit Lainnya
+            <a href="#/" className="btn btn-primary" onClick={(e) => { e.preventDefault(); onBack ? onBack() : (window.location.hash = '#/') }}>
+              <ArrowLeft size={16} /> Kembali ke Beranda
             </a>
           </div>
         </div>
