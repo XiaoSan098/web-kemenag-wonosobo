@@ -16,7 +16,7 @@ import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { createLoginLimiter, requireAdminPassword, requireDatabasePassword } from './security.js'
+import { createLoginLimiter, getAdminUsername, requireAdminPassword, requireDatabasePassword } from './security.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const UPLOAD_DIR = path.join(__dirname, '..', 'uploads')
@@ -28,6 +28,7 @@ if (fs.existsSync(envPath)) process.loadEnvFile(envPath)
 fs.mkdirSync(UPLOAD_DIR, { recursive: true })
 
 const ADMIN_PASSWORD = requireAdminPassword()
+const ADMIN_USERNAME = getAdminUsername()
 requireDatabasePassword()
 const tokens = new Set() // token aktif (memori; cukup untuk admin tunggal)
 const loginLimiter = createLoginLimiter()
@@ -56,17 +57,23 @@ app.post('/api/login', (req, res) => {
     return res.status(429).json({ error: 'Terlalu banyak percobaan masuk. Coba lagi nanti.' })
   }
 
-  const { password } = req.body || {}
+  const { username, password } = req.body || {}
+  const uUser = Buffer.from(String(username ?? ''))
+  const uExpected = Buffer.from(ADMIN_USERNAME)
+  const isUserValid = uUser.length === uExpected.length && crypto.timingSafeEqual(uUser, uExpected)
+
   const a = Buffer.from(String(password ?? ''))
   const b = Buffer.from(ADMIN_PASSWORD)
-  if (password && a.length === b.length && crypto.timingSafeEqual(a, b)) {
+  const isPassValid = password && a.length === b.length && crypto.timingSafeEqual(a, b)
+
+  if (isUserValid && isPassValid) {
     loginLimiter.clear(ip)
     const token = crypto.randomBytes(24).toString('hex')
     tokens.add(token)
-    res.json({ token })
+    res.json({ token, username: ADMIN_USERNAME })
   } else {
     loginLimiter.recordFailure(ip)
-    res.status(401).json({ error: 'Kata sandi salah' })
+    res.status(401).json({ error: 'Nama pengguna (username) atau kata sandi salah' })
   }
 })
 

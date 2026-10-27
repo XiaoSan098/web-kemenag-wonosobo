@@ -53,7 +53,7 @@ function StrukturTab({ unit }) {
           <div className="person-info">
             <p className="person-name">{person.name}</p>
             <p className="person-role">{person.role}</p>
-            {person.nip && <p className="person-nip">NIP {person.nip}</p>}
+            {person.pangkat && <p className="person-pangkat">{person.pangkat}</p>}
           </div>
         </div>
       ))}

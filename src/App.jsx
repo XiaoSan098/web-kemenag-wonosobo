@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { useData } from './store.js'
 import { Header } from './components/Header.jsx'
 import { Hero } from './components/Hero.jsx'
-import { UnitGrid } from './components/UnitGrid.jsx'
+import { ServiceButtons } from './components/ServiceButtons.jsx'
+import { StaticProfileSection } from './components/StaticProfileSection.jsx'
 import { UnitPage } from './components/UnitPage.jsx'
 import { SopModal } from './components/SopModal.jsx'
 import { SocialModal } from './components/SocialModal.jsx'
@@ -61,15 +62,20 @@ export default function App() {
 
   const openUnit = (id) => {
     window.location.hash = `#/unit/${id}`
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const goHome = () => {
     window.location.hash = '#/'
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
     <>
-      <Header />
+      <Header
+        onOpenSocial={() => setSocialOpen(true)}
+        onGoHome={goHome}
+      />
 
       <main>
         {unitRoute.unitId ? (
@@ -85,7 +91,8 @@ export default function App() {
         ) : (
           <>
             <Hero />
-            <UnitGrid seksi={seksi} onOpenUnit={openUnit} />
+            <ServiceButtons onOpenUnit={openUnit} />
+            <StaticProfileSection />
           </>
         )}
       </main>
@@ -122,4 +129,3 @@ export default function App() {
     </>
   )
 }
-

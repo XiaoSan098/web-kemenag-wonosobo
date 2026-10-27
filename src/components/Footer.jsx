@@ -1,4 +1,4 @@
-import { MapPin, Phone, Mail, Youtube, Instagram, Facebook, Share2 } from 'lucide-react'
+import { MapPin, Phone, Mail, Youtube, Instagram, Facebook, Share2, Lock } from 'lucide-react'
 import { WhatsAppIcon, TikTokIcon, XIcon } from '../icons.jsx'
 
 const SOCIAL_ICONS = {
@@ -70,8 +70,11 @@ export function Footer({ seksi = [], social = [], onOpenUnit, onOpenSocial }) {
       </div>
 
       <div className="footer-bottom">
-        <div className="container">
-          <p>© {new Date().getFullYear()} Kantor Kementerian Agama Kabupaten Wonosobo.</p>
+        <div className="container footer-bottom-inner">
+          <p>© {new Date().getFullYear()} Kantor Kementerian Agama Kabupaten Wonosobo. Hak Cipta Dilindungi.</p>
+          <a href="#/admin" className="footer-admin-link" title="Akses Masuk Administrator Internal">
+            <Lock size={12} aria-hidden="true" /> Masuk Admin
+          </a>
         </div>
       </div>
     </footer>

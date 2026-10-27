@@ -6,6 +6,7 @@
 
 :root {
   --green-950: #06331D;
+  --green-900: #073D22;
   --green-800: #084A2A;
   --green-700: #0B6638;
   --green-600: #0E7A42;
@@ -50,6 +51,7 @@
 
   --green-50: #14211A;
   --green-100: #1B2E23;
+  --green-900: #0B331D;
 
   --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-2: 0 8px 24px rgba(0, 0, 0, 0.5);
@@ -168,40 +170,169 @@ button { font: inherit; color: inherit; }
 }
 .topbar-item { display: inline-flex; align-items: center; gap: 6px; }
 
-.header { border-bottom: 1px solid var(--border); background: var(--bg); }
+.header { border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 90; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 .header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  gap: 16px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
-.brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit; }
-.brand-logo { width: 52px; height: 52px; object-fit: contain; flex: none; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; flex-shrink: 0; }
+.brand-logo { width: 48px; height: 48px; object-fit: contain; flex: none; }
 .brand-text { display: flex; flex-direction: column; gap: 1px; }
 .brand-ministry {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-3);
 }
-.brand-office { font-size: 1.02rem; font-weight: 800; color: var(--green-800); }
+.brand-office { font-size: 0.98rem; font-weight: 800; color: var(--green-800); }
 
 [data-theme="dark"] .brand-office { color: var(--green-100); }
 
-.header-actions { display: flex; align-items: center; gap: 10px; }
-.header-admin-btn {
+/* Desktop Navbar */
+.desktop-navbar {
+  display: flex;
+  align-items: center;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-link-btn {
+  background: transparent;
+  border: none;
+  padding: 8px 12px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-2);
+  border-radius: 8px;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.8rem;
+  transition: all 0.15s ease;
+}
+.nav-link-btn:hover {
+  background: var(--green-50);
+  color: var(--green-800);
+}
+[data-theme="dark"] .nav-link-btn:hover {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+}
+.nav-link-btn--badge {
+  background: var(--green-100);
+  color: var(--green-800);
+}
+[data-theme="dark"] .nav-link-btn--badge {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+}
+
+.header-actions { display: flex; align-items: center; gap: 8px; }
+.mobile-menu-toggle { display: none; }
+
+/* Mobile Drawer Overlay */
+.mobile-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  animation: fade-in 0.15s ease;
+}
+.mobile-drawer {
+  width: 320px;
+  max-width: 85vw;
+  height: 100%;
+  background: var(--surface);
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  animation: slide-in-right 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 20px;
+}
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+.mobile-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.mobile-drawer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.drawer-logo { width: 32px; height: 32px; object-fit: contain; }
+.mobile-nav-list {
+  list-style: none;
+  padding: 14px 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+.mobile-nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.88rem;
   font-weight: 600;
-  padding: 6px 12px;
-  text-decoration: none;
-  border-radius: 8px;
+  color: var(--text-1);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.mobile-nav-item .arrow {
+  margin-left: auto;
+  color: var(--text-3);
+}
+.mobile-nav-item:hover, .mobile-nav-item:focus {
+  background: var(--green-50);
+  border-color: var(--green-200);
+  color: var(--green-800);
+}
+[data-theme="dark"] .mobile-nav-item:hover {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+.mobile-nav-item--ppid {
+  border-color: var(--green-300);
+  background: var(--green-50);
+  color: var(--green-900);
+}
+[data-theme="dark"] .mobile-nav-item--ppid {
+  background: rgba(16, 185, 129, 0.18);
+  color: #6ee7b7;
+}
+
+@media (max-width: 980px) {
+  .desktop-navbar { display: none; }
+  .mobile-menu-toggle { display: inline-flex; }
 }
 
 /* ---------- Hero ---------- */
@@ -623,7 +754,15 @@ button { font: inherit; color: inherit; }
 }
 .person-name { font-weight: 700; font-size: 0.9rem; }
 .person-role { font-size: 0.78rem; color: var(--text-2); margin-top: 2px; }
-.person-nip { font-size: 0.72rem; color: var(--text-3); margin-top: 2px; }
+.person-pangkat {
+  font-size: 0.74rem;
+  color: var(--green-700);
+  font-weight: 600;
+  margin-top: 2px;
+  display: inline-block;
+}
+[data-theme="dark"] .person-pangkat { color: var(--green-400); }
+.person-nip { display: none; }
 
 /* ---------- Tab: Layanan ---------- */
 
@@ -914,7 +1053,31 @@ button { font: inherit; color: inherit; }
 .footer-social .btn { margin-top: 16px; color: #fff; border-color: rgba(255,255,255,0.25); }
 .footer-social .btn:hover { border-color: var(--gold-500); background: rgba(255,255,255,0.06); }
 
-.footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.12); padding: 16px 0; font-size: 0.78rem; color: #8FA899; }
+.footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.12); padding: 18px 0; font-size: 0.78rem; color: #8FA899; }
+.footer-bottom-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.footer-admin-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #8FA899;
+  text-decoration: none;
+  opacity: 0.65;
+  transition: opacity 0.15s ease, color 0.15s ease;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.footer-admin-link:hover {
+  opacity: 1;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
 
 /* ---------- Responsif ---------- */
 
@@ -1633,5 +1796,765 @@ textarea.admin-input { resize: vertical; min-height: 64px; }
   .unit-page-bottom-cta {
     padding: 24px 18px;
   }
+}
+
+/* ==========================================================================
+   1. MENU UTAMA TOMBOL / AKSES CEPAT LAYANAN (Quick Action Buttons)
+   ========================================================================== */
+
+.service-buttons-section {
+  padding: 56px 0 36px;
+  background: var(--bg);
+}
+
+.service-buttons-head {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 36px;
+}
+.service-buttons-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--green-700);
+  background: var(--green-50);
+  border: 1px solid var(--green-200);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+[data-theme="dark"] .service-buttons-pill {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.25);
+  color: #34d399;
+}
+.service-buttons-head h2 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: -0.02em;
+}
+.service-buttons-head p {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+.service-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+@media (max-width: 1080px) {
+  .service-buttons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .service-buttons-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.service-btn-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.service-btn-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--green-600);
+}
+.service-btn-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--green-50);
+  color: var(--green-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+[data-theme="dark"] .service-btn-icon-wrap {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+.service-btn-card:hover .service-btn-icon-wrap {
+  background: var(--green-700);
+  color: #fff;
+  transform: scale(1.05);
+}
+.service-btn-content {
+  flex: 1;
+  min-width: 0;
+}
+.service-btn-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.service-btn-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+}
+.badge--gold { background: #FEF3C7; color: #92400E; }
+.badge--emerald { background: #D1FAE5; color: #065F46; }
+.badge--blue { background: #DBEAFE; color: #1E40AF; }
+.badge--amber { background: #FFEDD5; color: #9A3412; }
+.badge--teal { background: #CCFBF1; color: #115E59; }
+.badge--purple { background: #F3E8FF; color: #6B21A8; }
+.badge--rose { background: #FFE4E6; color: #9F1239; }
+.badge--indigo { background: #E0E7FF; color: #3730A3; }
+
+[data-theme="dark"] .badge--gold { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+[data-theme="dark"] .badge--emerald { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+[data-theme="dark"] .badge--blue { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+[data-theme="dark"] .badge--amber { background: rgba(249, 115, 22, 0.2); color: #fb923c; }
+[data-theme="dark"] .badge--teal { background: rgba(20, 184, 166, 0.2); color: #2dd4bf; }
+[data-theme="dark"] .badge--purple { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+[data-theme="dark"] .badge--rose { background: rgba(244, 63, 94, 0.2); color: #fb7185; }
+[data-theme="dark"] .badge--indigo { background: rgba(99, 102, 241, 0.2); color: #818cf8; }
+
+.service-btn-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 4px;
+}
+.service-btn-desc {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.service-btn-arrow {
+  color: var(--text-3);
+  opacity: 0.5;
+  transition: transform 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+  align-self: center;
+}
+.service-btn-card:hover .service-btn-arrow {
+  opacity: 1;
+  color: var(--green-700);
+  transform: translateX(3px);
+}
+
+/* ==========================================================================
+   2. HALAMAN STATIS ATAS: PROFIL, VISI MISI & MAKLUMAT (Static Profile Section)
+   ========================================================================== */
+
+.static-profile-section {
+  padding: 44px 0 54px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-wrapper {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-header {
+  padding: 36px 36px 20px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--green-50) 0%, transparent 100%);
+}
+[data-theme="dark"] .profile-header {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, transparent 100%);
+}
+.profile-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--green-800);
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+.profile-header h2 {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--text-1);
+}
+.profile-header p {
+  margin-top: 8px;
+  font-size: 0.92rem;
+  color: var(--text-2);
+  max-width: 800px;
+  line-height: 1.6;
+}
+
+.profile-tabs {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.profile-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.profile-tab-btn:hover {
+  border-color: var(--green-600);
+  color: var(--green-700);
+}
+.profile-tab-btn.active {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.profile-content-card {
+  padding: 32px 36px 36px;
+}
+
+.profile-panel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 28px;
+}
+@media (max-width: 840px) {
+  .profile-panel-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.profile-box {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  background: var(--bg-soft);
+}
+.profile-box--highlight {
+  background: #084A2A;
+  background: linear-gradient(135deg, #06331D 0%, #0B6638 100%);
+  color: #FFFFFF;
+  border-color: #06331D;
+  box-shadow: 0 4px 16px rgba(11, 102, 56, 0.2);
+}
+.profile-box-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--green-700);
+  margin-bottom: 8px;
+}
+.profile-box--highlight .profile-box-tag {
+  color: #A7F3D0;
+}
+.profile-box--highlight h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #FFFFFF !important;
+  margin-bottom: 12px;
+}
+.profile-box--highlight p {
+  font-size: 0.94rem;
+  line-height: 1.7;
+  color: #ECFDF5 !important;
+  font-style: italic;
+}
+.profile-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.profile-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-1);
+  line-height: 1.55;
+}
+.profile-list-icon {
+  color: var(--green-700);
+  flex: none;
+  margin-top: 3px;
+}
+[data-theme="dark"] .profile-list-icon {
+  color: #34d399;
+}
+
+/* Maklumat Card */
+.maklumat-card {
+  background: var(--bg-soft);
+  border: 2px dashed var(--green-600);
+  border-radius: 14px;
+  padding: 30px;
+  text-align: center;
+}
+[data-theme="dark"] .maklumat-card {
+  border-color: rgba(16, 185, 129, 0.5);
+}
+.maklumat-badge {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--green-800);
+  background: var(--green-100);
+  padding: 4px 14px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+[data-theme="dark"] .maklumat-badge {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+.maklumat-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--green-800);
+  letter-spacing: 0.03em;
+  margin-bottom: 14px;
+}
+[data-theme="dark"] .maklumat-title {
+  color: var(--green-100);
+}
+.maklumat-quote {
+  font-size: 0.96rem;
+  color: var(--text-1);
+  font-weight: 500;
+  max-width: 820px;
+  margin: 0 auto 24px;
+  line-height: 1.75;
+  font-style: italic;
+}
+.maklumat-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  text-align: left;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+@media (max-width: 768px) {
+  .maklumat-features {
+    grid-template-columns: 1fr;
+  }
+}
+.maklumat-feat-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.feat-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: var(--green-700);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 800;
+  flex: none;
+  margin-top: 2px;
+}
+.maklumat-feat-item strong {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-1);
+}
+.maklumat-feat-item p {
+  font-size: 0.82rem;
+  color: var(--text-2);
+  margin-top: 3px;
+  line-height: 1.45;
+}
+
+/* 5 Nilai Budaya Kerja */
+.nilai-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 768px) {
+  .nilai-grid { grid-template-columns: 1fr; }
+}
+.nilai-card {
+  padding: 22px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  position: relative;
+}
+.nilai-card--wide {
+  grid-column: span 2;
+}
+@media (max-width: 768px) {
+  .nilai-card--wide { grid-column: span 1; }
+}
+.nilai-num {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--green-700);
+  opacity: 0.4;
+  position: absolute;
+  top: 14px;
+  right: 18px;
+}
+.nilai-card h4 {
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: var(--green-800);
+  margin-bottom: 6px;
+}
+[data-theme="dark"] .nilai-card h4 {
+  color: #34d399;
+}
+.nilai-card p {
+  font-size: 0.86rem;
+  color: var(--text-1);
+  line-height: 1.55;
+}
+
+/* ==========================================================================
+   3. PPID MODAL (Pejabat Pengelola Informasi dan Dokumentasi)
+   ========================================================================== */
+
+.overlay--ppid {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fade-in 0.15s ease;
+}
+
+.ppid-modal {
+  width: 820px;
+  max-width: 95vw;
+  max-height: 90vh;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.3);
+}
+
+.ppid-modal-header {
+  padding: 32px 36px 18px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--green-50) 0%, transparent 100%);
+}
+[data-theme="dark"] .ppid-modal-header {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.1) 0%, transparent 100%);
+}
+.ppid-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--green-800);
+  margin-bottom: 8px;
+}
+.ppid-modal-header h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text-1);
+}
+.ppid-subtitle {
+  font-size: 0.84rem;
+  color: var(--text-3);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.ppid-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.ppid-tab-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.ppid-tab-btn:hover {
+  border-color: var(--green-600);
+  color: var(--green-700);
+}
+.ppid-tab-btn.active {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  color: #fff;
+}
+
+.ppid-modal-body {
+  padding: 28px 36px 36px;
+  overflow-y: auto;
+}
+
+.ppid-intro-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.ppid-intro-box h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-1);
+  margin-bottom: 6px;
+}
+.ppid-intro-box p {
+  font-size: 0.88rem;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+.ppid-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 720px) {
+  .ppid-features-grid { grid-template-columns: 1fr; }
+}
+.ppid-feat-card {
+  padding: 18px;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+.ppid-feat-card .feat-icon {
+  color: var(--green-700);
+  margin-bottom: 10px;
+}
+.ppid-feat-card h4 {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 6px;
+}
+.ppid-feat-card p {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+
+/* Klasifikasi List */
+.kategori-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.kategori-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  background: var(--bg);
+}
+.kategori-card--dikecualikan {
+  border-color: #FECDD3;
+  background: #FFF1F2;
+}
+[data-theme="dark"] .kategori-card--dikecualikan {
+  border-color: rgba(244, 63, 94, 0.3);
+  background: rgba(244, 63, 94, 0.08);
+}
+.kategori-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+.tag--berkala { background: #DBEAFE; color: #1E40AF; }
+.tag--sertamerta { background: #FFEDD5; color: #9A3412; }
+.tag--setiapsaat { background: #D1FAE5; color: #065F46; }
+.tag--dikecualikan { background: #FFE4E6; color: #9F1239; }
+
+.kategori-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 4px;
+}
+.kategori-card p {
+  font-size: 0.82rem;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+/* Alur steps */
+.alur-steps {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.alur-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--green-700);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 800;
+  flex: none;
+}
+.step-content strong {
+  display: block;
+  font-size: 0.92rem;
+  color: var(--text-1);
+}
+.step-content p {
+  font-size: 0.8rem;
+  color: var(--text-2);
+  margin-top: 2px;
+  line-height: 1.5;
+}
+
+.keberatan-box {
+  background: var(--bg);
+  border-left: 4px solid var(--gold-500);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+.keberatan-box h4 {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 4px;
+}
+.keberatan-box p {
+  font-size: 0.8rem;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+/* PPID Kontak List */
+.ppid-contact-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+}
+.ppid-contact-box h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-1);
+  margin-bottom: 6px;
+}
+.ppid-contact-box p {
+  font-size: 0.88rem;
+  color: var(--text-2);
+}
+.ppid-contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ppid-contact-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.ppid-contact-list .icon {
+  color: var(--green-700);
+  flex: none;
+  margin-top: 2px;
+}
+.ppid-contact-list strong {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-1);
+}
+.ppid-contact-list p {
+  font-size: 0.8rem;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+.ppid-action-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 

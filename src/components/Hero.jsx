@@ -21,8 +21,11 @@ export function Hero() {
             Wonosobo — seluruh layanan bebas biaya.
           </p>
           <div className="hero-actions">
-            <a className="btn btn-primary" href="#unit">
-              Telusuri Unit Layanan <ArrowRight size={16} />
+            <a className="btn btn-primary" href="#layanan-utama">
+              Menu Layanan Utama <ArrowRight size={16} />
+            </a>
+            <a className="btn btn-outline" href="#profil-kemenag">
+              Profil &amp; Maklumat
             </a>
           </div>
         </div>

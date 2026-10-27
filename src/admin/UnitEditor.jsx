@@ -23,9 +23,9 @@ const PDF_ACCEPT = 'application/pdf'
 const VIDEO_ACCEPT = 'video/mp4,video/webm,video/quicktime'
 
 const STRUCTURE_FIELDS = [
-  { key: 'name', label: 'Nama' },
+  { key: 'name', label: 'Nama Lengkap & Gelar' },
   { key: 'role', label: 'Jabatan' },
-  { key: 'nip', label: 'NIP (kosongkan jika bukan ASN)' },
+  { key: 'pangkat', label: 'Pangkat / Golongan (mis. Pembina, IV/a)' },
   { key: 'badge', label: 'Badge (mis. Kepala Seksi)' },
   { key: 'photo', label: 'Foto pegawai', type: 'file', accept: IMAGE_ACCEPT }
 ]
@@ -123,7 +123,7 @@ export function UnitEditor({ unit, onChange, onDelete }) {
         items={unit.structure}
         fields={STRUCTURE_FIELDS}
         makeLabel={p => `${p.name || '(tanpa nama)'} — ${p.role || ''}`}
-        template={{ name: '', role: '', nip: '', photo: '', badge: '' }}
+        template={{ name: '', role: '', pangkat: '', photo: '', badge: '' }}
         onChange={next => set('structure', next)}
       />
       <ListEditor

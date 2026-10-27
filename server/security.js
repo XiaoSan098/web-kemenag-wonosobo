@@ -6,6 +6,10 @@ export function requireAdminPassword(env = process.env) {
   return password
 }
 
+export function getAdminUsername(env = process.env) {
+  return env.ADMIN_USERNAME || 'admin'
+}
+
 export function requireDatabasePassword(env = process.env) {
   const password = env.DB_PASSWORD
   if (!password || password === 'kemenag_wsb_2024') {

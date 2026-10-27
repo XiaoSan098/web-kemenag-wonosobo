@@ -24,7 +24,8 @@ import {
 import { UnitEditor } from './UnitEditor.jsx'
 import { readBackup } from '../backup.js'
 
-// Kata sandi masuk panel admin
+// Kredensial masuk panel admin (mode luring)
+const ADMIN_USER = 'admin'
 const ADMIN_PIN = 'webkemenagwonosobo123'
 
 const TABS = [
@@ -56,26 +57,28 @@ function ThemeToggle({ theme, onToggle }) {
 }
 
 function Gate({ onUnlock, theme, onToggleTheme }) {
-  const [pin, setPin] = useState('')
+  const [username, setUsername] = useState('admin')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
   const submit = async (e) => {
     e.preventDefault()
-    const value = pin.trim()
-    if (!value || busy) return
+    const uVal = username.trim()
+    const pVal = password.trim()
+    if (!uVal || !pVal || busy) return
     setBusy(true)
     setError('')
     try {
-      await login(value) // jika ada backend aktif
+      await login(uVal, pVal) // jika ada backend aktif
       onUnlock('server')
     } catch {
-      if (value === ADMIN_PIN) {
+      if (uVal === ADMIN_USER && pVal === ADMIN_PIN) {
         markLocalSession()
         onUnlock('local')
       } else {
-        setError('Kata sandi salah, silakan periksa kembali.')
+        setError('Nama pengguna atau kata sandi salah, silakan periksa kembali.')
       }
     } finally {
       setBusy(false)
@@ -94,31 +97,56 @@ function Gate({ onUnlock, theme, onToggleTheme }) {
           />
         </div>
         <h1>Panel Admin Kemenag Wonosobo</h1>
-        <p>Masuk memakai kata sandi operator untuk mengelola data situs.</p>
-        <div className="admin-password-wrap">
-          <input
-            className={`admin-input ${error ? 'admin-input--error' : ''}`}
-            type={showPassword ? 'text' : 'password'}
-            autoFocus
-            autoComplete="current-password"
-            placeholder="Kata sandi"
-            value={pin}
-            onChange={e => { setPin(e.target.value); setError('') }}
-          />
-          <button
-            type="button"
-            className="admin-password-toggle"
-            onClick={() => setShowPassword(!showPassword)}
-            aria-label={showPassword ? 'Sembunyikan sandi' : 'Lihat sandi'}
-            title={showPassword ? 'Sembunyikan sandi' : 'Lihat sandi'}
-          >
-            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-          </button>
+        <p>Masuk menggunakan kombinasi nama pengguna dan kata sandi operator.</p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', marginTop: '6px' }}>
+          <div>
+            <label className="admin-field-label" style={{ textAlign: 'left', display: 'block', marginBottom: '5px', fontSize: '0.8rem' }}>
+              Nama Pengguna (Username)
+            </label>
+            <input
+              className={`admin-input ${error ? 'admin-input--error' : ''}`}
+              type="text"
+              autoComplete="username"
+              placeholder="Contoh: admin"
+              value={username}
+              onChange={e => { setUsername(e.target.value); setError('') }}
+              required
+            />
+          </div>
+
+          <div>
+            <label className="admin-field-label" style={{ textAlign: 'left', display: 'block', marginBottom: '5px', fontSize: '0.8rem' }}>
+              Kata Sandi (Password)
+            </label>
+            <div className="admin-password-wrap">
+              <input
+                className={`admin-input ${error ? 'admin-input--error' : ''}`}
+                type={showPassword ? 'text' : 'password'}
+                autoFocus
+                autoComplete="current-password"
+                placeholder="Kata sandi"
+                value={password}
+                onChange={e => { setPassword(e.target.value); setError('') }}
+                required
+              />
+              <button
+                type="button"
+                className="admin-password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Sembunyikan sandi' : 'Lihat sandi'}
+                title={showPassword ? 'Sembunyikan sandi' : 'Lihat sandi'}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+          </div>
         </div>
-        {error && <p className="admin-error">{error}</p>}
-        <button type="submit" className="btn btn-primary" disabled={busy}>
+
+        {error && <p className="admin-error" style={{ marginTop: '10px' }}>{error}</p>}
+        <button type="submit" className="btn btn-primary" style={{ marginTop: '8px' }} disabled={busy}>
           {busy ? <Loader2 size={16} className="admin-spin" /> : <KeyRound size={16} />}
-          {busy ? 'Memeriksa…' : 'Buka Panel'}
+          {busy ? 'Memeriksa…' : 'Masuk ke Panel'}
         </button>
         <a className="admin-back-home" href="#/">← Kembali ke situs publik</a>
       </form>

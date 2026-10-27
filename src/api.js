@@ -95,11 +95,14 @@ export async function probeServer() {
 }
 
 /**
- * Masuk sebagai admin. Sukses → token disimpan di sessionStorage.
- * @throws {ApiError} status 401 bila kata sandi salah, status 0 bila server mati.
+ * Masuk sebagai admin dengan username dan password. Sukses → token disimpan di sessionStorage.
+ * @throws {ApiError} status 401 bila kredensial salah, status 0 bila server mati.
  */
-export async function login(password) {
-  const { token } = await request('/api/login', { method: 'POST', body: { password } })
+export async function login(username, password) {
+  // Dukung jika dipanggil dengan satu argumen (hanya password)
+  const user = password !== undefined ? username : 'admin'
+  const pass = password !== undefined ? password : username
+  const { token } = await request('/api/login', { method: 'POST', body: { username: user, password: pass } })
   if (!token) throw new ApiError('Server tidak mengirim token masuk.', 0)
   try { store()?.setItem(TOKEN_KEY, token) } catch { /* abaikan */ }
   clearLocalSession()

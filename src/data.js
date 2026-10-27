@@ -27,35 +27,35 @@ export const SUBBAG_TU_UNITS = [
       {
         name: 'H. Edi Sungkowo, S.Ag., M.Pd.I.',
         role: 'Kepala Kantor Kementerian Agama Kab. Wonosobo',
-        nip: '19700312 199603 1 002',
+        pangkat: 'Pembina Tk. I (IV/b)',
         photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
         badge: 'Kepala Kantor'
       },
       {
         name: 'H. Imron Awaludin, S.Ag., M.S.I.',
         role: 'Kepala Subbagian Tata Usaha (Kasubbag TU)',
-        nip: '19750412 200212 1 002',
+        pangkat: 'Pembina (IV/a)',
         photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
         badge: 'Pembina / Penanggung Jawab'
       },
       {
         name: 'Ahmad Fauzi, S.Kom',
         role: 'Koordinator Pelayanan Front Office PTSP',
-        nip: '19880815 201101 1 004',
+        pangkat: 'Penata Tk. I (III/d)',
         photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
         badge: 'Koordinator Unit'
       },
       {
         name: 'Siti Munawaroh, S.Sos',
         role: 'Petugas Loket Rekomendasi & Legalisir',
-        nip: '19920310 201802 2 001',
+        pangkat: 'Pengatur Tk. I (II/d)',
         photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
         badge: 'Customer Service'
       },
       {
         name: 'Budi Santoso, A.Md',
         role: 'Petugas Helpdesk & Pengaduan SP4N-LAPOR',
-        nip: '19950720 202012 1 003',
+        pangkat: 'Pengatur Tk. I (II/d)',
         photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
         badge: 'Helpdesk Layanan'
       }
@@ -187,21 +187,21 @@ export const SUBBAG_TU_UNITS = [
       {
         name: 'H. Imron Awaludin, S.Ag., M.S.I.',
         role: 'Kepala Subbagian Tata Usaha (Kasubbag TU)',
-        nip: '19750412 200212 1 002',
+        pangkat: 'Pembina (IV/a)',
         photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
         badge: 'Pembina'
       },
       {
         name: 'Rahmat Hidayat, S.E., M.Si',
         role: 'Perencana Ahli Muda / Koordinator Perencanaan',
-        nip: '19840217 200901 1 008',
+        pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80',
         badge: 'Koordinator Urusan'
       },
       {
         name: 'Tri Wahyuni, S.E',
         role: 'Penyusun Rencana Kerja & Anggaran (RKA-K/L)',
-        nip: '19910514 201503 2 003',
+        pangkat: 'Penata Muda (III/a)',
         photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80',
         badge: 'Analis Perencanaan'
       }
@@ -281,21 +281,21 @@ export const SUBBAG_TU_UNITS = [
       {
         name: 'H. Imron Awaludin, S.Ag., M.S.I.',
         role: 'Kepala Subbagian Tata Usaha (Kasubbag TU)',
-        nip: '19750412 200212 1 002',
+        pangkat: 'Pembina (IV/a)',
         photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
         badge: 'Pembina'
       },
       {
         name: 'Nur Kholis, S.Ag',
         role: 'Penata Urusan Rumah Tangga & Sarana Kantor',
-        nip: '19810419 200801 1 012',
+        pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80',
         badge: 'Koordinator Umum'
       },
       {
         name: 'Endang Sri Rejeki, S.AP',
         role: 'Analis Tata Persuratan Dinas & Kearsipan Digital',
-        nip: '19890623 201403 2 002',
+        pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
         badge: 'Pengelola Arsip'
       }
@@ -375,21 +375,21 @@ export const SUBBAG_TU_UNITS = [
       {
         name: 'H. Imron Awaludin, S.Ag., M.S.I.',
         role: 'Kepala Subbagian Tata Usaha (Kasubbag TU)',
-        nip: '19750412 200212 1 002',
+        pangkat: 'Pembina (IV/a)',
         photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
         badge: 'Pembina'
       },
       {
         name: 'Hendro Wibowo, S.E',
         role: 'Bendahara Pengeluaran Kantor Kemenag Wonosobo',
-        nip: '19820715 200701 1 015',
+        pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
         badge: 'Bendahara Pengeluaran'
       },
       {
         name: 'Sri Lestari, S.E., Ak',
         role: 'Analis Pengelolaan Keuangan APBN & Akuntansi SAKTI',
-        nip: '19870312 201101 2 009',
+        pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=80',
         badge: 'Analis Akuntansi'
       }
@@ -469,28 +469,28 @@ export const SUBBAG_TU_UNITS = [
       {
         name: 'H. Imron Awaludin, S.Ag., M.S.I.',
         role: 'Kepala Subbagian Tata Usaha (Kasubbag TU)',
-        nip: '19750412 200212 1 002',
+        pangkat: 'Pembina (IV/a)',
         photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
         badge: 'Pembina / Penanggung Jawab'
       },
       {
         name: 'Muhammad Ilham, S.I.Kom',
         role: 'Koordinator Pranata Humas Ahli / Pengelola Media Resmi',
-        nip: '19870412 201101 1 005',
+        pangkat: 'Penata Tk. I (III/d)',
         photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
         badge: 'Koordinator Humas'
       },
       {
         name: 'Annisa Rahmawati, S.Sos',
         role: 'Pranata Humas / Pengelola Konten Media Sosial & Berita',
-        nip: '19930718 201902 2 004',
+        pangkat: 'Penata Muda Tk. I (III/b)',
         photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
         badge: 'Content Creator'
       },
       {
         name: 'Dimas Aditya, S.Kom',
         role: 'Desainer Grafis & Kameramen Dokumentasi Multimedia',
-        nip: '19960310 202203 1 003',
+        pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
         badge: 'Multimedia Editor'
       }
@@ -592,21 +592,21 @@ export const SEKSI_DATA = [
       {
         name: 'H. Ahmad Fuadi, S.Ag., M.Pd.',
         role: 'Kepala Seksi Bimas Islam',
-        nip: '19720510 199803 1 003',
+        pangkat: 'Pembina (IV/a)',
         photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80',
         badge: 'Kepala Seksi'
       },
       {
         name: 'Drs. H. Miftahudin, M.H',
         role: 'Penghulu Ahli Madya / Koordinator Kepenghuluan',
-        nip: '19700814 199603 1 002',
+        pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
         badge: 'Koordinator Kepenghuluan'
       },
       {
         name: 'Hj. Umi Kulsum, S.Ag',
         role: 'Penyuluh Agama Islam Ahli Madya',
-        nip: '19760920 200312 2 001',
+        pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
         badge: 'Penyuluh Ahli'
       }
@@ -685,14 +685,14 @@ export const SEKSI_DATA = [
       {
         name: 'Drs. H. Totok Jumantoro, M.S.I',
         role: 'Kepala Seksi Pendidikan Madrasah',
-        nip: '19680315 199403 1 004',
+        pangkat: 'Pembina (IV/a)',
         photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
         badge: 'Kepala Seksi'
       },
       {
         name: 'Bayu Wicaksono, S.Pd',
         role: 'Pengelola Data EMIS 4.0 & Simpatika Madrasah',
-        nip: '19890412 201503 1 002',
+        pangkat: 'Penata Muda (III/a)',
         photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
         badge: 'Admin EMIS'
       }
@@ -756,14 +756,14 @@ export const SEKSI_DATA = [
       {
         name: 'H. Asrori, S.Ag., M.Pd.I',
         role: 'Kepala Seksi Pendidikan Agama Islam',
-        nip: '19730612 199903 1 003',
+        pangkat: 'Pembina (IV/a)',
         photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
         badge: 'Kepala Seksi'
       },
       {
         name: 'Lutfi Hakim, S.Pd.I',
         role: 'Admin Aplikasi SIAGA PAI & Verval Sertifikasi',
-        nip: '19870914 201201 1 004',
+        pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
         badge: 'Admin SIAGA'
       }
@@ -827,14 +827,14 @@ export const SEKSI_DATA = [
       {
         name: 'H. Subhan, S.Ag., M.S.I',
         role: 'Kepala Seksi PD Pontren',
-        nip: '19741120 200112 1 002',
+        pangkat: 'Pembina (IV/a)',
         photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80',
         badge: 'Kepala Seksi'
       },
       {
         name: 'Gus Ahmad Munir, S.Pd.I',
         role: 'Penyusun Pembinaan Kelembagaan Pondok Pesantren',
-        nip: '19850518 201001 1 011',
+        pangkat: 'Penata Muda (III/a)',
         photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
         badge: 'Pembina Pesantren'
       }
@@ -898,14 +898,14 @@ export const SEKSI_DATA = [
       {
         name: 'H. Moh. Muhlisin, S.Ag',
         role: 'Penyelenggara Zakat dan Wakaf (Penzawa)',
-        nip: '19750314 200312 1 003',
+        pangkat: 'Penata Tk. I (III/d)',
         photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80',
         badge: 'Penyelenggara'
       },
       {
         name: 'Fajar Nugraha, S.Sy',
         role: 'Analis Pengelolaan Wakaf & Sertifikasi BPN',
-        nip: '19890212 201402 1 005',
+        pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
         badge: 'Analis Wakaf'
       }
@@ -969,14 +969,14 @@ export const SEKSI_DATA = [
       {
         name: 'H. Ahmad Syarifudin, M.S.I',
         role: 'Penyelenggara Syariah Kemenag Wonosobo',
-        nip: '19760810 200501 1 004',
+        pangkat: 'Penata Tk. I (III/d)',
         photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
         badge: 'Penyelenggara'
       },
       {
         name: 'Rifqi Abdullah, S.T',
         role: 'Tim Falakiyah & Ahli Ukur Theodolite Azimuth',
-        nip: '19930315 201903 1 003',
+        pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
         badge: 'Tim Falakiyah'
       }
@@ -1051,14 +1051,14 @@ export const SEKSI_DATA = [
       {
         name: 'Samuel Hendra Pratama, S.Th., M.Pd.K',
         role: 'Penyelenggara Kristen Kemenag Wonosobo',
-        nip: '19780612 200501 1 003',
+        pangkat: 'Penata Tk. I (III/d)',
         photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
         badge: 'Penyelenggara'
       },
       {
         name: 'Deborah Natalia, S.Pd.K',
         role: 'Penyuluh Agama Kristen Ahli Pertama',
-        nip: '19891225 201503 2 004',
+        pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
         badge: 'Penyuluh Agama'
       }
@@ -1137,14 +1137,14 @@ export const SEKSI_DATA = [
       {
         name: 'Yohanes Baptista Sudarman, S.Ag',
         role: 'Penyelenggara Katolik Kemenag Wonosobo',
-        nip: '19730514 200212 1 003',
+        pangkat: 'Penata Tk. I (III/d)',
         photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
         badge: 'Penyelenggara'
       },
       {
         name: 'Maria Magdalena Sri Hartati, S.Pd',
         role: 'Penyuluh Agama Katolik / Urusan Pendidikan',
-        nip: '19860822 201101 2 008',
+        pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
         badge: 'Penyuluh Agama'
       }
@@ -1208,14 +1208,14 @@ export const SEKSI_DATA = [
       {
         name: 'Pandita Budi Santoso, S.Ag., M.Pd.B',
         role: 'Penyelenggara Buddha Kemenag Wonosobo',
-        nip: '19790415 200604 1 002',
+        pangkat: 'Penata Tk. I (III/d)',
         photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
         badge: 'Penyelenggara'
       },
       {
         name: 'Ratna Sari Dewi, S.Pd.B',
         role: 'Penyuluh Agama Buddha Ahli Muda',
-        nip: '19880520 201201 2 006',
+        pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
         badge: 'Penyuluh Agama'
       }
