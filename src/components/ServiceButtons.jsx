@@ -16,7 +16,7 @@ export function ServiceButtons({ onOpenUnit }) {
     },
     {
       id: 'bimas',
-      title: 'Bimas Islam & KUA',
+      title: 'Bimas Islam',
       desc: 'Layanan nikah, pembinaan 15 KUA kecamatan, kemasjidan, dan penyuluhan agama',
       icon: BookHeart,
       badge: 'Bimas Islam',
@@ -56,7 +56,7 @@ export function ServiceButtons({ onOpenUnit }) {
     },
     {
       id: 'syariah',
-      title: 'Bimbingan Syariah',
+      title: 'Layanan Syariah',
       desc: 'Penetapan hisab rukyat, pengukuran arah kiblat, dan pembinaan syariah',
       icon: Scale,
       badge: 'Syariah',
@@ -64,7 +64,7 @@ export function ServiceButtons({ onOpenUnit }) {
     },
     {
       id: 'kristen',
-      title: 'Penyelenggara Kristen',
+      title: 'Layanan Kristen',
       desc: 'Bimbingan masyarakat, urusan keagamaan, dan pendidikan agama Kristen',
       icon: Cross,
       badge: 'Kristen',
@@ -72,7 +72,7 @@ export function ServiceButtons({ onOpenUnit }) {
     },
     {
       id: 'katolik',
-      title: 'Penyelenggara Katolik',
+      title: 'Layanan Katolik',
       desc: 'Pelayanan bimbingan masyarakat dan pendidikan agama Katolik',
       icon: Church,
       badge: 'Katolik',
@@ -80,11 +80,19 @@ export function ServiceButtons({ onOpenUnit }) {
     },
     {
       id: 'buddha',
-      title: 'Penyelenggara Buddha',
+      title: 'Layanan Buddha',
       desc: 'Pelayanan keagamaan dan pembinaan umat Buddha di Kabupaten Wonosobo',
       icon: Sparkles,
       badge: 'Buddha',
       badgeColor: 'badge--gold'
+    },
+    {
+      id: 'hindu',
+      title: 'Layanan Hindu',
+      desc: 'Pelayanan keagamaan dan pembinaan umat Hindu di Kabupaten Wonosobo',
+      icon: Sparkles,
+      badge: 'Hindu',
+      badgeColor: 'badge--amber'
     }
   ]
 
@@ -98,7 +106,7 @@ export function ServiceButtons({ onOpenUnit }) {
           <h2>Menu Layanan Utama Masyarakat</h2>
           <p>
             Pilih seksi atau unit layanan di bawah ini untuk melihat struktur pengelola,
-            standar operasional prosedur (SOP), syarat berkas, dan dokumentasi kegiatan.
+            daftar layanan, syarat berkas, dan dokumentasi kegiatan.
           </p>
         </div>
 

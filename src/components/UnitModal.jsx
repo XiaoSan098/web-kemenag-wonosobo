@@ -21,7 +21,7 @@ const ICONS = {
 
 const TABS = [
   { id: 'struktur', label: 'Struktur Organisasi', Icon: Users },
-  { id: 'layanan', label: 'Layanan & SOP', Icon: FileText },
+  { id: 'layanan', label: 'Layanan', Icon: FileText },
   { id: 'foto', label: 'Foto Kegiatan', Icon: Images },
   { id: 'video', label: 'Video', Icon: PlayCircle }
 ]
@@ -94,18 +94,8 @@ function LayananTab({ unit, onOpenSop }) {
 
           <footer className="service-actions">
             <button type="button" className="btn btn-ghost" onClick={() => onOpenSop(svc, unit)}>
-              <Eye size={15} /> Pratinjau SOP
+              <Eye size={15} /> Pratinjau Layanan
             </button>
-            {svc.fileUrl ? (
-              // Berkas resmi yang diunggah admin lewat panel kelola
-              <a className="btn btn-ghost" href={svc.fileUrl} download>
-                <Download size={15} /> Unduh Berkas Resmi
-              </a>
-            ) : (
-              <button type="button" className="btn btn-ghost" onClick={() => import('../pdf.js').then(({ downloadSopPdf }) => downloadSopPdf(svc, unit))}>
-                <Download size={15} /> Unduh PDF
-              </button>
-            )}
           </footer>
         </article>
       ))}
@@ -135,7 +125,7 @@ function FotoTab({ unit, onOpenLightbox }) {
             <p className="photo-caption">{p.caption}</p>
             <div className="photo-links">
               <span className="photo-date"><Calendar size={13} aria-hidden="true" /> {p.date}</span>
-              <a href={p.igUrl || 'https://www.instagram.com/kemenagwonosobo/'} target="_blank" rel="noopener noreferrer">
+              <a href={p.igUrl || 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='} target="_blank" rel="noopener noreferrer">
                 Lihat di Instagram
               </a>
             </div>

@@ -34,7 +34,7 @@
 
   --radius: 12px;
   --radius-lg: 16px;
-  --container: 1140px;
+  --container: 1560px;
 
   --font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
@@ -80,7 +80,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 img { display: block; max-width: 100%; }
 button { font: inherit; color: inherit; }
 
-.container { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+.container { width: 100%; max-width: var(--container); margin: 0 auto; padding: 0 clamp(16px, 2.5vw, 36px); }
 
 :focus-visible { outline: 2px solid var(--gold-500); outline-offset: 2px; }
 
@@ -397,7 +397,7 @@ button { font: inherit; color: inherit; }
 }
 
 .hero-copy {
-  max-width: 720px;
+  max-width: 860px;
 }
 
 .hero-eyebrow {
@@ -919,7 +919,7 @@ button { font: inherit; color: inherit; }
   flex: none;
 }
 
-/* ---------- Pratinjau SOP ---------- */
+/* ---------- Pratinjau Layanan ---------- */
 
 .overlay--pdf { z-index: 120; align-items: flex-start; padding: 24px; }
 .modal--pdf { max-width: 800px; max-height: 92vh; }
@@ -936,22 +936,38 @@ button { font: inherit; color: inherit; }
 .pdf-toolbar-title { display: flex; flex-direction: column; min-width: 0; }
 .pdf-toolbar-title strong { font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pdf-toolbar-title span { font-size: 0.72rem; color: #94A3B8; }
-.pdf-toolbar-actions { display: flex; align-items: center; gap: 8px; flex: none; }
+.pdf-toolbar-actions { display: flex; align-items: center; gap: 10px; flex: none; }
 
-.pdf-body { padding: 24px; overflow-y: auto; background: #EDF1EE; }
+.pdf-preview-only-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #E2E8F0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  user-select: none;
+}
+
+.pdf-body { padding: 24px; overflow-y: auto; background: #EDF1EE; user-select: none; -webkit-user-select: none; }
 
 /* Dokumen bergaya naskah dinas */
 .sop-paper {
   background: #fff;
   color: #000;
   border: 1px solid #D5DCCD;
-  box-shadow: var(--shadow-1);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14), 0 2px 6px rgba(15, 23, 42, 0.08);
   padding: 36px 40px;
   max-width: 720px;
   margin: 0 auto;
   font-family: 'Times New Roman', Times, serif;
   line-height: 1.5;
   font-size: 12pt;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .sop-kop { text-align: center; border-bottom: 3px double #000; padding-bottom: 14px; margin-bottom: 20px; }
@@ -1097,21 +1113,24 @@ button { font: inherit; color: inherit; }
   .sop-paper { padding: 22px 18px; }
 }
 
-/* ---------- Cetak: hanya dokumen SOP ---------- */
+/* ---------- Cetak dinonaktifkan: dokumen hanya untuk pratinjau ---------- */
 
 @media print {
-  body * { visibility: hidden; }
-  .print-area, .print-area * { visibility: visible; }
-  .print-area {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    border: none;
-    box-shadow: none;
-    padding: 0;
+  body * {
+    display: none !important;
+    visibility: hidden !important;
   }
-  .no-print { display: none !important; }
+  body::before {
+    content: "Dokumen informasi layanan ini hanya untuk pratinjau di layar dan tidak dapat dicetak.";
+    display: block !important;
+    visibility: visible !important;
+    padding: 48px 24px;
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 14pt;
+    font-weight: 700;
+    color: #14201A;
+  }
 }
 
 /* ---------- Preferensi pengguna ---------- */
@@ -1365,7 +1384,7 @@ button { font: inherit; color: inherit; }
 [data-theme="dark"] .admin-tab.active,
 [data-theme="dark"] .admin-pick-btn:hover:not(.active) { color: #8FE3AE; }
 
-.admin-main { padding: 26px 24px 64px; max-width: 980px; }
+.admin-main { padding: 26px 24px 64px; max-width: var(--container); }
 
 .admin-note { margin-top: 36px; padding: 16px 18px; border: 1px dashed var(--border-strong); border-radius: var(--radius); color: var(--text-2); font-size: 0.82rem; }
 .admin-note strong { color: var(--text-1); }
@@ -2557,4 +2576,615 @@ textarea.admin-input { resize: vertical; min-height: 64px; }
   gap: 12px;
   flex-wrap: wrap;
 }
+
+/* ==========================================================================
+   4. EFEK TIMBUL (3D EMBOSS, DEPTH & ELEVATION) — VISUAL ENHANCEMENT
+   Membuat tipografi judul, tombol, lencana, dan kartu layanan tampak timbul,
+   berdimensi, dan lebih hidup baik di mode terang maupun gelap.
+   ========================================================================== */
+
+@keyframes float-up-3d {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* --- Tipografi Timbul (3D Layered Text Shadow) --- */
+
+.brand-office {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9),
+    0 2px 4px rgba(8, 74, 42, 0.18);
+  transition: transform 0.2s ease, text-shadow 0.2s ease;
+}
+.brand:hover .brand-office {
+  transform: translateY(-1px);
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95),
+    0 4px 8px rgba(8, 74, 42, 0.25);
+}
+[data-theme="dark"] .brand-office {
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.8),
+    0 2px 10px rgba(52, 211, 153, 0.28);
+}
+
+.brand-logo {
+  filter: drop-shadow(0 3px 6px rgba(6, 51, 29, 0.22));
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
+}
+.brand:hover .brand-logo {
+  transform: translateY(-2px) scale(1.05);
+  filter: drop-shadow(0 6px 12px rgba(6, 51, 29, 0.32));
+}
+
+.hero-copy {
+  animation: float-up-3d 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-title {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95),
+    0 2px 0 rgba(220, 237, 226, 0.85),
+    0 4px 8px rgba(6, 51, 29, 0.18),
+    0 10px 24px rgba(6, 51, 29, 0.14);
+}
+[data-theme="dark"] .hero-title {
+  text-shadow:
+    0 2px 0 rgba(6, 20, 12, 0.95),
+    0 4px 12px rgba(0, 0, 0, 0.75),
+    0 0 28px rgba(16, 185, 129, 0.22);
+}
+
+.hero-lead {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+[data-theme="dark"] .hero-lead {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.service-buttons-head h2,
+.profile-header h2,
+.unit-page-title,
+.section-head h2,
+.maklumat-title {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9),
+    0 2px 0 rgba(220, 237, 226, 0.7),
+    0 4px 10px rgba(8, 74, 42, 0.15);
+}
+[data-theme="dark"] .service-buttons-head h2,
+[data-theme="dark"] .profile-header h2,
+[data-theme="dark"] .unit-page-title,
+[data-theme="dark"] .section-head h2,
+[data-theme="dark"] .maklumat-title {
+  text-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.85),
+    0 4px 14px rgba(0, 0, 0, 0.65),
+    0 0 20px rgba(52, 211, 153, 0.18);
+}
+
+.service-btn-title,
+.unit-card-title,
+.service-card-head h4,
+.person-name,
+.nilai-card h4,
+.photo-title,
+.video-title {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8), 0 1px 2px rgba(6, 51, 29, 0.08);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+[data-theme="dark"] .service-btn-title,
+[data-theme="dark"] .unit-card-title,
+[data-theme="dark"] .service-card-head h4,
+[data-theme="dark"] .person-name,
+[data-theme="dark"] .nilai-card h4,
+[data-theme="dark"] .photo-title,
+[data-theme="dark"] .video-title {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
+}
+
+/* --- Lencana / Pill Timbul --- */
+
+.hero-eyebrow {
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--green-50) 100%);
+  padding: 6px 14px 6px 12px;
+  border-radius: 0 999px 999px 0;
+  border: 1px solid var(--green-100);
+  border-left: 4px solid var(--gold-500);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 3px 8px rgba(8, 74, 42, 0.10);
+}
+[data-theme="dark"] .hero-eyebrow {
+  background: linear-gradient(180deg, rgba(20, 33, 26, 0.95) 0%, rgba(16, 27, 21, 0.95) 100%);
+  border-color: rgba(52, 211, 153, 0.25);
+  border-left: 4px solid var(--gold-500);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+}
+
+.service-buttons-pill,
+.profile-pill,
+.modal-badge,
+.maklumat-badge {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 2px 6px rgba(11, 102, 56, 0.12);
+}
+
+/* --- Tombol 3D Timbul (Tactile Push Buttons) --- */
+
+.btn {
+  position: relative;
+  transition:
+    transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, var(--green-600) 0%, var(--green-700) 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  border-bottom: 2px solid var(--green-950);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 4px 0 var(--green-900),
+    0 8px 18px rgba(11, 102, 56, 0.28);
+}
+.btn-primary:hover {
+  background: linear-gradient(180deg, #10894B 0%, var(--green-700) 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 6px 0 var(--green-900),
+    0 12px 24px rgba(11, 102, 56, 0.36);
+}
+.btn-primary:active {
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 0 var(--green-900),
+    0 3px 8px rgba(11, 102, 56, 0.22);
+}
+
+.btn-outline {
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg-soft) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 3px 0 var(--border-strong),
+    0 6px 14px rgba(20, 42, 30, 0.08);
+}
+.btn-outline:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 5px 0 var(--green-700),
+    0 10px 20px rgba(11, 102, 56, 0.16);
+}
+.btn-outline:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 1px 0 var(--green-700),
+    0 3px 6px rgba(11, 102, 56, 0.12);
+}
+
+/* Tombol outline di area gelap (Footer & Topbar Admin) tetap berlatar gelap transparan */
+.footer-social .btn-outline,
+.admin-topbar-actions .btn-outline {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.04) 100%);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.28);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 3px 0 rgba(0, 0, 0, 0.35),
+    0 6px 14px rgba(0, 0, 0, 0.25);
+}
+.footer-social .btn-outline:hover,
+.admin-topbar-actions .btn-outline:hover:not(:disabled) {
+  background: linear-gradient(180deg, rgba(184, 145, 44, 0.28) 0%, rgba(184, 145, 44, 0.14) 100%);
+  color: #FFFFFF;
+  border-color: var(--gold-500);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 5px 0 rgba(0, 0, 0, 0.45),
+    0 10px 20px rgba(0, 0, 0, 0.35);
+}
+
+.btn-ghost {
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--green-50) 100%);
+  border: 1px solid var(--green-100);
+  border-bottom: 2px solid var(--border-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 2px 6px rgba(11, 102, 56, 0.09);
+}
+.btn-ghost:hover {
+  background: linear-gradient(180deg, var(--green-50) 0%, var(--green-100) 100%);
+  border-color: var(--green-600);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 4px 0 rgba(11, 102, 56, 0.2),
+    0 8px 16px rgba(11, 102, 56, 0.16);
+}
+.btn-ghost:active {
+  transform: translateY(1px);
+}
+[data-theme="dark"] .btn-ghost {
+  background: linear-gradient(180deg, #1B2E23 0%, #14211A 100%);
+  border-color: var(--border-strong);
+  color: #6EE7B7;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 3px 8px rgba(0, 0, 0, 0.45);
+}
+
+/* --- Kartu Layanan Utama 3D Timbul --- */
+
+.service-btn-card {
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg-soft) 100%);
+  border: 1px solid var(--border);
+  border-bottom: 4px solid var(--border-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 6px 16px -2px rgba(14, 42, 28, 0.08),
+    0 2px 4px rgba(14, 42, 28, 0.05);
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.2s ease;
+}
+[data-theme="dark"] .service-btn-card {
+  background: linear-gradient(180deg, #182820 0%, #121E18 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+.service-btn-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: var(--green-600);
+  border-bottom-color: var(--green-700);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 16px 32px -6px rgba(11, 102, 56, 0.20),
+    0 6px 12px -2px rgba(11, 102, 56, 0.12);
+}
+[data-theme="dark"] .service-btn-card:hover {
+  border-color: #34D399;
+  border-bottom-color: #10B981;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 16px 34px -4px rgba(0, 0, 0, 0.7),
+    0 0 20px rgba(16, 185, 129, 0.18);
+}
+.service-btn-card:active {
+  transform: translateY(-1px);
+}
+
+.service-btn-card:hover .service-btn-title {
+  color: var(--green-700);
+  transform: translateX(2px);
+}
+[data-theme="dark"] .service-btn-card:hover .service-btn-title {
+  color: #6EE7B7;
+}
+
+.service-btn-icon-wrap {
+  border: 1px solid var(--green-100);
+  border-bottom: 3px solid var(--border-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 4px 10px rgba(11, 102, 56, 0.12);
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+.service-btn-card:hover .service-btn-icon-wrap {
+  background: linear-gradient(135deg, var(--green-600) 0%, var(--green-800) 100%);
+  border-color: var(--green-700);
+  border-bottom-color: var(--green-950);
+  color: #fff;
+  transform: translateY(-2px) scale(1.08) rotate(-3deg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 8px 16px rgba(11, 102, 56, 0.32);
+}
+
+.service-btn-badge {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Kartu Profil, Maklumat, Budaya Kerja & Detail Unit Timbul --- */
+
+.profile-wrapper {
+  border-bottom: 4px solid var(--border-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 14px 36px -6px rgba(14, 42, 28, 0.10),
+    0 4px 10px rgba(14, 42, 28, 0.05);
+}
+
+.profile-box,
+.nilai-card,
+.person-card,
+.service-card,
+.photo-card,
+.video-card,
+.unit-card {
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg-soft) 100%);
+  border: 1px solid var(--border);
+  border-bottom: 3px solid var(--border-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 6px 16px -3px rgba(14, 42, 28, 0.08),
+    0 2px 4px rgba(14, 42, 28, 0.04);
+  transition:
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.2s ease;
+}
+[data-theme="dark"] .profile-box,
+[data-theme="dark"] .nilai-card,
+[data-theme="dark"] .person-card,
+[data-theme="dark"] .service-card,
+[data-theme="dark"] .photo-card,
+[data-theme="dark"] .video-card,
+[data-theme="dark"] .unit-card {
+  background: linear-gradient(180deg, #17271F 0%, #121E18 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+.nilai-card:hover,
+.person-card:hover,
+.service-card:hover,
+.photo-card:hover,
+.video-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--green-600);
+  border-bottom-color: var(--green-700);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 14px 28px -6px rgba(11, 102, 56, 0.16),
+    0 4px 10px rgba(11, 102, 56, 0.08);
+}
+
+.profile-box--highlight {
+  background: linear-gradient(135deg, #06331D 0%, #0B6638 60%, #0E7A42 100%);
+  border: 1px solid #0E7A42;
+  border-bottom: 4px solid #042213;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 12px 28px -4px rgba(6, 51, 29, 0.38);
+}
+.profile-box--highlight h3 {
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.unit-page-header,
+.unit-page-subunits,
+.unit-page-body {
+  border-bottom: 4px solid var(--border-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 10px 26px -4px rgba(14, 42, 28, 0.09),
+    0 2px 6px rgba(14, 42, 28, 0.04);
+}
+[data-theme="dark"] .unit-page-header,
+[data-theme="dark"] .unit-page-subunits,
+[data-theme="dark"] .unit-page-body {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 12px 28px rgba(0, 0, 0, 0.5);
+}
+
+.unit-page-icon {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 6px 14px rgba(11, 102, 56, 0.16);
+  border-bottom: 3px solid var(--border-strong);
+}
+
+.person-avatar {
+  box-shadow:
+    0 0 0 3px var(--surface),
+    0 4px 10px rgba(14, 42, 28, 0.16);
+}
+
+/* ==========================================================================
+   5. ANIMASI TIMBUL SAAT DIBUKA & DI-SCROLL (3D SCROLL-REVEAL POP-UP)
+   Elemen dan tulisan awalnya rata/tersembunyi lalu muncul timbul (3D pop-up)
+   secara berurutan ketika pertama kali dilihat atau di-scroll ke arahnya.
+   ========================================================================== */
+
+.reveal-3d {
+  opacity: 0;
+  transform: perspective(900px) translateY(36px) scale(0.94) rotateX(7deg);
+  filter: blur(3px);
+  will-change: opacity, transform, filter, box-shadow;
+  transition:
+    opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    filter 0.55s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    box-shadow 0.65s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    border-color 0.25s ease;
+}
+
+/* Saat belum terlihat, bayangan teks & kartu masih datar agar efek timbulnya terasa nyata saat muncul */
+.reveal-3d:not(.is-revealed) {
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0) !important;
+  text-shadow: none !important;
+}
+.reveal-3d:not(.is-revealed) h1,
+.reveal-3d:not(.is-revealed) h2,
+.reveal-3d:not(.is-revealed) h3,
+.reveal-3d:not(.is-revealed) h4 {
+  text-shadow: none !important;
+}
+
+/* Saat masuk ke area pandang (dilihat / di-scroll): timbul naik ke posisi 3D penuh */
+.reveal-3d.is-revealed {
+  opacity: 1;
+  transform: perspective(900px) translateY(0) scale(1) rotateX(0deg);
+  filter: blur(0);
+}
+
+/* Pastikan interaksi hover pada kartu yang sudah muncul tetap instan tanpa jeda stagger */
+.service-btn-card.reveal-3d.is-revealed:hover {
+  transition-delay: 0ms;
+  transform: perspective(900px) translateY(-6px) scale(1.015) rotateX(0deg);
+}
+
+.nilai-card.reveal-3d.is-revealed:hover,
+.person-card.reveal-3d.is-revealed:hover,
+.service-card.reveal-3d.is-revealed:hover,
+.photo-card.reveal-3d.is-revealed:hover,
+.video-card.reveal-3d.is-revealed:hover {
+  transition-delay: 0ms;
+  transform: perspective(900px) translateY(-4px) scale(1.01) rotateX(0deg);
+}
+
+/* ==========================================================================
+   6. KONTRAS TINGGI PANEL ADMIN (GARIS & TULISAN LEBIH TEGAS / HITAM)
+   Mempertegas warna teks, label, input, tombol pilih, dan garis pembatas di
+   halaman Admin agar jelas terlihat dan tidak tampak pucat/abu-abu.
+   ========================================================================== */
+
+.admin {
+  --text-1: #0A120E;
+  --text-2: #1A2820;
+  --text-3: #283B30;
+  --border: #7A9283;
+  --border-strong: #4F6859;
+  color: var(--text-1);
+}
+
+[data-theme="dark"] .admin {
+  --text-1: #F4F9F6;
+  --text-2: #D5E5DC;
+  --text-3: #B0C7BA;
+  --border: #4A6656;
+  --border-strong: #678B77;
+}
+
+.admin-gate-card,
+.admin-editor,
+.admin-backup-card {
+  border: 1.5px solid var(--border-strong);
+  box-shadow: 0 8px 24px rgba(10, 24, 16, 0.12);
+}
+
+.admin-welcome-bar,
+.admin-tabs {
+  border-bottom: 1.5px solid var(--border-strong);
+}
+
+.admin-tab {
+  color: var(--text-1);
+  font-weight: 700;
+}
+.admin-tab.active {
+  border-width: 1.5px;
+  border-color: var(--border-strong);
+  color: var(--green-800);
+  font-weight: 800;
+}
+[data-theme="dark"] .admin-tab.active {
+  color: #6EE7B7;
+}
+
+.admin-field-label {
+  color: var(--text-1);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.admin-input {
+  border: 1.5px solid var(--border-strong);
+  color: var(--text-1);
+  font-weight: 600;
+}
+.admin-input::placeholder {
+  color: var(--text-3);
+  opacity: 0.85;
+}
+.admin-input:focus {
+  border-color: var(--green-700);
+  box-shadow: 0 0 0 3px rgba(11, 102, 56, 0.22);
+}
+
+.admin-pick-btn {
+  border: 1.5px solid var(--border-strong);
+  color: var(--text-1);
+  font-weight: 700;
+}
+.admin-pick-btn:hover {
+  border-color: var(--green-700);
+  background: var(--green-50);
+}
+
+.admin-item {
+  border: 1.5px solid var(--border-strong);
+}
+.admin-item summary {
+  color: var(--text-1);
+  font-weight: 700;
+}
+.admin-item-title {
+  color: var(--text-1);
+  font-weight: 700;
+}
+.admin-item-caret {
+  color: var(--text-1);
+}
+.admin-item-body {
+  border-top: 1.5px solid var(--border-strong);
+}
+.admin-item-tools button {
+  border: 1.5px solid var(--border-strong);
+  color: var(--text-1);
+}
+
+.admin-list-head h4,
+.admin-editor-head h3,
+.admin-welcome-text h3,
+.admin-empty-state h4,
+.admin-backup-card h4 {
+  color: var(--text-1);
+  font-weight: 800;
+}
+
+.admin-count,
+.admin-welcome-text p,
+.admin-empty-state p,
+.admin-backup-card p,
+.admin-note,
+.admin-back-home {
+  color: var(--text-2);
+  font-weight: 600;
+}
+
+.admin-empty-state {
+  border: 2px dashed var(--border-strong);
+}
+
+.admin-note {
+  border: 1.5px dashed var(--border-strong);
+}
+
+
+
 

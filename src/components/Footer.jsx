@@ -11,12 +11,11 @@ const SOCIAL_ICONS = {
 }
 
 const SOCIALS = [
-  { name: 'YouTube', url: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA', Icon: Youtube },
-  { name: 'Instagram', url: 'https://www.instagram.com/kemenagwonosobo/', Icon: Instagram },
-  { name: 'X (Twitter)', url: 'https://x.com/KemenagWonosobo', Icon: XIcon },
-  { name: 'TikTok', url: 'https://www.tiktok.com/@kemenagwonosobo', Icon: TikTokIcon },
-  { name: 'Facebook', url: 'https://www.facebook.com/kemenag.teras/', Icon: Facebook },
-  { name: 'WhatsApp PTSP', url: 'https://api.whatsapp.com/send?phone=6281230055633', Icon: WhatsAppIcon }
+  { name: 'YouTube', url: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA', Icon: Youtube, iconKey: 'youtube' },
+  { name: 'Instagram', url: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw==', Icon: Instagram, iconKey: 'instagram' },
+  { name: 'TikTok', url: 'https://www.tiktok.com/@kemenag.wonosobo?is_from_webapp=1&sender_device=pc', Icon: TikTokIcon, iconKey: 'tiktok' },
+  { name: 'Facebook', url: 'https://web.facebook.com/kemenagwonosobo', Icon: Facebook, iconKey: 'facebook' },
+  { name: 'WhatsApp PTSP', url: 'https://api.whatsapp.com/send?phone=6281230055633', Icon: WhatsAppIcon, iconKey: 'whatsapp' }
 ]
 
 export function Footer({ seksi = [], social = [], onOpenUnit, onOpenSocial }) {
@@ -54,14 +53,16 @@ export function Footer({ seksi = [], social = [], onOpenUnit, onOpenSocial }) {
           <h4>Kanal Resmi</h4>
           <p>Ikuti informasi resmi Kemenag Wonosobo:</p>
           <div className="footer-social-row">
-            {(social.length ? social : SOCIALS.map(({ name, url }) => ({ name, url, iconKey: 'link' }))).map(item => {
-              const Icon = SOCIAL_ICONS[item.iconKey] || Share2
-              return (
-                <a key={item.id || item.name} href={item.url} target="_blank" rel="noopener noreferrer" aria-label={item.name} title={item.name}>
-                  <Icon size={17} />
-                </a>
-              )
-            })}
+            {(social.length ? social : SOCIALS)
+              .filter(item => item.id !== 'twitter' && item.iconKey !== 'twitter')
+              .map(item => {
+                const Icon = SOCIAL_ICONS[item.iconKey] || Share2
+                return (
+                  <a key={item.id || item.name} href={item.url} target="_blank" rel="noopener noreferrer" aria-label={item.name} title={item.name}>
+                    <Icon size={17} />
+                  </a>
+                )
+              })}
           </div>
           <button type="button" className="btn btn-outline btn-sm" onClick={onOpenSocial}>
             <Share2 size={15} /> Semua Kanal &amp; Kontak

@@ -16,7 +16,7 @@ export function Hero() {
             Layanan keagamaan dan pendidikan yang cepat, gratis, dan akuntabel
           </h1>
           <p className="hero-lead">
-            Akses standar pelayanan (SOP), struktur pengelola, serta dokumentasi kegiatan
+            Akses informasi layanan, struktur pengelola, serta dokumentasi kegiatan
             dari seluruh seksi dan Subbag Tata Usaha Kantor Kementerian Agama Kabupaten
             Wonosobo — seluruh layanan bebas biaya.
           </p>

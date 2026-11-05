@@ -1,32 +1,49 @@
-import { X, Printer, Download } from 'lucide-react'
+import { useEffect } from 'react'
+import { X, Eye } from 'lucide-react'
 import { tanggalIndo } from '../date.js'
 
-// Pratinjau SOP bergaya dokumen dinas; tombol cetak memakai print stylesheet
-// yang hanya mencetak area dokumen ini.
+// Pratinjau Layanan bergaya dokumen dinas (hanya lihat/pratinjau, tanpa cetak & unduh PDF).
 
 export function SopModal({ svc, seksi, onClose }) {
+  const serviceCode = (svc.pdfCode || 'Belum ditetapkan').replace(/\bSOP\b/gi, 'LAYANAN')
+
+  useEffect(() => {
+    const blockPrintAndSave = (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P' || e.key === 's' || e.key === 'S')) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    }
+    window.addEventListener('keydown', blockPrintAndSave, true)
+    return () => window.removeEventListener('keydown', blockPrintAndSave, true)
+  }, [])
+
   return (
-    <div className="overlay overlay--pdf" role="dialog" aria-modal="true" aria-label={`Pratinjau SOP ${svc.title}`} onClick={e => e.target === e.currentTarget && onClose()}>
+    <div
+      className="overlay overlay--pdf"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Pratinjau Layanan ${svc.title}`}
+      onClick={e => e.target === e.currentTarget && onClose()}
+      onContextMenu={e => e.preventDefault()}
+    >
       <div className="modal modal--pdf">
         <header className="pdf-toolbar no-print">
           <div className="pdf-toolbar-title">
             <strong>{svc.title}</strong>
-            <span>{svc.pdfCode || 'Belum ditetapkan'}</span>
+            <span>{serviceCode}</span>
           </div>
           <div className="pdf-toolbar-actions">
-            <button type="button" className="btn btn-dark" onClick={() => window.print()}>
-              <Printer size={15} /> Cetak
-            </button>
-            <button type="button" className="btn btn-dark" onClick={() => import('../pdf.js').then(({ downloadSopPdf }) => downloadSopPdf(svc, seksi))}>
-              <Download size={15} /> Unduh PDF
-            </button>
+            <span className="pdf-preview-only-badge" title="Dokumen ini hanya untuk pratinjau di layar">
+              <Eye size={14} /> Mode Pratinjau
+            </span>
             <button type="button" className="icon-btn icon-btn--dark" onClick={onClose} aria-label="Tutup pratinjau">
               <X size={18} />
             </button>
           </div>
         </header>
 
-        <div className="pdf-body">
+        <div className="pdf-body" onCopy={e => e.preventDefault()}>
           <div className="sop-paper print-area">
             <div className="sop-kop">
               <img src="/logo_kemenag.png" alt="Logo Kementerian Agama" className="sop-kop-logo" />
@@ -37,9 +54,9 @@ export function SopModal({ svc, seksi, onClose }) {
             </div>
 
             <div className="sop-title">
-              <p><strong>DRAF - BUKAN DOKUMEN RESMI</strong></p>
-              <h4>STANDAR OPERASIONAL PROSEDUR (SOP)</h4>
-              <p><strong>NOMOR: {svc.pdfCode || 'Belum ditetapkan'}</strong></p>
+              <p><strong>DOKUMEN PRATINJAU LAYANAN</strong></p>
+              <h4>INFORMASI STANDAR LAYANAN</h4>
+              <p><strong>NOMOR: {serviceCode}</strong></p>
               <p className="sop-title-about">TENTANG: {svc.title.toUpperCase()}</p>
             </div>
 

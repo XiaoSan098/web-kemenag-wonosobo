@@ -582,7 +582,7 @@ export default function AdminApp() {
         <div className="container admin-welcome-inner">
           <div className="admin-welcome-text">
             <h3>Selamat Datang, Admin! 👋</h3>
-            <p>Kelola data pejabat, layanan/SOP, dokumentasi foto/video, dan kanal resmi Kemenag Wonosobo dengan mudah.</p>
+            <p>Kelola data pejabat, layanan, dokumentasi foto/video, dan kanal resmi Kemenag Wonosobo dengan mudah.</p>
           </div>
           <span className="admin-welcome-badge">
             Admin Kemenag Terautentikasi
@@ -640,7 +640,7 @@ export default function AdminApp() {
               <div className="admin-empty-state">
                 <Pencil size={24} className="admin-empty-icon" />
                 <h4>Pilih Unit di Atas untuk Mengedit</h4>
-                <p>Klik salah satu tombol unit di atas untuk mengedit nama, deskripsi, layanan SOP, personil, atau fotonya.</p>
+                <p>Klik salah satu tombol unit di atas untuk mengedit nama, deskripsi, layanan, personil, atau fotonya.</p>
               </div>
             )}
           </div>
@@ -677,7 +677,7 @@ export default function AdminApp() {
               <div className="admin-empty-state">
                 <Pencil size={24} className="admin-empty-icon" />
                 <h4>Pilih Seksi di Atas untuk Mengedit</h4>
-                <p>Klik salah satu tombol seksi di atas (misal <strong>Seksi Bimas Islam</strong>) untuk mengedit teks judul, deskripsi, personil, SOP, dan dokumentasi.</p>
+                <p>Klik salah satu tombol seksi di atas (misal <strong>Seksi Bimas Islam</strong>) untuk mengedit teks judul, deskripsi, personil, layanan, dan dokumentasi.</p>
               </div>
             )}
           </div>

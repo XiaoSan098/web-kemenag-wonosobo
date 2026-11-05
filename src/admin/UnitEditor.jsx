@@ -37,11 +37,7 @@ const SERVICE_FIELDS = [
   { key: 'prosedur', label: 'Prosedur / Alur', multiline: true },
   { key: 'waktu', label: 'Jangka waktu penyelesaian' },
   { key: 'biaya', label: 'Biaya / tarif' },
-  { key: 'pdfCode', label: 'Nomor SOP (pdfCode)' },
-  { key: 'pdfName', label: 'Nama unduhan PDF (pdfName)' },
-  // Bila diisi, tombol "Unduh Berkas Resmi" memakai PDF ini alih-alih
-  // PDF yang dibuat di peramban (lihat UnitModal.jsx).
-  { key: 'fileUrl', label: 'Berkas SOP resmi (PDF)', type: 'file', accept: PDF_ACCEPT }
+  { key: 'pdfCode', label: 'Nomor Layanan' }
 ]
 
 const PHOTO_FIELDS = [
@@ -127,7 +123,7 @@ export function UnitEditor({ unit, onChange, onDelete }) {
         onChange={next => set('structure', next)}
       />
       <ListEditor
-        title="Layanan & SOP"
+        title="Layanan"
         items={unit.services}
         fields={SERVICE_FIELDS}
         makeLabel={s => s.title || '(Layanan baru)'}

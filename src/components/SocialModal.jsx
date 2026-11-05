@@ -28,9 +28,11 @@ export function SocialModal({ contacts, onClose }) {
 
         <div className="modal-body">
           <ul className="social-list">
-            {contacts.map(item => {
-              const Icon = BRAND_ICONS[item.id] || ExternalLink
-              return (
+            {contacts
+              .filter(item => item.id !== 'twitter' && item.iconKey !== 'twitter')
+              .map(item => {
+                const Icon = BRAND_ICONS[item.id] || BRAND_ICONS[item.iconKey] || ExternalLink
+                return (
                 <li key={item.id}>
                   <a
                     className={`social-item ${item.id === 'whatsapp' ? 'social-item--wa' : ''}`}

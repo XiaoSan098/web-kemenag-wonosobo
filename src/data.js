@@ -115,14 +115,14 @@ export const SUBBAG_TU_UNITS = [
         date: '08 Oktober 2026',
         image: 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=700&q=80',
         caption: 'Komitmen pelayanan inklusif di loket terpadu front office demi kemudahan seluruh lapisan masyarakat Wonosobo.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       },
       {
         title: 'Sosialisasi Sistem Antrean Online dan Integrasi WhatsApp PTSP Mandiri',
         date: '02 Oktober 2026',
         image: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=700&q=80',
         caption: 'Penerapan digitalisasi nomor antrean untuk mempercepat durasi layanan rekomendasi dan legalisir dokumen keagamaan.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
     // 4. VIDEO (Link YouTube, TikTok, Instagram & Facebook)
@@ -142,7 +142,7 @@ export const SUBBAG_TU_UNITS = [
         duration: '00:58',
         thumbnail: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=700&q=80',
         platform: 'Instagram',
-        videoUrl: 'https://www.instagram.com/kemenagwonosobo/',
+        videoUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw==',
         embedUrl: ''
       },
       {
@@ -151,7 +151,7 @@ export const SUBBAG_TU_UNITS = [
         duration: '01:15',
         thumbnail: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=700&q=80',
         platform: 'TikTok',
-        videoUrl: 'https://www.tiktok.com/@kemenagwonosobo',
+        videoUrl: 'https://www.tiktok.com/@kemenag.wonosobo?is_from_webapp=1&sender_device=pc',
         embedUrl: ''
       },
       {
@@ -160,7 +160,7 @@ export const SUBBAG_TU_UNITS = [
         duration: '02:30',
         thumbnail: 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=700&q=80',
         platform: 'Facebook',
-        videoUrl: 'https://www.facebook.com/kemenag.teras/',
+        videoUrl: 'https://web.facebook.com/kemenagwonosobo',
         embedUrl: ''
       }
     ]
@@ -244,7 +244,7 @@ export const SUBBAG_TU_UNITS = [
         date: '04 Oktober 2026',
         image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=700&q=80',
         caption: 'Penyelarasan pagu indikatif bersama seluruh Kepala Seksi dan pengelola DIPA kantor Kemenag Wonosobo.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
     videos: [
@@ -338,7 +338,7 @@ export const SUBBAG_TU_UNITS = [
         date: '06 Oktober 2026',
         image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=700&q=80',
         caption: 'Penerapan sistem kearsipan berbasis elektronik untuk menjaga keamanan dan kecepatan temu balik arsip persuratan.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
     videos: [
@@ -432,7 +432,7 @@ export const SUBBAG_TU_UNITS = [
         date: '02 Oktober 2026',
         image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=700&q=80',
         caption: 'Pencapaian Indikator Kinerja Pelaksanaan Anggaran (IKPA) Kemenag Wonosobo dengan predikat Sangat Baik (Nilai 98,8).',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
     videos: [
@@ -532,7 +532,7 @@ export const SUBBAG_TU_UNITS = [
         date: '06 Oktober 2026',
         image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=700&q=80',
         caption: 'Apresiasi komitmen transparansi dan kecepatan tanggap dalam melayani pertanyaan publik lewat media digital.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
     videos: [
@@ -551,7 +551,7 @@ export const SUBBAG_TU_UNITS = [
         duration: '01:20',
         thumbnail: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=700&q=80',
         platform: 'TikTok',
-        videoUrl: 'https://www.tiktok.com/@kemenagwonosobo',
+        videoUrl: 'https://www.tiktok.com/@kemenag.wonosobo?is_from_webapp=1&sender_device=pc',
         embedUrl: ''
       }
     ]
@@ -649,7 +649,7 @@ export const SEKSI_DATA = [
         date: '04 Oktober 2026',
         image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=700&q=80',
         caption: 'Penyuluh Agama Islam Seksi Bimas Islam memberikan edukasi kesiapan mental, reproduksi, dan spiritual bagi pelajar.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
     videos: [
@@ -720,7 +720,7 @@ export const SEKSI_DATA = [
         date: '05 Oktober 2026',
         image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=80',
         caption: 'Pemberian apresiasi oleh Kepala Kemenag Wonosobo kepada para juara bidang Sains dan Riset Madrasah.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
     videos: [
@@ -791,7 +791,7 @@ export const SEKSI_DATA = [
         date: '02 Oktober 2026',
         image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=700&q=80',
         caption: 'Kerjasama KKG dan MGMP PAI untuk menghadirkan materi pendidikan agama yang menarik bagi Generasi Z.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
     videos: [
@@ -862,7 +862,7 @@ export const SEKSI_DATA = [
         date: '03 Oktober 2026',
         image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=700&q=80',
         caption: 'Penyusunan rangkaian agenda Kemandirian Pesantren, Musabaqah Qira\'atil Kutub, dan Apel Akbar Santri.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
     videos: [
@@ -933,7 +933,7 @@ export const SEKSI_DATA = [
         date: '30 September 2026',
         image: 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=700&q=80',
         caption: 'Pemberian kepastian hukum aset keagamaan bagi takmir masjid dan pondok pesantren di pelosok Wonosobo.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
     videos: [
@@ -949,11 +949,11 @@ export const SEKSI_DATA = [
     ]
   },
 
-  // 7. PENYELENGGARA SYARIAH
+  // 7. LAYANAN SYARIAH
   {
     id: 'syariah',
-    title: 'Penyelenggara Syariah',
-    fullTitle: 'Penyelenggara Syariah',
+    title: 'Layanan Syariah',
+    fullTitle: 'Layanan Syariah',
     subtitle: 'Kalibrasi Arah Kiblat, Hisab Rukyat & Konsultasi Syariah',
     badge: 'Akurasi Arah Kiblat',
     icon: 'compass',
@@ -1015,7 +1015,7 @@ export const SEKSI_DATA = [
         date: '01 Oktober 2026',
         image: 'https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=700&q=80',
         caption: 'Pemanfaatan theodolite digital presisi tinggi untuk memastikan keakuratan arah kiblat jamaah.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
     videos: [
@@ -1031,11 +1031,11 @@ export const SEKSI_DATA = [
     ]
   },
 
-  // 8. PENYELENGGARA KRISTEN
+  // 8. LAYANAN KRISTEN
   {
     id: 'kristen',
-    title: 'Penyelenggara Kristen',
-    fullTitle: 'Penyelenggara Kristen',
+    title: 'Layanan Kristen',
+    fullTitle: 'Layanan Kristen',
     subtitle: 'Bimbingan Masyarakat & Pendidikan Agama Kristen',
     badge: 'Gereja & Umat Kristen',
     icon: 'cross',
@@ -1101,7 +1101,7 @@ export const SEKSI_DATA = [
         date: '28 September 2026',
         image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=700&q=80',
         caption: 'Mempererat tali kasih persaudaraan dan partisipasi aktif umat Kristen dalam pembangunan daerah Wonosobo.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
     videos: [
@@ -1117,11 +1117,11 @@ export const SEKSI_DATA = [
     ]
   },
 
-  // 9. PENYELENGGARA KATOLIK
+  // 9. LAYANAN KATOLIK
   {
     id: 'katolik',
-    title: 'Penyelenggara Katolik',
-    fullTitle: 'Penyelenggara Katolik',
+    title: 'Layanan Katolik',
+    fullTitle: 'Layanan Katolik',
     subtitle: 'Bimbingan Masyarakat & Pendidikan Agama Katolik',
     badge: 'Gereja & Umat Katolik',
     icon: 'cross',
@@ -1172,7 +1172,7 @@ export const SEKSI_DATA = [
         date: '29 September 2026',
         image: 'https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=700&q=80',
         caption: 'Menjaga kerukunan antarumat beragama dan harmoni toleransi di bumi asri Wonosobo.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
     videos: [
@@ -1188,11 +1188,11 @@ export const SEKSI_DATA = [
     ]
   },
 
-  // 10. PENYELENGGARA BUDDHA
+  // 10. LAYANAN BUDDHA
   {
     id: 'buddha',
-    title: 'Penyelenggara Buddha',
-    fullTitle: 'Penyelenggara Buddha',
+    title: 'Layanan Buddha',
+    fullTitle: 'Layanan Buddha',
     subtitle: 'Bimbingan Masyarakat & Pembinaan Vihara Buddha',
     badge: 'Vihara & Umat Buddha',
     icon: 'book-open-check',
@@ -1258,7 +1258,7 @@ export const SEKSI_DATA = [
         date: '20 September 2026',
         image: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=700&q=80',
         caption: 'Menjaga kedamaian batin, welas asih, dan harmoni keberagaman di bumi pegunungan Dieng Wonosobo.',
-        igUrl: 'https://www.instagram.com/kemenagwonosobo/'
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
     videos: [
@@ -1267,6 +1267,92 @@ export const SEKSI_DATA = [
         date: '18 September 2026',
         duration: '04:10',
         thumbnail: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=700&q=80',
+        platform: 'YouTube',
+        videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
+        embedUrl: ''
+      }
+    ]
+  },
+
+  // 11. LAYANAN HINDU
+  {
+    id: 'hindu',
+    title: 'Layanan Hindu',
+    fullTitle: 'Layanan Hindu',
+    subtitle: 'Bimbingan Masyarakat & Pembinaan Umat Hindu',
+    badge: 'Pura & Umat Hindu',
+    icon: 'compass',
+    color: 'amber',
+    contact: {
+      officer: 'Petugas Layanan Hindu',
+      role: 'Pelayanan Umat Hindu, Pura & Bimbingan Keagamaan Hindu',
+      phone: '+62 812-3005-5633',
+      rawPhone: '6281230055633',
+      hours: 'Senin - Jumat (08.00 - 15.30 WIB)'
+    },
+    structure: [
+      {
+        name: 'I Made Surya Dharma, S.Ag',
+        role: 'Pembina Layanan Umat Hindu Kemenag Wonosobo',
+        pangkat: 'Penata (III/c)',
+        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+        badge: 'Layanan Hindu'
+      },
+      {
+        name: 'Ni Luh Putu Ayu, S.Pd.H',
+        role: 'Penyuluh Agama Hindu',
+        pangkat: 'Penata Muda Tk. I (III/b)',
+        photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
+        badge: 'Penyuluh Agama'
+      }
+    ],
+    services: [
+      {
+        id: 'hindu-1',
+        title: 'Rekomendasi Bantuan Rumah Ibadah Pura & Lembaga Keagamaan Hindu',
+        desc: 'Penerbitan surat rekomendasi permohonan bantuan rehabilitasi dan sarana ibadah Pura bagi umat Hindu di Kabupaten Wonosobo.',
+        syarat: [
+          'Surat Permohonan Pengurus Pura / PHDI Kabupaten Wonosobo',
+          'Proposal teknis perbaikan bangunan atau pengadaan sarana ibadah Pura',
+          'Tanda Daftar Rumah Ibadah Pura resmi Kemenag RI'
+        ],
+        prosedur: 'Pengajuan proposal -> Verifikasi berkas & lokasi Pura -> Penerbitan Surat Rekomendasi Resmi.',
+        waktu: '2 Hari Kerja',
+        biaya: 'Gratis (Rp 0,-)',
+        pdfName: 'Layanan-Rekomendasi-Pura-Hindu.pdf',
+        pdfCode: 'LAYANAN/HINDU/01/2026'
+      },
+      {
+        id: 'hindu-2',
+        title: 'Pendaftaran Tanda Daftar Lembaga & Rumah Ibadah Pura',
+        desc: 'Layanan penerbitan tanda daftar resmi bagi tempat ibadah Pura dan lembaga keagamaan Hindu di Kabupaten Wonosobo.',
+        syarat: [
+          'Surat Permohonan Pengurus Pura / Lembaga Hindu',
+          'Susunan Pengurus yang disahkan',
+          'Bukti status tanah / domisili tempat ibadah'
+        ],
+        prosedur: 'Pemeriksaan berkas administrasi -> Validasi lapangan -> Penerbitan Tanda Daftar Resmi.',
+        waktu: '3 Hari Kerja',
+        biaya: 'Gratis (Rp 0,-)',
+        pdfName: 'Layanan-Tanda-Daftar-Pura-Hindu.pdf',
+        pdfCode: 'LAYANAN/HINDU/02/2026'
+      }
+    ],
+    photos: [
+      {
+        title: 'Pembinaan Kerukunan dan Dharma Santi Umat Hindu di Kabupaten Wonosobo',
+        date: '22 September 2026',
+        image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=700&q=80',
+        caption: 'Merawat harmoni, moderasi beragama, dan kelestarian budaya spiritual di dataran tinggi Dieng Wonosobo.',
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
+      }
+    ],
+    videos: [
+      {
+        title: 'Dokumentasi Pembinaan & Moderasi Beragama Umat Hindu di Wonosobo',
+        date: '19 September 2026',
+        duration: '04:05',
+        thumbnail: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=700&q=80',
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
         embedUrl: ''
@@ -1290,29 +1376,19 @@ export const SOCIAL_MEDIA_CONTACTS = [
   {
     id: 'instagram',
     name: 'Instagram',
-    handle: '@kemenagwonosobo',
+    handle: '@kemenag_wonosobo',
     desc: 'Ikuti galeri foto kegiatan harian, informasi grafis, dan pengumuman terbaru.',
-    url: 'https://www.instagram.com/kemenagwonosobo/',
+    url: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw==',
     badge: 'Foto & Reels',
     btnText: 'Buka di Instagram',
     iconKey: 'instagram'
   },
   {
-    id: 'twitter',
-    name: 'Twitter / X',
-    handle: '@KemenagWonosobo',
-    desc: 'Pembaruan kilat informasi kebijakan dan siaran pers resmi.',
-    url: 'https://x.com/KemenagWonosobo',
-    badge: 'Pembaruan Kilat',
-    btnText: 'Ikuti di Twitter / X',
-    iconKey: 'twitter'
-  },
-  {
     id: 'tiktok',
     name: 'TikTok',
-    handle: '@kemenagwonosobo',
+    handle: '@kemenag.wonosobo',
     desc: 'Video pendek edukasi keagamaan santun dan konten kreatif anak muda.',
-    url: 'https://www.tiktok.com/@kemenagwonosobo',
+    url: 'https://www.tiktok.com/@kemenag.wonosobo?is_from_webapp=1&sender_device=pc',
     badge: 'Video Pendek',
     btnText: 'Buka di TikTok',
     iconKey: 'tiktok'
@@ -1322,7 +1398,7 @@ export const SOCIAL_MEDIA_CONTACTS = [
     name: 'Facebook',
     handle: 'Kemenag Wonosobo',
     desc: 'Laman komunitas resmi publikasi artikel berita dan foto kegiatan.',
-    url: 'https://www.facebook.com/kemenag.teras/',
+    url: 'https://web.facebook.com/kemenagwonosobo',
     badge: 'Komunitas & Berita',
     btnText: 'Kunjungi Facebook',
     iconKey: 'facebook'

@@ -105,7 +105,7 @@ export function StaticProfileSection() {
                     <div className="maklumat-feat-item">
                       <span className="feat-check">✓</span>
                       <div>
-                        <strong>Kepastian Waktu &amp; SOP</strong>
+                        <strong>Kepastian Waktu &amp; Layanan</strong>
                         <p>Standar waktu penyelesaian dokumen jelas dan terukur.</p>
                       </div>
                     </div>
