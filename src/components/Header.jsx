@@ -19,7 +19,7 @@ export function Header({ onOpenSocial, onGoHome }) {
   const { theme, toggle } = useTheme()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  // Tutup mobile menu bila pengguna menekan tombol Escape
+  // Tutup mobile menu bila pengguna menekan tombol Escape & kunci scroll layar saat drawer dibuka
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === 'Escape') setMobileMenuOpen(false)
@@ -27,6 +27,13 @@ export function Header({ onOpenSocial, onGoHome }) {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [])
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = prev }
+  }, [mobileMenuOpen])
 
   const handleNavClick = (anchorId) => {
     setMobileMenuOpen(false)
@@ -155,79 +162,79 @@ export function Header({ onOpenSocial, onGoHome }) {
             </button>
           </div>
         </div>
+      </header>
 
-        {/* Mobile Navigation Drawer */}
-        {mobileMenuOpen && (
-          <div className="mobile-drawer-overlay" onClick={() => setMobileMenuOpen(false)}>
-            <div className="mobile-drawer" onClick={e => e.stopPropagation()}>
-              <div className="mobile-drawer-head">
-                <div className="mobile-drawer-brand">
-                  <img src="/logo_kemenag.png" alt="" className="drawer-logo" />
-                  <span>Menu Navigasi</span>
-                </div>
+      {/* Mobile Navigation Drawer (di luar <header> agar tidak terpotong oleh backdrop-filter) */}
+      {mobileMenuOpen && (
+        <div className="mobile-drawer-overlay" onClick={() => setMobileMenuOpen(false)}>
+          <div className="mobile-drawer" onClick={e => e.stopPropagation()}>
+            <div className="mobile-drawer-head">
+              <div className="mobile-drawer-brand">
+                <img src="/logo_kemenag.png" alt="" className="drawer-logo" />
+                <span>Menu Navigasi</span>
+              </div>
+              <button
+                type="button"
+                className="icon-btn"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Tutup menu"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <ul className="mobile-nav-list">
+              <li>
                 <button
                   type="button"
-                  className="icon-btn"
-                  onClick={() => setMobileMenuOpen(false)}
-                  aria-label="Tutup menu"
+                  className="mobile-nav-item"
+                  onClick={() => handleNavClick('home')}
                 >
-                  <X size={18} />
+                  <Home size={18} />
+                  <span>Beranda</span>
+                  <ChevronRight size={16} className="arrow" />
                 </button>
-              </div>
-
-              <ul className="mobile-nav-list">
-                <li>
-                  <button
-                    type="button"
-                    className="mobile-nav-item"
-                    onClick={() => handleNavClick('home')}
-                  >
-                    <Home size={18} />
-                    <span>Beranda</span>
-                    <ChevronRight size={16} className="arrow" />
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    className="mobile-nav-item"
-                    onClick={() => handleNavClick('profil-kemenag')}
-                  >
-                    <FileText size={18} />
-                    <span>Profil &amp; Maklumat</span>
-                    <ChevronRight size={16} className="arrow" />
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    className="mobile-nav-item"
-                    onClick={() => handleNavClick('layanan-utama')}
-                  >
-                    <Grid size={18} />
-                    <span>Menu Layanan Utama</span>
-                    <ChevronRight size={16} className="arrow" />
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    className="mobile-nav-item"
-                    onClick={() => {
-                      setMobileMenuOpen(false)
-                      if (onOpenSocial) onOpenSocial()
-                    }}
-                  >
-                    <Phone size={18} />
-                    <span>Kontak &amp; Lokasi</span>
-                    <ChevronRight size={16} className="arrow" />
-                  </button>
-                </li>
-              </ul>
-            </div>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className="mobile-nav-item"
+                  onClick={() => handleNavClick('profil-kemenag')}
+                >
+                  <FileText size={18} />
+                  <span>Profil &amp; Maklumat</span>
+                  <ChevronRight size={16} className="arrow" />
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className="mobile-nav-item"
+                  onClick={() => handleNavClick('layanan-utama')}
+                >
+                  <Grid size={18} />
+                  <span>Menu Layanan Utama</span>
+                  <ChevronRight size={16} className="arrow" />
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className="mobile-nav-item"
+                  onClick={() => {
+                    setMobileMenuOpen(false)
+                    if (onOpenSocial) onOpenSocial()
+                  }}
+                >
+                  <Phone size={18} />
+                  <span>Kontak &amp; Lokasi</span>
+                  <ChevronRight size={16} className="arrow" />
+                </button>
+              </li>
+            </ul>
           </div>
-        )}
-      </header>
+        </div>
+      )}
     </>
   )
 }
