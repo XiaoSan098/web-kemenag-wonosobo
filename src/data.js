@@ -3,7 +3,7 @@
  * Struktur Organisasi, Layanan (PDF), Foto Kegiatan (Instagram), dan Video (YouTube & IG)
  */
 
-// 4 BAGIAN LAYANAN DI DALAM SUBBAG TU
+// 6 BAGIAN LAYANAN DI DALAM SUBBAG TU
 export const SUBBAG_TU_UNITS = [
   {
     id: 'ptsp',
@@ -263,16 +263,16 @@ export const SUBBAG_TU_UNITS = [
   {
     id: 'pelayanan',
     parentId: 'subbag-tu',
-    title: 'Pelayanan',
-    fullTitle: 'Urusan Pelayanan Umum & Rumah Tangga',
+    title: 'Layanan PTSP',
+    fullTitle: 'Urusan Layanan PTSP',
     subtitle: 'Bagian Subbag Tata Usaha Kemenag Wonosobo',
-    badge: 'Umum, Persuratan & BMN',
+    badge: 'Layanan PTSP & Umum',
     icon: 'newspaper',
     color: 'blue',
-    description: 'Unit kerja di bawah Subbag Tata Usaha yang mengelola ketatausahaan kantor, tata persuratan dinas (SRIKANDI), kearsipan, kepegawaian ASN, urusan rumah tangga, dan pemeliharaan Barang Milik Negara (BMN).',
+    description: 'Unit kerja di bawah Subbag Tata Usaha yang mengelola ketatausahaan kantor, tata persuratan dinas (SRIKANDI), kearsipan, urusan rumah tangga, dan pemeliharaan Barang Milik Negara (BMN).',
     contact: {
-      officer: 'Tim Urusan Pelayanan Umum & Rumah Tangga',
-      role: 'Pelayanan Tata Persuratan, Kepegawaian & Sarana Kantor',
+      officer: 'Tim Urusan Layanan PTSP',
+      role: 'Pelayanan Tata Persuratan & Sarana Prasarana Kantor',
       phone: '+62 823-2680-5111',
       rawPhone: '6282326805111',
       hours: 'Senin - Jumat (07.30 - 16.00 WIB)'
@@ -555,18 +555,114 @@ export const SUBBAG_TU_UNITS = [
         embedUrl: ''
       }
     ]
+  },
+
+  // 6. ORTALA (Organisasi, Tata Laksana & Kepegawaian)
+  {
+    id: 'ortala',
+    parentId: 'subbag-tu',
+    title: 'Ortala',
+    fullTitle: 'Urusan Kepegawaian & Ortala',
+    subtitle: 'Bagian Subbag Tata Usaha Kemenag Wonosobo',
+    badge: 'Kepegawaian & Ortala',
+    icon: 'landmark',
+    color: 'purple',
+    description: 'Unit kerja di bawah Subbag Tata Usaha yang mengampu manajemen aparatur sipil negara (ASN), kenaikan pangkat, mutasi, penilaian kinerja (E-Kinerja BKN), kenaikan gaji berkala (KGB), penataan organisasi, tata laksana, dan reformasi birokrasi.',
+    contact: {
+      officer: 'Tim Urusan Kepegawaian & Ortala Subbag TU',
+      role: 'Pelayanan Kepegawaian ASN, Kenaikan Pangkat, Mutasi & KGB',
+      phone: '+62 823-2680-5111',
+      rawPhone: '6282326805111',
+      hours: 'Senin - Jumat (07.30 - 16.00 WIB)'
+    },
+    // Struktur 3 orang sesuai arahan
+    structure: [
+      {
+        name: 'H. Imron Awaludin, S.Ag., M.S.I.',
+        role: 'Kepala Subbagian Tata Usaha (Kasubbag TU)',
+        pangkat: 'Pembina (IV/a)',
+        photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+        badge: 'Pembina / Penanggung Jawab'
+      },
+      {
+        name: 'Bambang Priyono, S.Kom',
+        role: 'Analis SDM Aparatur / Koordinator Kepegawaian & Ortala',
+        pangkat: 'Penata Tk. I (III/d)',
+        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+        badge: 'Koordinator Ortala'
+      },
+      {
+        name: 'Dwi Astuti, S.A.P',
+        role: 'Pengelola Kinerja Pegawai, Mutasi & Kenaikan Pangkat',
+        pangkat: 'Penata Muda Tk. I (III/b)',
+        photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
+        badge: 'Analis Kepegawaian'
+      }
+    ],
+    services: [
+      {
+        id: 'ortala-svc-1',
+        title: 'Usul Kenaikan Pangkat (KP) & Kenaikan Gaji Berkala (KGB) ASN',
+        desc: 'Layanan verifikasi berkas usulan kenaikan pangkat reguler/pilihan dan penerbitan Surat Pemberitahuan Kenaikan Gaji Berkala bagi ASN Kemenag Wonosobo melalui SIASN BKN.',
+        syarat: [
+          'Salinan SK Kenaikan Pangkat Terakhir & SK Jabatan',
+          'Penilaian Kinerja Pegawai (E-Kinerja BKN) 2 tahun terakhir bernilai Baik',
+          'Surat Pengantar dari Kepala Seksi / Kepala Madrasah / Kepala KUA'
+        ],
+        prosedur: 'Verifikasi kelengkapan berkas -> Input pada aplikasi SIASN BKN / Simpeg Kemenag -> Validasi Kanwil Kemenag Jateng -> Penerbitan SK/Surat Pemberitahuan.',
+        waktu: '3 - 7 Hari Kerja (Sesuai Periode BKN)',
+        biaya: 'Gratis (Rp 0,- Bebas Biaya)',
+        pdfName: 'SOP-Layanan-Kenaikan-Pangkat-dan-KGB-ASN.pdf',
+        pdfCode: 'SOP/TU-ORTALA/01/2026'
+      },
+      {
+        id: 'ortala-svc-2',
+        title: 'Layanan Cuti, Mutasi & Pensiun ASN Kemenag',
+        desc: 'Fasilitasi penerbitan surat izin cuti tahunan/besar/sakit/melahirkan serta pendampingan berkas mutasi dan penetapan pensiun ASN bekerjasama dengan BKN dan PT Taspen.',
+        syarat: [
+          'Formulir Permohonan Cuti / Mutasi / Pensiun yang ditandatangani atasan langsung',
+          'Dokumen pendukung (surat dokter untuk cuti sakit, SK CPNS s.d. terakhir untuk pensiun)',
+          'Surat bebas temuan / tanggungan dinas'
+        ],
+        prosedur: 'Pemeriksaan berkas administrasi -> Validasi sisa hak cuti/syarat pensiun -> Penerbitan Surat Keputusan / Surat Rekomendasi.',
+        waktu: '1 - 3 Hari Kerja',
+        biaya: 'Gratis (Rp 0,- Bebas Biaya)',
+        pdfName: 'SOP-Layanan-Cuti-dan-Pensiun-ASN.pdf',
+        pdfCode: 'SOP/TU-ORTALA/02/2026'
+      }
+    ],
+    photos: [
+      {
+        title: 'Sosialisasi Penilaian Kinerja ASN Berbasis E-Kinerja BKN dan Tata Laksana Pelayanan',
+        date: '05 Oktober 2026',
+        image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=700&q=80',
+        caption: 'Peningkatan profesionalisme dan disiplin aparatur sipil negara di lingkungan Kemenag Kabupaten Wonosobo.',
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
+      }
+    ],
+    videos: [
+      {
+        title: 'Panduan Praktis Pengisian Sasaran Kinerja Pegawai (SKP) Lewat E-Kinerja BKN',
+        date: '28 September 2026',
+        duration: '05:20',
+        thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=700&q=80',
+        platform: 'YouTube',
+        videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
+        embedUrl: ''
+      }
+    ]
   }
 ];
 
 // DAFTAR UNIT & SEKSI DI HALAMAN UTAMA
 export const SEKSI_DATA = [
-  // 1. SUBBAG TATA USAHA (Memiliki 5 Tombol Layanan di dalamnya)
+  // 1. SUBBAG TATA USAHA (Memiliki 6 Tombol Bagian di dalamnya)
   {
     id: 'subbag-tu',
     title: 'Subbag TU',
     fullTitle: 'Subbagian Tata Usaha',
-    subtitle: 'Membawahi 5 Layanan: PTSP, Perencanaan, Pelayanan, Keuangan, & Humas',
-    badge: '5 Layanan Utama',
+    subtitle: 'Membawahi 6 Bagian: PTSP, Perencanaan, Layanan PTSP, Keuangan, Ortala, & Humas',
+    badge: '6 Bagian Utama',
     icon: 'building-2',
     color: 'emerald',
     isParentSubbag: true
@@ -883,13 +979,13 @@ export const SEKSI_DATA = [
     id: 'zawa',
     title: 'Penyelenggara Zawa',
     fullTitle: 'Penyelenggara Zakat & Wakaf (Zawa)',
-    subtitle: 'Sertifikasi Tanah Wakaf & Pembinaan Nazhir',
-    badge: 'Sertifikat Wakaf Gratis',
+    subtitle: 'Sertifikasi Tanah Wakaf, Pembinaan Nazhir & Layanan Syariah (Kiblat / Hisab)',
+    badge: 'Wakaf & Falakiyah',
     icon: 'coins',
     color: 'rose',
     contact: {
       officer: 'Petugas Front Office Penyelenggara Zawa',
-      role: 'Pelayanan Akta Ikrar Wakaf (AIW), Sertifikasi Tanah & BAZNAS',
+      role: 'Pelayanan Akta Ikrar Wakaf (AIW), Sertifikasi Tanah, BAZNAS, serta Pengukuran Arah Kiblat & Hisab Rukyat',
       phone: '+62 852-2785-8924',
       rawPhone: '6285227858924',
       hours: 'Senin - Jumat (08.00 - 15.30 WIB)'
@@ -908,6 +1004,13 @@ export const SEKSI_DATA = [
         pangkat: 'Penata (III/c)',
         photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
         badge: 'Analis Wakaf'
+      },
+      {
+        name: 'Rifqi Abdullah, S.T',
+        role: 'Tim Falakiyah & Ahli Ukur Theodolite Azimuth',
+        pangkat: 'Penata (III/c)',
+        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
+        badge: 'Tim Falakiyah'
       }
     ],
     services: [
@@ -925,6 +1028,32 @@ export const SEKSI_DATA = [
         biaya: 'Gratis (Program Percepatan Sertifikasi Wakaf)',
         pdfName: 'SOP-Sertifikasi-Tanah-Wakaf-Gratis.pdf',
         pdfCode: 'SOP/ZAWA/01/2026'
+      },
+      {
+        id: 'zawa-2',
+        title: 'Pengukuran & Sertifikasi Kalibrasi Arah Kiblat (Theodolite Digital)',
+        desc: 'Penentuan sudut presisi arah kiblat masjid, musala, dan tempat pemakaman muslim menggunakan kompas theodolite berstandar nasional.',
+        syarat: [
+          'Surat Permohonan Takmir Masjid / Panitia Pembangunan',
+          'Alamat lengkap dan share location titik bangunan masjid',
+          'Nomor kontak penanggung jawab di lokasi'
+        ],
+        prosedur: 'Surat permohonan masuk -> Tim Ahli Falakiyah datang ke lokasi -> Pengukuran lapangan -> Penerbitan Berita Acara & Sertifikat Arah Kiblat.',
+        waktu: '2 - 3 Hari Kerja',
+        biaya: 'Gratis (Rp 0,- Bebas Biaya)',
+        pdfName: 'SOP-Pengukuran-Arah-Kiblat.pdf',
+        pdfCode: 'SOP/ZAWA/02/2026'
+      },
+      {
+        id: 'zawa-3',
+        title: 'Konsultasi Penentuan Jadwal Sholat Sepanjang Tahun',
+        desc: 'Penerbitan jadwal sholat presisi koordinat lokal Kabupaten Wonosobo untuk acuan jadwal imsakiyah dan waktu sholat 15 kecamatan.',
+        syarat: ['Surat Permohonan / Permintaan Jadwal Imsakiyah'],
+        prosedur: 'Perhitungan koordinat geografis -> Penerbitan tabel resmi hisab syariah.',
+        waktu: '1 Hari Kerja',
+        biaya: 'Gratis (Rp 0,-)',
+        pdfName: 'SOP-Jadwal-Sholat-Syariah.pdf',
+        pdfCode: 'SOP/ZAWA/03/2026'
       }
     ],
     photos: [
@@ -933,6 +1062,13 @@ export const SEKSI_DATA = [
         date: '30 September 2026',
         image: 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=700&q=80',
         caption: 'Pemberian kepastian hukum aset keagamaan bagi takmir masjid dan pondok pesantren di pelosok Wonosobo.',
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
+      },
+      {
+        title: 'Tim Falakiyah Kemenag Wonosobo Lakukan Kalibrasi Arah Kiblat Masjid Agung Baru',
+        date: '01 Oktober 2026',
+        image: 'https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=700&q=80',
+        caption: 'Pemanfaatan theodolite digital presisi tinggi untuk memastikan keakuratan arah kiblat jamaah.',
         igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
       }
     ],
@@ -945,80 +1081,7 @@ export const SEKSI_DATA = [
         platform: 'YouTube',
         videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
         embedUrl: ''
-      }
-    ]
-  },
-
-  // 7. LAYANAN SYARIAH
-  {
-    id: 'syariah',
-    title: 'Layanan Syariah',
-    fullTitle: 'Layanan Syariah',
-    subtitle: 'Kalibrasi Arah Kiblat, Hisab Rukyat & Konsultasi Syariah',
-    badge: 'Akurasi Arah Kiblat',
-    icon: 'compass',
-    color: 'teal',
-    contact: {
-      officer: 'Petugas Penyelenggara Syariah',
-      role: 'Pelayanan Penentuan Arah Kiblat & Hisab Rukyatul Hilal',
-      phone: '+62 852-2785-8924',
-      rawPhone: '6285227858924',
-      hours: 'Senin - Jumat (08.00 - 15.30 WIB)'
-    },
-    structure: [
-      {
-        name: 'H. Ahmad Syarifudin, M.S.I',
-        role: 'Penyelenggara Syariah Kemenag Wonosobo',
-        pangkat: 'Penata Tk. I (III/d)',
-        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
-        badge: 'Penyelenggara'
       },
-      {
-        name: 'Rifqi Abdullah, S.T',
-        role: 'Tim Falakiyah & Ahli Ukur Theodolite Azimuth',
-        pangkat: 'Penata (III/c)',
-        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
-        badge: 'Tim Falakiyah'
-      }
-    ],
-    services: [
-      {
-        id: 'syr-1',
-        title: 'Pengukuran & Sertifikasi Kalibrasi Arah Kiblat (Theodolite Digital)',
-        desc: 'Penentuan sudut presisi arah kiblat masjid, musala, dan tempat pemakaman muslim menggunakan kompas theodolite berstandar nasional.',
-        syarat: [
-          'Surat Permohonan Takmir Masjid / Panitia Pembangunan',
-          'Alamat lengkap dan share location titik bangunan masjid',
-          'Nomor kontak penanggung jawab di lokasi'
-        ],
-        prosedur: 'Surat permohonan masuk -> Tim Ahli Falakiyah datang ke lokasi -> Pengukuran lapangan -> Penerbitan Berita Acara & Sertifikat Arah Kiblat.',
-        waktu: '2 - 3 Hari Kerja',
-        biaya: 'Gratis (Rp 0,- Bebas Biaya)',
-        pdfName: 'SOP-Pengukuran-Arah-Kiblat.pdf',
-        pdfCode: 'SOP/SYARIAH/01/2026'
-      },
-      {
-        id: 'syr-2',
-        title: 'Konsultasi Penentuan Jadwal Sholat Sepanjang Tahun',
-        desc: 'Penerbitan jadwal sholat presisi koordinat lokal Kabupaten Wonosobo untuk acuan jadwal imsakiyah dan waktu sholat 15 kecamatan.',
-        syarat: ['Surat Permohonan / Permintaan Jadwal Imsakiyah'],
-        prosedur: 'Perhitungan koordinat geografis -> Penerbitan tabel resmi hisab syariah.',
-        waktu: '1 Hari Kerja',
-        biaya: 'Gratis (Rp 0,-)',
-        pdfName: 'SOP-Jadwal-Sholat-Syariah.pdf',
-        pdfCode: 'SOP/SYARIAH/02/2026'
-      }
-    ],
-    photos: [
-      {
-        title: 'Tim Falakiyah Kemenag Wonosobo Lakukan Kalibrasi Arah Kiblat Masjid Agung Baru',
-        date: '01 Oktober 2026',
-        image: 'https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=700&q=80',
-        caption: 'Pemanfaatan theodolite digital presisi tinggi untuk memastikan keakuratan arah kiblat jamaah.',
-        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
-      }
-    ],
-    videos: [
       {
         title: 'Tutorial & Edukasi: Cara Tim Syariah Kemenag Mengukur Arah Kiblat Presisi',
         date: '26 September 2026',
@@ -1031,7 +1094,7 @@ export const SEKSI_DATA = [
     ]
   },
 
-  // 8. LAYANAN KRISTEN
+  // 7. LAYANAN KRISTEN
   {
     id: 'kristen',
     title: 'Layanan Kristen',
@@ -1117,7 +1180,7 @@ export const SEKSI_DATA = [
     ]
   },
 
-  // 9. LAYANAN KATOLIK
+  // 8. LAYANAN KATOLIK
   {
     id: 'katolik',
     title: 'Layanan Katolik',
@@ -1188,7 +1251,7 @@ export const SEKSI_DATA = [
     ]
   },
 
-  // 10. LAYANAN BUDDHA
+  // 9. LAYANAN BUDDHA
   {
     id: 'buddha',
     title: 'Layanan Buddha',
@@ -1274,7 +1337,7 @@ export const SEKSI_DATA = [
     ]
   },
 
-  // 11. LAYANAN HINDU
+  // 10. LAYANAN HINDU
   {
     id: 'hindu',
     title: 'Layanan Hindu',
@@ -1414,3 +1477,14 @@ export const SOCIAL_MEDIA_CONTACTS = [
     iconKey: 'whatsapp'
   }
 ];
+
+// DATA KEPALA KANTOR KEMENAG WONOSOBO (Tampil di Beranda & Dikelola Lewat Panel Admin)
+export const DEFAULT_KEPALA_KANTOR = {
+  nama: 'H. Edi Sungkowo, S.Ag., M.Pd.I.',
+  jabatan: 'Kepala Kantor Kementerian Agama Kab. Wonosobo',
+  pangkat: 'Pembina Tk. I (IV/b)',
+  badge: 'Kepala Kantor',
+  foto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+  sambutan: 'Mewujudkan pelayanan keagamaan dan pendidikan yang profesional, transparan, akuntabel, dan berintegritas tinggi bagi seluruh masyarakat Kabupaten Wonosobo.',
+  aktif: true
+};

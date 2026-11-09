@@ -2,7 +2,7 @@ import { useState } from 'react'
 import {
   X, Users, FileText, Images, PlayCircle, Calendar, CheckCircle2,
   Timer, Download, Eye, Building2, BookHeart, GraduationCap,
-  BookOpenCheck, Landmark, Coins, Compass, Cross, Newspaper
+  BookOpenCheck, Landmark, Coins, Compass, Cross, Newspaper, ZoomIn
 } from 'lucide-react'
 import { findUnit, toRawPhone } from '../store.js'
 import { WhatsAppIcon } from '../icons.jsx'
@@ -34,7 +34,7 @@ function waUrlFor(unit) {
   return `https://api.whatsapp.com/send?phone=${phone}&text=${msg}`
 }
 
-function StrukturTab({ unit }) {
+function StrukturTab({ unit, onOpenLightbox }) {
   const list = unit.structure || []
   if (!list.length) {
     return <p className="empty-note">Data personil sedang diperbarui oleh bagian kepegawaian.</p>
@@ -43,13 +43,27 @@ function StrukturTab({ unit }) {
     <div className="person-grid">
       {list.map(person => (
         <div className="person-card" key={person.name}>
-          <img
-            className="person-avatar"
-            src={person.photo}
-            alt={`Foto ${person.name}`}
-            loading="lazy"
-            onError={e => { e.currentTarget.src = '/logo_kemenag.png' }}
-          />
+          <button
+            type="button"
+            className="person-avatar-btn"
+            onClick={() => onOpenLightbox && onOpenLightbox({
+              src: person.photo,
+              caption: `${person.name} — ${person.role}${person.pangkat ? ` • ${person.pangkat}` : ''}`
+            })}
+            title={`Klik untuk memperbesar foto ${person.name}`}
+            aria-label={`Perbesar foto ${person.name}`}
+          >
+            <img
+              className="person-avatar"
+              src={person.photo}
+              alt={`Foto ${person.name}`}
+              loading="lazy"
+              onError={e => { e.currentTarget.src = '/logo_kemenag.png' }}
+            />
+            <span className="person-avatar-zoom" aria-hidden="true">
+              <ZoomIn size={16} />
+            </span>
+          </button>
           <div className="person-info">
             <p className="person-name">{person.name}</p>
             <p className="person-role">{person.role}</p>
@@ -246,7 +260,7 @@ export function UnitModal({ unitId, units = [], seksi = [], onClose, onOpenSop, 
         </div>
 
         <div className="modal-body">
-          {tab === 'struktur' && <StrukturTab unit={unit} />}
+          {tab === 'struktur' && <StrukturTab unit={unit} onOpenLightbox={onOpenLightbox} />}
           {tab === 'layanan' && <LayananTab unit={unit} onOpenSop={onOpenSop} />}
           {tab === 'foto' && <FotoTab unit={unit} onOpenLightbox={onOpenLightbox} />}
           {tab === 'video' && <VideoTab unit={unit} />}

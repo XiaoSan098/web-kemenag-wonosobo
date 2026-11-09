@@ -1,51 +1,86 @@
 import { useState } from 'react'
-import { Award, Compass, HeartHandshake, ShieldCheck, CheckCircle2, ChevronRight, FileText } from 'lucide-react'
+import { Award, Compass, HeartHandshake, ShieldCheck, CheckCircle2, ChevronRight, FileText, ZoomIn } from 'lucide-react'
+import { useData } from '../store.js'
 
-export function StaticProfileSection() {
+export function StaticProfileSection({ onOpenLightbox }) {
   const [activeTab, setActiveTab] = useState('visi-misi')
+  const { kepalaKantor } = useData()
 
   return (
     <section className="static-profile-section" id="profil-kemenag">
       <div className="container">
         <div className="profile-wrapper">
           <div className="profile-header">
-            <span className="profile-pill">
-              <ShieldCheck size={14} /> Profil &amp; Legalitas Instansi
-            </span>
-            <h2>Kantor Kementerian Agama Kabupaten Wonosobo</h2>
-            <p>
-              Komitmen kami dalam menghadirkan pelayanan publik bidang keagamaan dan pendidikan Islam
-              yang profesional, transparan, akuntabel, dan berintegritas tinggi.
-            </p>
+            <div className="profile-header-top">
+              <div className="profile-header-info">
+                <span className="profile-pill">
+                  <ShieldCheck size={14} /> Profil &amp; Legalitas Instansi
+                </span>
+                <h2>Kantor Kementerian Agama Kabupaten Wonosobo</h2>
+                <p>
+                  Komitmen kami dalam menghadirkan pelayanan publik bidang keagamaan dan pendidikan Islam
+                  yang profesional, transparan, akuntabel, dan berintegritas tinggi.
+                </p>
 
-            <div className="profile-tabs" role="tablist">
-              <button
-                type="button"
-                className={`profile-tab-btn ${activeTab === 'visi-misi' ? 'active' : ''}`}
-                onClick={() => setActiveTab('visi-misi')}
-                role="tab"
-                aria-selected={activeTab === 'visi-misi'}
-              >
-                <Compass size={16} /> Visi &amp; Misi
-              </button>
-              <button
-                type="button"
-                className={`profile-tab-btn ${activeTab === 'maklumat' ? 'active' : ''}`}
-                onClick={() => setActiveTab('maklumat')}
-                role="tab"
-                aria-selected={activeTab === 'maklumat'}
-              >
-                <HeartHandshake size={16} /> Maklumat Pelayanan
-              </button>
-              <button
-                type="button"
-                className={`profile-tab-btn ${activeTab === 'nilai-kerja' ? 'active' : ''}`}
-                onClick={() => setActiveTab('nilai-kerja')}
-                role="tab"
-                aria-selected={activeTab === 'nilai-kerja'}
-              >
-                <Award size={16} /> 5 Nilai Budaya Kerja
-              </button>
+                <div className="profile-tabs" role="tablist">
+                  <button
+                    type="button"
+                    className={`profile-tab-btn ${activeTab === 'visi-misi' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('visi-misi')}
+                    role="tab"
+                    aria-selected={activeTab === 'visi-misi'}
+                  >
+                    <Compass size={16} /> Visi &amp; Misi
+                  </button>
+                  <button
+                    type="button"
+                    className={`profile-tab-btn ${activeTab === 'maklumat' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('maklumat')}
+                    role="tab"
+                    aria-selected={activeTab === 'maklumat'}
+                  >
+                    <HeartHandshake size={16} /> Maklumat Pelayanan
+                  </button>
+                  <button
+                    type="button"
+                    className={`profile-tab-btn ${activeTab === 'nilai-kerja' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('nilai-kerja')}
+                    role="tab"
+                    aria-selected={activeTab === 'nilai-kerja'}
+                  >
+                    <Award size={16} /> 5 Nilai Budaya Kerja
+                  </button>
+                </div>
+              </div>
+
+              {kepalaKantor && kepalaKantor.aktif !== false && (
+                <div className="profile-kepala-card" aria-label={`Profil Kepala Kantor: ${kepalaKantor.nama}`}>
+                  <button
+                    type="button"
+                    className="profile-kepala-avatar-wrap profile-kepala-avatar-btn"
+                    onClick={() => onOpenLightbox && onOpenLightbox({
+                      src: kepalaKantor.foto,
+                      caption: `${kepalaKantor.nama} — ${kepalaKantor.jabatan}`
+                    })}
+                    title={`Klik untuk memperbesar foto ${kepalaKantor.nama}`}
+                    aria-label={`Perbesar foto ${kepalaKantor.nama}`}
+                  >
+                    <img
+                      src={kepalaKantor.foto}
+                      alt={kepalaKantor.nama}
+                      className="profile-kepala-avatar"
+                      loading="lazy"
+                    />
+                    <span className="profile-kepala-zoom" aria-hidden="true">
+                      <ZoomIn size={22} />
+                    </span>
+                  </button>
+                  <div className="profile-kepala-meta">
+                    <h3 className="profile-kepala-name">{kepalaKantor.nama}</h3>
+                    <p className="profile-kepala-role">{kepalaKantor.jabatan}</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

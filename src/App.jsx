@@ -181,7 +181,7 @@ export default function App() {
           <>
             <Hero />
             <ServiceButtons onOpenUnit={openUnit} />
-            <StaticProfileSection />
+            <StaticProfileSection onOpenLightbox={setLightbox} />
           </>
         )}
       </main>

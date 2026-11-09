@@ -1,6 +1,6 @@
 import {
   Building2, BookHeart, GraduationCap,
-  Coins, BookOpenCheck, Landmark, Scale,
+  Coins, BookOpenCheck, Landmark,
   Cross, Church, Sparkles, ChevronRight
 } from 'lucide-react'
 
@@ -9,7 +9,7 @@ export function ServiceButtons({ onOpenUnit }) {
     {
       id: 'subbag-tu',
       title: 'PTSP & Subbag TU',
-      desc: 'Pelayanan Terpadu Satu Pintu, legalisir, kepegawaian, perencanaan, keuangan & humas',
+      desc: 'Pelayanan Terpadu Satu Pintu (PTSP), perencanaan, layanan PTSP, keuangan, ortala, serta humas',
       icon: Building2,
       badge: 'Induk Layanan',
       badgeColor: 'badge--gold'
@@ -49,18 +49,10 @@ export function ServiceButtons({ onOpenUnit }) {
     {
       id: 'zawa',
       title: 'Zakat & Wakaf',
-      desc: 'Sertifikasi tanah wakaf, perwakafan produktif, serta pembinaan BAZNAS & LAZ',
+      desc: 'Sertifikasi tanah wakaf, perwakafan produktif, pembinaan BAZNAS/LAZ, hisab rukyat & kalibrasi arah kiblat',
       icon: Coins,
       badge: 'ZAWA',
       badgeColor: 'badge--teal'
-    },
-    {
-      id: 'syariah',
-      title: 'Layanan Syariah',
-      desc: 'Penetapan hisab rukyat, pengukuran arah kiblat, dan pembinaan syariah',
-      icon: Scale,
-      badge: 'Syariah',
-      badgeColor: 'badge--indigo'
     },
     {
       id: 'kristen',

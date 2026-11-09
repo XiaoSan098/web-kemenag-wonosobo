@@ -2,20 +2,23 @@
  * Data Store — sumber data tunggal untuk situs publik & halaman admin.
  *
  * Data default berasal dari src/data.js (paket, statis). Admin mengelola
- * salinan yang disimpan di localStorage (kew_wsb_data_v1); bila ada salinan
+ * salinan yang disimpan di localStorage (kew_wsb_data_v9); bila ada salinan
  * tersimpan, situs publik otomatis membacanya. Semua perubahan di-broadcast
  * lewat CustomEvent agar komponen yang memakai useData() ikut ter-render ulang.
  */
 import { useEffect, useState } from 'react'
-import { SUBBAG_TU_UNITS, SEKSI_DATA, SOCIAL_MEDIA_CONTACTS } from './data.js'
+import {
+  SUBBAG_TU_UNITS, SEKSI_DATA, SOCIAL_MEDIA_CONTACTS, DEFAULT_KEPALA_KANTOR
+} from './data.js'
 
-const STORAGE_KEY = 'kew_wsb_data_v5'
+const STORAGE_KEY = 'kew_wsb_data_v9'
 const CHANGE_EVENT = 'kew-data-change'
 
 const DEFAULT_DATA = {
   units: structuredClone(SUBBAG_TU_UNITS),
   seksi: structuredClone(SEKSI_DATA),
-  social: structuredClone(SOCIAL_MEDIA_CONTACTS)
+  social: structuredClone(SOCIAL_MEDIA_CONTACTS),
+  kepalaKantor: structuredClone(DEFAULT_KEPALA_KANTOR)
 }
 
 export const hasStorage = () => {
@@ -36,7 +39,10 @@ function readStored() {
     return {
       units: Array.isArray(parsed.units) ? parsed.units : DEFAULT_DATA.units,
       seksi: Array.isArray(parsed.seksi) ? parsed.seksi : DEFAULT_DATA.seksi,
-      social: Array.isArray(parsed.social) ? parsed.social : DEFAULT_DATA.social
+      social: Array.isArray(parsed.social) ? parsed.social : DEFAULT_DATA.social,
+      kepalaKantor: (parsed.kepalaKantor && typeof parsed.kepalaKantor === 'object')
+        ? { ...DEFAULT_DATA.kepalaKantor, ...parsed.kepalaKantor }
+        : structuredClone(DEFAULT_DATA.kepalaKantor)
     }
   } catch {
     return null
@@ -97,10 +103,12 @@ export function useData() {
       .then(server => {
         if (!alive || !Array.isArray(server?.seksi)) return
         try {
+          const current = readStored() || DEFAULT_DATA
           localStorage.setItem(STORAGE_KEY, JSON.stringify({
             units: server.units || [],
             seksi: server.seksi || [],
-            social: server.social || []
+            social: server.social || [],
+            kepalaKantor: server.kepalaKantor || current.kepalaKantor || DEFAULT_DATA.kepalaKantor
           }))
         } catch { /* cache gagal tulis: lanjut dengan data di memori */ }
         reload()
@@ -139,3 +147,4 @@ export { EMPTY }
 export const DEFAULT_UNITS = SUBBAG_TU_UNITS
 export const DEFAULT_SEKSI = SEKSI_DATA
 export const DEFAULT_SOCIAL = SOCIAL_MEDIA_CONTACTS
+export const DEFAULT_KEPALA = DEFAULT_KEPALA_KANTOR

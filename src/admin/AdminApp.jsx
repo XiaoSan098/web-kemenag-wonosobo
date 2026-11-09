@@ -16,7 +16,7 @@ import {
   Building2, Landmark, Globe, Lock, ChevronDown, WifiOff, Moon, Sun, Pencil,
   Eye, EyeOff
 } from 'lucide-react'
-import { getData, resetData, saveData, useData } from '../store.js'
+import { getData, resetData, saveData, useData, DEFAULT_KEPALA } from '../store.js'
 import {
   login, logout, markLocalSession, probeServer, resetServer, restoreSession,
   saveSnapshot, uploadFile
@@ -29,6 +29,7 @@ const ADMIN_USER = 'admin'
 const ADMIN_PIN = 'webkemenagwonosobo123'
 
 const TABS = [
+  { id: 'kepala', label: 'Kepala Kantor', Icon: Users },
   { id: 'units', label: 'Unit Subbag TU', Icon: Building2 },
   { id: 'seksi', label: 'Seksi & Penyelenggara', Icon: Landmark },
   { id: 'social', label: 'Media Sosial', Icon: Share2 },
@@ -361,6 +362,84 @@ function SocialEditor({ contacts, onChange }) {
   )
 }
 
+function KepalaKantorEditor({ kepala, onChange }) {
+  const current = kepala || {}
+
+  const update = (key, val) => {
+    onChange({ ...current, [key]: val })
+  }
+
+  return (
+    <div className="admin-editor">
+      <div className="admin-editor-head">
+        <div>
+          <h3>Pengaturan Profil &amp; Sambutan Kepala Kantor</h3>
+          <p style={{ fontSize: '0.84rem', color: 'var(--text-3)', marginTop: '3px' }}>
+            Data pimpinan ini ditampilkan di sebelah kanan bagian Profil &amp; Legalitas Instansi pada beranda utama sebagai informasi pimpinan resmi kantor.
+          </p>
+        </div>
+        <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer', background: 'var(--surface-2)', padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+          <input
+            type="checkbox"
+            checked={current.aktif !== false}
+            onChange={e => update('aktif', e.target.checked)}
+            style={{ width: '16px', height: '16px', accentColor: 'var(--green-600)', cursor: 'pointer' }}
+          />
+          <span style={{ fontWeight: 600, fontSize: '0.84rem', color: 'var(--text-1)' }}>
+            {current.aktif !== false ? 'Aktif (Tampil di Beranda)' : 'Disembunyikan'}
+          </span>
+        </label>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px', marginTop: '14px' }}>
+        <Field
+          label="Nama Lengkap Beserta Gelar"
+          value={current.nama}
+          placeholder="Contoh: H. Edi Sungkowo, S.Ag., M.Pd.I."
+          onChange={v => update('nama', v)}
+        />
+        <Field
+          label="Jabatan Resmi"
+          value={current.jabatan}
+          placeholder="Contoh: Kepala Kantor Kementerian Agama Kab. Wonosobo"
+          onChange={v => update('jabatan', v)}
+        />
+        <Field
+          label="Pangkat / Golongan Ruang"
+          value={current.pangkat}
+          placeholder="Contoh: Pembina Tk. I (IV/b)"
+          onChange={v => update('pangkat', v)}
+        />
+        <Field
+          label="Label / Badge Kartu"
+          value={current.badge}
+          placeholder="Contoh: Kepala Kantor"
+          onChange={v => update('badge', v)}
+        />
+      </div>
+
+      <div style={{ marginTop: '14px' }}>
+        <UploadField
+          label="Foto Resmi Kepala Kantor (URL atau Unggah File Foto)"
+          value={current.foto}
+          onChange={v => update('foto', v)}
+          accept="image/*"
+        />
+      </div>
+
+      <div style={{ marginTop: '14px' }}>
+        <Field
+          label="Kutipan Sambutan / Komitmen Pelayanan"
+          value={current.sambutan}
+          multiline="tall"
+          placeholder="Tuliskan komitmen pelayanan publik, visi, atau arahan Kepala Kantor..."
+          onChange={v => update('sambutan', v)}
+        />
+      </div>
+    </div>
+  )
+}
+
 function BackupTab({ draft, onImport, onReset }) {
   const fileRef = useRef(null)
   const jsonString = useMemo(() => JSON.stringify(draft, null, 2), [draft])
@@ -433,11 +512,12 @@ export default function AdminApp() {
     const { id, tab: t } = parseHashParams()
     if (t) return t
     if (id) {
+      if (id === 'kepala') return 'kepala'
       const d = getData()
       if (d.seksi?.some(s => s.id === id)) return 'seksi'
       if (d.units?.some(u => u.id === id)) return 'units'
     }
-    return 'units'
+    return 'kepala'
   })
   const [activeUnitId, setActiveUnitId] = useState(() => {
     const { id } = parseHashParams()
@@ -466,7 +546,9 @@ export default function AdminApp() {
       const { id, tab: t } = parseHashParams()
       if (t) setTab(t)
       if (id) {
-        if (draft.seksi?.some(s => s.id === id)) {
+        if (id === 'kepala') {
+          setTab('kepala')
+        } else if (draft.seksi?.some(s => s.id === id)) {
           setTab('seksi')
           setActiveSeksiId(id)
         } else if (draft.units?.some(u => u.id === id)) {
@@ -538,7 +620,11 @@ export default function AdminApp() {
     }
   }, [session])
 
-  const doImport = (parsed) => setDraft(parsed)
+  const doImport = (parsed) => setDraft(d => ({
+    ...d,
+    ...parsed,
+    kepalaKantor: parsed.kepalaKantor || d.kepalaKantor || DEFAULT_KEPALA
+  }))
 
   const doLogout = async () => {
     const yakin = window.confirm('Apakah Anda yakin ingin keluar dari Panel Admin Kemenag Wonosobo?')
@@ -609,6 +695,13 @@ export default function AdminApp() {
       </nav>
 
       <main className="admin-main container">
+        {tab === 'kepala' && (
+          <KepalaKantorEditor
+            kepala={draft.kepalaKantor}
+            onChange={next => setSection('kepalaKantor', next)}
+          />
+        )}
+
         {tab === 'units' && (
           <div className="admin-col">
             <div className="admin-pick">

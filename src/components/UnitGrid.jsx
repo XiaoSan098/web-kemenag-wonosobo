@@ -32,7 +32,7 @@ function UnitCard({ seksi, onOpen }) {
             {seksi.title}
             {isTu && <span className="unit-card-badge">Induk Layanan</span>}
           </span>
-          <span className="unit-card-sub">{isTu ? 'PTSP · Perencanaan · Pelayanan · Keuangan' : seksi.subtitle}</span>
+          <span className="unit-card-sub">{isTu ? 'PTSP · Perencanaan · Layanan PTSP · Keuangan · Ortala · Humas' : seksi.subtitle}</span>
         </span>
         <ChevronRight size={16} className="unit-card-arrow" aria-hidden="true" />
       </button>

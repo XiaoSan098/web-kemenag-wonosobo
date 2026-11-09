@@ -735,33 +735,124 @@ button { font: inherit; color: inherit; }
 
 /* ---------- Tab: Struktur ---------- */
 
-.person-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.person-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
+  gap: 14px;
+}
 .person-card {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px;
+  gap: 16px;
+  padding: 16px;
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
-.person-avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid var(--border);
+.person-card:hover {
+  border-color: rgba(16, 185, 129, 0.45);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.1), var(--shadow-md);
+  transform: translateY(-2px);
+}
+[data-theme="dark"] .person-card:hover {
+  border-color: rgba(52, 211, 153, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.person-avatar-btn {
+  position: relative;
   flex: none;
+  width: 78px;
+  height: 86px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
 }
-.person-name { font-weight: 700; font-size: 0.9rem; }
-.person-role { font-size: 0.78rem; color: var(--text-2); margin-top: 2px; }
+.person-avatar-btn:hover {
+  transform: scale(1.04);
+}
+.person-avatar-btn:focus-visible {
+  outline: 2px solid var(--green-600);
+  outline-offset: 2px;
+}
+
+.person-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 2px solid var(--green-600);
+  background: var(--surface-2);
+  display: block;
+  transition: filter 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+[data-theme="dark"] .person-avatar {
+  border-color: #34d399;
+}
+.person-avatar-btn:hover .person-avatar {
+  filter: brightness(0.85);
+}
+
+.person-avatar-zoom {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(11, 74, 42, 0.48);
+  color: #fff;
+  border-radius: 14px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  backdrop-filter: blur(1.5px);
+}
+.person-avatar-btn:hover .person-avatar-zoom,
+.person-avatar-btn:focus-visible .person-avatar-zoom {
+  opacity: 1;
+}
+
+.person-info {
+  flex: 1;
+  min-width: 0;
+}
+.person-name { font-weight: 700; font-size: 0.94rem; color: var(--text-1); line-height: 1.35; }
+.person-role { font-size: 0.8rem; color: var(--text-2); margin-top: 3px; line-height: 1.4; }
 .person-pangkat {
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   color: var(--green-700);
   font-weight: 600;
-  margin-top: 2px;
+  margin-top: 3px;
   display: inline-block;
 }
-[data-theme="dark"] .person-pangkat { color: var(--green-400); }
+[data-theme="dark"] .person-pangkat { color: #34d399; }
+.person-badge {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 7px;
+  background: var(--green-50);
+  color: var(--green-800);
+  border-radius: 6px;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+[data-theme="dark"] .person-badge {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border-color: rgba(52, 211, 153, 0.3);
+}
 .person-nip { display: none; }
 
 /* ---------- Tab: Layanan ---------- */
@@ -2009,6 +2100,160 @@ textarea.admin-input { resize: vertical; min-height: 64px; }
 [data-theme="dark"] .profile-header {
   background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, transparent 100%);
 }
+
+.profile-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+.profile-header-info {
+  flex: 1;
+  min-width: 0;
+}
+.profile-header-info p {
+  margin-top: 8px;
+  font-size: 0.92rem;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+/* Kartu Informasi Kepala Kantor di Sebelah Kanan Profil */
+.profile-kepala-card {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 16px 16px 14px;
+  background: var(--surface);
+  border: 1.5px solid rgba(16, 185, 129, 0.28);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.1), var(--shadow-sm);
+  width: 230px;
+  margin-right: 112px;
+}
+[data-theme="dark"] .profile-kepala-card {
+  background: var(--surface-2);
+  border-color: rgba(52, 211, 153, 0.3);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+}
+
+.profile-kepala-avatar-wrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.profile-kepala-avatar-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.profile-kepala-avatar-btn:hover {
+  transform: scale(1.02);
+}
+.profile-kepala-avatar-btn:focus-visible {
+  outline: 2px solid var(--green-600);
+  outline-offset: 2px;
+}
+.profile-kepala-avatar-btn:hover .profile-kepala-avatar {
+  filter: brightness(0.9);
+}
+.profile-kepala-zoom {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(11, 74, 42, 0.42);
+  color: #fff;
+  border-radius: 14px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  backdrop-filter: blur(1.5px);
+}
+.profile-kepala-avatar-btn:hover .profile-kepala-zoom,
+.profile-kepala-avatar-btn:focus-visible .profile-kepala-zoom {
+  opacity: 1;
+}
+.profile-kepala-avatar {
+  width: 196px;
+  height: 245px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 2.5px solid var(--green-600);
+  background: var(--surface-2);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+}
+[data-theme="dark"] .profile-kepala-avatar {
+  border-color: #34d399;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+.profile-kepala-meta {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 3px;
+  margin-top: 10px;
+}
+.profile-kepala-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-1);
+  line-height: 1.35;
+  margin: 0;
+}
+.profile-kepala-role {
+  font-size: 0.76rem;
+  color: var(--text-2);
+  line-height: 1.4;
+  margin: 0;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .profile-header-top {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .profile-header-info {
+    width: 100%;
+  }
+  .profile-kepala-card {
+    width: 240px;
+    margin-right: 0;
+  }
+}
+@media (max-width: 480px) {
+  .profile-kepala-card {
+    width: 210px;
+    padding: 12px;
+  }
+  .profile-kepala-avatar {
+    width: 180px;
+    height: 225px;
+  }
+  .profile-kepala-name {
+    font-size: 0.9rem;
+  }
+  .profile-kepala-role {
+    font-size: 0.72rem;
+  }
+}
+
 .profile-pill {
   display: inline-flex;
   align-items: center;
@@ -3504,12 +3749,12 @@ body {
     gap: 12px;
   }
   .person-card {
-    padding: 12px;
-    gap: 12px;
+    padding: 13px 12px;
+    gap: 13px;
   }
-  .person-avatar {
-    width: 50px;
-    height: 50px;
+  .person-avatar-btn {
+    width: 68px;
+    height: 74px;
   }
   .service-card {
     padding: 15px 14px;
