@@ -16,9 +16,8 @@ const ICON_OPTIONS = [
 
 const COLOR_OPTIONS = ['emerald', 'teal', 'blue', 'amber', 'purple', 'rose', 'indigo']
 
-// Jenis berkas mengikuti filter server/index.js agar berkasnya tidak ditolak
-// setelah terlanjur diunggah.
-const IMAGE_ACCEPT = 'image/png,image/jpeg,image/webp'
+// Jenis berkas gambar, PDF, dan video yang diizinkan pada panel admin.
+const IMAGE_ACCEPT = 'image/*'
 const PDF_ACCEPT = 'application/pdf'
 const VIDEO_ACCEPT = 'video/mp4,video/webm,video/quicktime'
 

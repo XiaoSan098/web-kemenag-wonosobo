@@ -59,17 +59,18 @@ export function StaticProfileSection({ onOpenLightbox }) {
                     type="button"
                     className="profile-kepala-avatar-wrap profile-kepala-avatar-btn"
                     onClick={() => onOpenLightbox && onOpenLightbox({
-                      src: kepalaKantor.foto,
+                      src: kepalaKantor.foto || '/logo_kemenag.png',
                       caption: `${kepalaKantor.nama} — ${kepalaKantor.jabatan}`
                     })}
                     title={`Klik untuk memperbesar foto ${kepalaKantor.nama}`}
                     aria-label={`Perbesar foto ${kepalaKantor.nama}`}
                   >
                     <img
-                      src={kepalaKantor.foto}
+                      src={kepalaKantor.foto || '/logo_kemenag.png'}
                       alt={kepalaKantor.nama}
                       className="profile-kepala-avatar"
                       loading="lazy"
+                      onError={e => { e.currentTarget.src = '/logo_kemenag.png' }}
                     />
                     <span className="profile-kepala-zoom" aria-hidden="true">
                       <ZoomIn size={22} />

@@ -101,7 +101,12 @@ app.put('/api/data', requireAdmin, wrap(async (req, res) => {
   if (!idUnik(body.units) || !idUnik(body.seksi)) {
     return res.status(400).json({ error: 'Ada id unit yang kosong atau ganda' })
   }
-  await saveSnapshot({ units: body.units, seksi: body.seksi, social: body.social })
+  await saveSnapshot({
+    units: body.units,
+    seksi: body.seksi,
+    social: body.social,
+    kepalaKantor: body.kepalaKantor
+  })
   res.json({ ok: true })
 }))
 
@@ -150,7 +155,7 @@ const upload = multer({
   storage,
   limits: { fileSize: 200 * 1024 * 1024 }, // 200 MB (video kegiatan)
   fileFilter: (req, file, cb) => {
-    const ok = /^image\/(png|jpe?g|webp)$|^application\/pdf$|^video\/(mp4|webm|quicktime)$/.test(file.mimetype)
+    const ok = /^image\/(png|jpe?g|webp|gif|avif|svg\+xml|heic|heif)$|^application\/pdf$|^video\/(mp4|webm|quicktime)$/.test(file.mimetype)
     cb(ok ? null : new Error('Jenis berkas tidak diizinkan (gambar, PDF, atau video)'), ok)
   }
 })

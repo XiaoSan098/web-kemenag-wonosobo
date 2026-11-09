@@ -43,13 +43,13 @@ function StrukturTab({ unit, onOpenLightbox }) {
   }
   return (
     <div className="person-grid">
-      {list.map(person => (
-        <div className="person-card" key={person.name}>
+      {list.map((person, idx) => (
+        <div className="person-card" key={`${person.name || 'person'}-${idx}`}>
           <button
             type="button"
             className="person-avatar-btn"
             onClick={() => onOpenLightbox && onOpenLightbox({
-              src: person.photo,
+              src: person.photo || '/logo_kemenag.png',
               caption: `${person.name} — ${person.role}${person.pangkat ? ` • ${person.pangkat}` : ''}`
             })}
             title={`Klik untuk memperbesar foto ${person.name}`}
@@ -57,7 +57,7 @@ function StrukturTab({ unit, onOpenLightbox }) {
           >
             <img
               className="person-avatar"
-              src={person.photo}
+              src={person.photo || '/logo_kemenag.png'}
               alt={`Foto ${person.name}`}
               loading="lazy"
               onError={e => { e.currentTarget.src = '/logo_kemenag.png' }}

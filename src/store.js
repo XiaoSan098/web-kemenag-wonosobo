@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import {
   SUBBAG_TU_UNITS, SEKSI_DATA, SOCIAL_MEDIA_CONTACTS, DEFAULT_KEPALA_KANTOR
 } from './data.js'
+import { isSupabaseConfigured, supabaseLoadData } from './supabase.js'
 
 const STORAGE_KEY = 'kew_wsb_data_v9'
 const CHANGE_EVENT = 'kew-data-change'
@@ -21,6 +22,8 @@ const DEFAULT_DATA = {
   kepalaKantor: structuredClone(DEFAULT_KEPALA_KANTOR)
 }
 
+let memoryData = null
+
 export const hasStorage = () => {
   try {
     return typeof localStorage !== 'undefined'
@@ -29,21 +32,25 @@ export const hasStorage = () => {
   }
 }
 
+function normalizeData(parsed) {
+  if (!parsed || typeof parsed !== 'object') return null
+  return {
+    units: Array.isArray(parsed.units) ? parsed.units : DEFAULT_DATA.units,
+    seksi: Array.isArray(parsed.seksi) ? parsed.seksi : DEFAULT_DATA.seksi,
+    social: Array.isArray(parsed.social) ? parsed.social : DEFAULT_DATA.social,
+    kepalaKantor: (parsed.kepalaKantor && typeof parsed.kepalaKantor === 'object')
+      ? { ...DEFAULT_DATA.kepalaKantor, ...parsed.kepalaKantor }
+      : structuredClone(DEFAULT_DATA.kepalaKantor)
+  }
+}
+
 function readStored() {
+  if (memoryData) return structuredClone(memoryData)
   if (!hasStorage()) return null
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return null
-    const parsed = JSON.parse(raw)
-    if (!parsed || typeof parsed !== 'object') return null
-    return {
-      units: Array.isArray(parsed.units) ? parsed.units : DEFAULT_DATA.units,
-      seksi: Array.isArray(parsed.seksi) ? parsed.seksi : DEFAULT_DATA.seksi,
-      social: Array.isArray(parsed.social) ? parsed.social : DEFAULT_DATA.social,
-      kepalaKantor: (parsed.kepalaKantor && typeof parsed.kepalaKantor === 'object')
-        ? { ...DEFAULT_DATA.kepalaKantor, ...parsed.kepalaKantor }
-        : structuredClone(DEFAULT_DATA.kepalaKantor)
-    }
+    return normalizeData(JSON.parse(raw))
   } catch {
     return null
   }
@@ -56,18 +63,22 @@ export function getData() {
 
 /** Menyimpan snapshot data baru & mem-broadcast perubahan. */
 export function saveData(next) {
-  if (!hasStorage()) return next
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
-  } catch {
-    /* penyimpanan privat / penuh: tetap kirim event agar UI live ikut naik */
+  const normalized = normalizeData(next) || structuredClone(DEFAULT_DATA)
+  memoryData = structuredClone(normalized)
+  if (hasStorage()) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized))
+    } catch {
+      /* penyimpanan privat / penuh: tetap tersimpan di memoryData & kirim event agar UI live ikut naik */
+    }
   }
   window.dispatchEvent(new CustomEvent(CHANGE_EVENT))
-  return next
+  return normalized
 }
 
 /** Membuang override admin: situs kembali memakai data bawaan paket. */
 export function resetData() {
+  memoryData = null
   if (hasStorage()) {
     try { localStorage.removeItem(STORAGE_KEY) } catch { /* abaikan */ }
   }
@@ -98,18 +109,25 @@ export function useData() {
     window.addEventListener('storage', reload)
 
     let alive = true
-    fetch('/api/data')
-      .then(r => (r.ok ? r.json() : Promise.reject(new Error('gagal'))))
+    const loadRemote = isSupabaseConfigured()
+      ? supabaseLoadData()
+      : fetch('/api/data').then(r => (r.ok ? r.json() : Promise.reject(new Error('gagal'))))
+
+    loadRemote
       .then(server => {
         if (!alive || !Array.isArray(server?.seksi)) return
         try {
           const current = readStored() || DEFAULT_DATA
-          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          const next = normalizeData({
             units: server.units || [],
             seksi: server.seksi || [],
             social: server.social || [],
             kepalaKantor: server.kepalaKantor || current.kepalaKantor || DEFAULT_DATA.kepalaKantor
-          }))
+          })
+          memoryData = structuredClone(next)
+          if (hasStorage()) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+          }
         } catch { /* cache gagal tulis: lanjut dengan data di memori */ }
         reload()
       })

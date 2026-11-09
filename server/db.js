@@ -20,7 +20,7 @@
 
 import mysql from 'mysql2/promise'
 import {
-  SEKSI_DATA, SUBBAG_TU_UNITS, SOCIAL_MEDIA_CONTACTS
+  SEKSI_DATA, SUBBAG_TU_UNITS, SOCIAL_MEDIA_CONTACTS, DEFAULT_KEPALA_KANTOR
 } from '../src/data.js'
 
 const DB = {
@@ -75,7 +75,8 @@ CREATE TABLE IF NOT EXISTS struktur (
   name     VARCHAR(255) NULL,
   role     VARCHAR(255) NULL,
   nip      VARCHAR(64)  NULL,
-  photo    TEXT         NULL,
+  pangkat  VARCHAR(255) NULL,
+  photo    MEDIUMTEXT   NULL,
   badge    VARCHAR(255) NULL,
   CONSTRAINT fk_struktur_unit FOREIGN KEY (unit_id) REFERENCES unit(id) ON DELETE CASCADE,
   KEY idx_struktur_unit (unit_id, urutan)
@@ -113,7 +114,7 @@ CREATE TABLE IF NOT EXISTS foto (
   urutan  INT NOT NULL,
   title   TEXT NULL,
   tanggal VARCHAR(64) NULL,
-  image   TEXT NULL,
+  image   MEDIUMTEXT NULL,
   caption TEXT NULL,
   ig_url  TEXT NULL,
   CONSTRAINT fk_foto_unit FOREIGN KEY (unit_id) REFERENCES unit(id) ON DELETE CASCADE,
@@ -127,7 +128,7 @@ CREATE TABLE IF NOT EXISTS video (
   title     TEXT NULL,
   tanggal   VARCHAR(64) NULL,
   durasi    VARCHAR(32) NULL,
-  thumbnail TEXT NULL,
+  thumbnail MEDIUMTEXT NULL,
   platform  VARCHAR(64) NULL,
   video_url TEXT NULL,
   embed_url TEXT NULL,
@@ -149,6 +150,11 @@ CREATE TABLE IF NOT EXISTS sosial (
   icon_key  VARCHAR(64)  NULL,
   icon      VARCHAR(64)  NULL,
   PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS pengaturan (
+  kunci VARCHAR(64) NOT NULL PRIMARY KEY,
+  nilai MEDIUMTEXT  NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 `
 
@@ -219,8 +225,11 @@ const KOL_SOSIAL = {
 // Urutan baku obyek anak — semua kunci selalu ada pada data paket, sehingga
 // kunci opsional (fileUrl pada layanan) cukup diletakkan terakhir.
 const susunStruktur = (r) => ({
-  name: teks(r.name), role: teks(r.role), nip: teks(r.nip),
-  photo: teks(r.photo), badge: teks(r.badge)
+  name: teks(r.name),
+  role: teks(r.role),
+  pangkat: teks(r.pangkat || r.nip),
+  photo: teks(r.photo),
+  badge: teks(r.badge)
 })
 const susunLayanan = (r, syarat) => ({
   id: teks(r.svc_id), title: teks(r.title), description: teks(r.description),
@@ -256,6 +265,11 @@ export async function ensureSchema() {
     for (const stmt of DDL.split(';').map(s => s.trim()).filter(Boolean)) {
       await conn.query(stmt)
     }
+    // Migrasi aman untuk database lama agar memiliki kolom pangkat & MEDIUMTEXT
+    await conn.query('ALTER TABLE struktur ADD COLUMN IF NOT EXISTS pangkat VARCHAR(255) NULL').catch(() => {})
+    await conn.query('ALTER TABLE struktur MODIFY COLUMN photo MEDIUMTEXT NULL').catch(() => {})
+    await conn.query('ALTER TABLE foto MODIFY COLUMN image MEDIUMTEXT NULL').catch(() => {})
+    await conn.query('ALTER TABLE video MODIFY COLUMN thumbnail MEDIUMTEXT NULL').catch(() => {})
   } finally {
     conn.release()
   }
@@ -274,13 +288,18 @@ export async function loadSnapshot() {
   const anak = await muatAnak(semuaId)
 
   const [sosialRows] = await pool.query('SELECT * FROM sosial ORDER BY urutan')
+  const [pengaturanRows] = await pool.query('SELECT nilai FROM pengaturan WHERE kunci = ?', ['kepalaKantor']).catch(() => [[]])
+  const kepalaRow = pengaturanRows?.[0]?.nilai ? pars(pengaturanRows[0].nilai) : null
 
   return {
     units: subbag.map(r => susunUnit(r, anak)),
     seksi: seksi.map(r => susunUnit(r, anak)),
     social: sosialRows.map(r => susun(
       r, KOL_SOSIAL, pars(r.kunci) || KUNCI_SOSIAL, {}, pars(r.extra)
-    ))
+    )),
+    kepalaKantor: (kepalaRow && typeof kepalaRow === 'object')
+      ? { ...DEFAULT_KEPALA_KANTOR, ...kepalaRow }
+      : structuredClone(DEFAULT_KEPALA_KANTOR)
   }
 }
 
@@ -345,7 +364,8 @@ function susunUnit(row, anak) {
 const dataBawaan = () => ({
   units: structuredClone(SUBBAG_TU_UNITS),
   seksi: structuredClone(SEKSI_DATA),
-  social: structuredClone(SOCIAL_MEDIA_CONTACTS)
+  social: structuredClone(SOCIAL_MEDIA_CONTACTS),
+  kepalaKantor: structuredClone(DEFAULT_KEPALA_KANTOR)
 })
 
 /**
@@ -419,6 +439,14 @@ export async function saveSnapshot(db) {
       )
     }
 
+    if (db.kepalaKantor && typeof db.kepalaKantor === 'object') {
+      await conn.query(
+        `INSERT INTO pengaturan (kunci, nilai) VALUES (?, ?)
+         ON DUPLICATE KEY UPDATE nilai = VALUES(nilai)`,
+        ['kepalaKantor', JSON.stringify(db.kepalaKantor)]
+      )
+    }
+
     await conn.commit()
     return db
   } catch (err) {
@@ -440,8 +468,8 @@ function urutkanParentDulu(items) {
 async function tulisAnak(conn, unitId, u) {
   for (const [i, p] of array(u.structure).entries()) {
     await conn.query(
-      `INSERT INTO struktur (unit_id, urutan, name, role, nip, photo, badge) VALUES (?,?,?,?,?,?,?)`,
-      [unitId, i, p?.name ?? null, p?.role ?? null, p?.nip ?? null, p?.photo ?? null, p?.badge ?? null]
+      `INSERT INTO struktur (unit_id, urutan, name, role, nip, pangkat, photo, badge) VALUES (?,?,?,?,?,?,?,?)`,
+      [unitId, i, p?.name ?? null, p?.role ?? null, p?.nip ?? null, p?.pangkat ?? null, p?.photo ?? null, p?.badge ?? null]
     )
   }
 

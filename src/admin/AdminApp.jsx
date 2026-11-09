@@ -18,8 +18,8 @@ import {
 } from 'lucide-react'
 import { getData, resetData, saveData, useData, DEFAULT_KEPALA } from '../store.js'
 import {
-  login, logout, markLocalSession, probeServer, resetServer, restoreSession,
-  saveSnapshot, uploadFile
+  isSupabaseConfigured, login, logout, markLocalSession, probeServer,
+  resetServer, restoreSession, saveSnapshot, uploadFile, verifyAdminSession
 } from '../api.js'
 import { UnitEditor } from './UnitEditor.jsx'
 import { readBackup } from '../backup.js'
@@ -58,6 +58,7 @@ function ThemeToggle({ theme, onToggle }) {
 }
 
 function Gate({ onUnlock, theme, onToggleTheme }) {
+  const sbActive = isSupabaseConfigured()
   const [username, setUsername] = useState('admin')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -72,14 +73,14 @@ function Gate({ onUnlock, theme, onToggleTheme }) {
     setBusy(true)
     setError('')
     try {
-      await login(uVal, pVal) // jika ada backend aktif
-      onUnlock('server')
-    } catch {
+      const res = await login(uVal, pVal) // Supabase Auth atau Backend Express
+      onUnlock(res?.mode || (sbActive ? 'supabase' : 'server'))
+    } catch (err) {
       if (uVal === ADMIN_USER && pVal === ADMIN_PIN) {
         markLocalSession()
         onUnlock('local')
       } else {
-        setError('Nama pengguna atau kata sandi salah, silakan periksa kembali.')
+        setError(err?.message || 'Email/nama pengguna atau kata sandi salah, silakan periksa kembali.')
       }
     } finally {
       setBusy(false)
@@ -98,18 +99,22 @@ function Gate({ onUnlock, theme, onToggleTheme }) {
           />
         </div>
         <h1>Panel Admin Kemenag Wonosobo</h1>
-        <p>Masuk menggunakan kombinasi nama pengguna dan kata sandi operator.</p>
+        <p>
+          {sbActive
+            ? 'Masuk menggunakan akun resmi Supabase Auth operator Kemenag Wonosobo.'
+            : 'Masuk menggunakan kombinasi nama pengguna dan kata sandi operator.'}
+        </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', marginTop: '6px' }}>
           <div>
             <label className="admin-field-label" style={{ textAlign: 'left', display: 'block', marginBottom: '5px', fontSize: '0.8rem' }}>
-              Nama Pengguna (Username)
+              {sbActive ? 'Email atau Username Admin' : 'Nama Pengguna (Username)'}
             </label>
             <input
               className={`admin-input ${error ? 'admin-input--error' : ''}`}
               type="text"
               autoComplete="username"
-              placeholder="Contoh: admin"
+              placeholder={sbActive ? 'admin@kemenagwonosobo.id atau admin' : 'Contoh: admin'}
               value={username}
               onChange={e => { setUsername(e.target.value); setError('') }}
               required
@@ -181,6 +186,7 @@ export function Field({ label, value, onChange, multiline = false, placeholder =
 export function UploadField({ label, value, onChange, accept = 'image/*' }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const isDataUrl = typeof value === 'string' && value.startsWith('data:')
 
   const pick = async (e) => {
     const file = e.target.files?.[0]
@@ -203,8 +209,8 @@ export function UploadField({ label, value, onChange, accept = 'image/*' }) {
       <div className="admin-upload-row">
         <input
           className="admin-input"
-          value={value ?? ''}
-          placeholder="https://… atau /uploads/…"
+          value={isDataUrl ? '' : (value ?? '')}
+          placeholder={isDataUrl ? '✓ Foto berhasil dimuat dari perangkat (atau tempel URL baru di sini)' : 'https://… atau unggah foto dari perangkat'}
           onChange={e => onChange(e.target.value)}
         />
         <label className={`btn btn-ghost btn-sm admin-upload-btn ${busy ? 'is-busy' : ''}`}>
@@ -212,13 +218,23 @@ export function UploadField({ label, value, onChange, accept = 'image/*' }) {
           {busy ? 'Mengunggah…' : 'Unggah'}
           <input type="file" hidden accept={accept} disabled={busy} onChange={pick} />
         </label>
+        {value && (
+          <button
+            type="button"
+            className="btn btn-outline btn-sm"
+            title="Hapus foto/berkas"
+            onClick={() => { onChange(''); setError('') }}
+          >
+            <Trash2 size={14} />
+          </button>
+        )}
       </div>
       {accept.startsWith('image/') && value && (
         <img
-          key={value}
+          key={value.slice(0, 128)}
           className="admin-upload-preview"
           src={value}
-          alt=""
+          alt="Pratinjau foto"
           onError={e => { e.currentTarget.style.visibility = 'hidden' }}
         />
       )}
@@ -561,13 +577,17 @@ export default function AdminApp() {
     return () => window.removeEventListener('hashchange', handleHash)
   }, [draft])
 
-  // Cek sekali apakah backend hidup, supaya gerbang masuk tahu mode mana
-  // yang harus dipakai dan panel bisa memperingatkan sebelum operator menulis.
+  // Cek sekali apakah backend / Supabase hidup, serta verifikasi token Protected Route (#/admin)
   useEffect(() => {
     let alive = true
     probeServer().then(ok => { if (alive) setServerUp(ok) })
+    verifyAdminSession().then(validMode => {
+      if (alive && session && !validMode) {
+        setSession(null)
+      }
+    })
     return () => { alive = false }
-  }, [])
+  }, [session])
 
   const units = draft.units || []
   const seksi = draft.seksi || []
@@ -590,9 +610,25 @@ export default function AdminApp() {
     setBusy(true)
     setSaveError('')
     try {
-      if (session === 'server') await saveSnapshot(draft)
-      // Perbarui cache luring + broadcast ke komponen lain. Di mode server ini
-      // cerminan data yang baru tersimpan, bukan tujuan penyimpanan.
+      if (session === 'supabase' || session === 'server') {
+        try {
+          await saveSnapshot(draft)
+        } catch (serverErr) {
+          if (session === 'supabase' && serverErr?.status === 401) {
+            setSession(null)
+            throw new Error('Sesi Supabase Auth berakhir. Silakan login kembali.')
+          }
+          // Jika server Express tidak aktif / 404 (mode hosting statis / Vite dev tanpa server),
+          // otomatis beralih ke penyimpanan lokal agar perubahan tetap tersimpan.
+          if (session === 'server' && (serverErr?.status === 0 || serverErr?.status === 404 || serverErr?.status === 405 || serverErr?.status >= 500)) {
+            markLocalSession()
+            setSession('local')
+          } else {
+            throw serverErr
+          }
+        }
+      }
+      // Perbarui cache luring + broadcast ke komponen lain.
       saveData(structuredClone(draft))
       setSavedFlash(true)
       setTimeout(() => setSavedFlash(false), 1600)
@@ -610,9 +646,12 @@ export default function AdminApp() {
     setBusy(true)
     setSaveError('')
     try {
-      if (session === 'server') await resetServer()
       resetData()
-      setDraft(getData())
+      const freshDefault = getData()
+      if (session === 'supabase' || session === 'server') {
+        await resetServer(freshDefault)
+      }
+      setDraft(freshDefault)
     } catch (err) {
       setSaveError(err.message || 'Gagal mengatur ulang data.')
     } finally {
@@ -647,7 +686,7 @@ export default function AdminApp() {
         <div className="admin-topbar-actions">
           <ThemeToggle theme={theme} onToggle={toggleTheme} />
           <span className="admin-offline-chip">
-            Editor Aktif
+            {session === 'supabase' ? 'Supabase Cloud Aktif' : session === 'server' ? 'Server Aktif' : 'Editor Aktif'}
           </span>
           {dirty && <span className="admin-dirty-chip">Perubahan belum disimpan</span>}
           <button type="button" className="btn btn-outline btn-sm" onClick={reload} disabled={!dirty || busy}>
