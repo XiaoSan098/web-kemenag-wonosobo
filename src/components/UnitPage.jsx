@@ -50,7 +50,7 @@ function StrukturTab({ unit, onOpenLightbox }) {
             className="person-avatar-btn"
             onClick={() => onOpenLightbox && onOpenLightbox({
               src: person.photo || '/logo_kemenag.png',
-              caption: `${person.name} — ${person.role}${person.pangkat ? ` • ${person.pangkat}` : ''}`
+              caption: `${person.name} — ${person.role}`
             })}
             title={`Klik untuk memperbesar foto ${person.name}`}
             aria-label={`Perbesar foto ${person.name}`}
@@ -69,7 +69,6 @@ function StrukturTab({ unit, onOpenLightbox }) {
           <div className="person-info">
             <p className="person-name">{person.name}</p>
             <p className="person-role">{person.role}</p>
-            {person.pangkat && <p className="person-pangkat">{person.pangkat}</p>}
             {person.badge && <span className="person-badge">{person.badge}</span>}
           </div>
         </div>

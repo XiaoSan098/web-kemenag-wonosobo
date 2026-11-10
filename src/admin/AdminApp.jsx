@@ -421,12 +421,6 @@ function KepalaKantorEditor({ kepala, onChange }) {
           onChange={v => update('jabatan', v)}
         />
         <Field
-          label="Pangkat / Golongan Ruang"
-          value={current.pangkat}
-          placeholder="Contoh: Pembina Tk. I (IV/b)"
-          onChange={v => update('pangkat', v)}
-        />
-        <Field
           label="Label / Badge Kartu"
           value={current.badge}
           placeholder="Contoh: Kepala Kantor"
