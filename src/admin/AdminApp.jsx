@@ -523,8 +523,9 @@ export default function AdminApp() {
     if (t) return t
     if (id) {
       if (id === 'kepala') return 'kepala'
+      if (id === 'subbag-tu') return 'units'
       const d = getData()
-      if (d.seksi?.some(s => s.id === id)) return 'seksi'
+      if (d.seksi?.some(s => s.id === id && s.id !== 'subbag-tu')) return 'seksi'
       if (d.units?.some(u => u.id === id)) return 'units'
     }
     return 'kepala'
@@ -532,6 +533,7 @@ export default function AdminApp() {
   const [activeUnitId, setActiveUnitId] = useState(() => {
     const { id } = parseHashParams()
     if (id) {
+      if (id === 'subbag-tu') return 'ptsp'
       const d = getData()
       if (d.units?.some(u => u.id === id)) return id
     }
@@ -539,7 +541,7 @@ export default function AdminApp() {
   })
   const [activeSeksiId, setActiveSeksiId] = useState(() => {
     const { id } = parseHashParams()
-    if (id) {
+    if (id && id !== 'subbag-tu') {
       const d = getData()
       if (d.seksi?.some(s => s.id === id)) return id
     }
@@ -558,6 +560,9 @@ export default function AdminApp() {
       if (id) {
         if (id === 'kepala') {
           setTab('kepala')
+        } else if (id === 'subbag-tu') {
+          setTab('units')
+          setActiveUnitId('ptsp')
         } else if (draft.seksi?.some(s => s.id === id)) {
           setTab('seksi')
           setActiveSeksiId(id)
@@ -585,7 +590,6 @@ export default function AdminApp() {
 
   const units = draft.units || []
   const seksi = draft.seksi || []
-  const sttUnit = seksi.find(s => s.id === 'subbag-tu')
   const seksiList = seksi.filter(s => s.id !== 'subbag-tu')
 
   const dirty = useMemo(() => JSON.stringify(draft) !== JSON.stringify(live), [draft, live])
@@ -777,7 +781,7 @@ export default function AdminApp() {
             <div className="admin-pick">
               <label className="admin-field-label">Pilih Seksi / Penyelenggara yang ingin diedit:</label>
               <div className="admin-pick-row">
-                {[sttUnit, ...seksiList].filter(Boolean).map(s => (
+                {seksiList.map(s => (
                   <button
                     key={s.id}
                     type="button"
