@@ -1488,3 +1488,43 @@ export const DEFAULT_KEPALA_KANTOR = {
   sambutan: 'Mewujudkan pelayanan keagamaan dan pendidikan yang profesional, transparan, akuntabel, dan berintegritas tinggi bagi seluruh masyarakat Kabupaten Wonosobo.',
   aktif: true
 };
+
+// DATA TANYA JAWAB / Q&A (FAQ) KEMENAG WONOSOBO
+export const DEFAULT_FAQS = [
+  {
+    id: 'faq-1',
+    category: 'Jam & Lokasi Layanan',
+    question: 'Kapan jam operasional pelayanan di Kantor Kemenag Kabupaten Wonosobo dan di mana lokasinya?',
+    answer: 'Pelayanan Terpadu Satu Pintu (PTSP) Kantor Kementerian Agama Kabupaten Wonosobo buka setiap hari kerja: Senin – Kamis pukul 07.30 – 16.00 WIB dan Jumat pukul 07.30 – 16.30 WIB (Sabtu, Minggu, dan hari libur nasional tutup). Lokasi kantor berada di Jl. Tumenggung Jogonegoro No. 38, Jaraksari, Kec. Wonosobo, Kabupaten Wonosobo, Jawa Tengah 56314.'
+  },
+  {
+    id: 'faq-2',
+    category: 'Biaya Pelayanan',
+    question: 'Apakah pengurusan surat rekomendasi, legalisir, dan perizinan di PTSP Kemenag Wonosobo dikenakan biaya?',
+    answer: 'Seluruh layanan administrasi di PTSP Kemenag Kabupaten Wonosobo 100% GRATIS (Rp 0,-) tanpa pungutan biaya apa pun. Khusus untuk layanan pencatatan nikah di KUA Kecamatan: Gratis (Rp 0,-) apabila akad nikah dilaksanakan di Kantor KUA pada hari dan jam kerja, atau dikenakan tarif resmi PNBP sebesar Rp 600.000,- (disetor langsung ke Kas Negara melalui bank/pos persepsi) apabila dilaksanakan di luar KUA atau di luar jam kerja.'
+  },
+  {
+    id: 'faq-3',
+    category: 'Legalisir Dokumen',
+    question: 'Bagaimana prosedur dan syarat legalisir ijazah madrasah (RA/MI/MTs/MA) atau piagam keagamaan?',
+    answer: 'Pemohon cukup datang ke loket PTSP Kemenag Wonosobo dengan membawa: (1) Ijazah atau dokumen asli yang masih terbaca jelas, (2) Fotokopi dokumen yang akan dilegalisir (maksimal 5 lembar), dan (3) KTP asli pemohon (atau surat kuasa jika diwakilkan). Proses verifikasi dan pengesahan selesai dalam waktu sekitar 15 – 30 menit (bisa ditunggu) dan gratis.'
+  },
+  {
+    id: 'faq-4',
+    category: 'Layanan KUA & Pernikahan',
+    question: 'Bagaimana cara mendaftar nikah atau mengurus surat rekomendasi pindah nikah di KUA Kecamatan?',
+    answer: 'Pendaftaran nikah dapat dilakukan secara online melalui laman resmi SIMKAH Kemenag (simkah4.kemenag.go.id) atau datang langsung ke KUA Kecamatan setempat minimal 10 hari kerja sebelum akad nikah dengan membawa surat pengantar desa/kelurahan (model N1–N4), fotokopi KTP, KK, Akta Kelahiran, serta pasfoto latar biru. Jika menikah di luar kecamatan domisili, surat rekomendasi nikah diurus terlebih dahulu di KUA kecamatan asal.'
+  },
+  {
+    id: 'faq-5',
+    category: 'Pesantren, MDT & TPQ',
+    question: 'Bagaimana cara mengurus izin operasional Pondok Pesantren, Madrasah Diniyah (MDT), atau LPQ/TPQ?',
+    answer: 'Pengajuan izin operasional dilakukan melalui sistem SITREN/SIKAP Kemenag dan menyerahkan berkas permohonan ke PTSP / Seksi PD Pontren Kemenag Wonosobo (meliputi profil lembaga, susunan pengurus, daftar santri dan pengajar, surat keterangan domisili lembaga, serta bukti kepemilikan lahan). Tim Seksi PD Pontren akan melakukan verifikasi berkas serta visitasi lapangan sebelum menerbitkan Piagam Statistik / Izin Operasional.'
+  },
+  {
+    id: 'faq-6',
+    category: 'Konsultasi & Pengaduan',
+    question: 'Ke mana saya harus menghubungi jika masih bingung mengenai syarat berkas atau ingin menyampaikan pengaduan?',
+    answer: 'Anda dapat melihat rincian persyaratan setiap layanan pada bagian Menu Layanan Utama di halaman ini, atau langsung menghubungi petugas Front Office PTSP melalui WhatsApp resmi di nomor +62 812-3005-5633 pada jam kerja. Untuk aspirasi dan pengaduan masyarakat, tersedia pula layanan pengaduan terpadu SP4N-LAPOR! yang transparan dan bebas pungli.'
+  }
+];

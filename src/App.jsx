@@ -4,6 +4,7 @@ import { Header } from './components/Header.jsx'
 import { Hero } from './components/Hero.jsx'
 import { ServiceButtons } from './components/ServiceButtons.jsx'
 import { StaticProfileSection } from './components/StaticProfileSection.jsx'
+import { FaqSection } from './components/FaqSection.jsx'
 import { UnitPage } from './components/UnitPage.jsx'
 import { SopModal } from './components/SopModal.jsx'
 import { SocialModal } from './components/SocialModal.jsx'
@@ -21,6 +22,9 @@ const REVEAL_SELECTOR = [
   '.profile-box',
   '.maklumat-card',
   '.nilai-card',
+  '.faq-head',
+  '.faq-card',
+  '.faq-cta-card',
   '.unit-page-header',
   '.unit-page-subunits',
   '.unit-page-tabs-wrap',
@@ -182,6 +186,7 @@ export default function App() {
             <Hero />
             <ServiceButtons onOpenUnit={openUnit} />
             <StaticProfileSection onOpenLightbox={setLightbox} />
+            <FaqSection onOpenSocial={() => setSocialOpen(true)} />
           </>
         )}
       </main>

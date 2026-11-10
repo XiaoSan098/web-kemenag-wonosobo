@@ -14,7 +14,7 @@ import {
   ArrowDown, ArrowLeft, ArrowUp, Database, Download, FileJson, KeyRound, LayoutDashboard,
   LogOut, Loader2, Plus, RotateCcw, Save, Share2, Trash2, Upload, Users,
   Building2, Landmark, Globe, Lock, ChevronDown, WifiOff, Moon, Sun, Pencil,
-  Eye, EyeOff
+  Eye, EyeOff, HelpCircle
 } from 'lucide-react'
 import { getData, resetData, saveData, useData, DEFAULT_KEPALA } from '../store.js'
 import {
@@ -32,6 +32,7 @@ const TABS = [
   { id: 'kepala', label: 'Kepala Kantor', Icon: Users },
   { id: 'units', label: 'Unit Subbag TU', Icon: Building2 },
   { id: 'seksi', label: 'Seksi & Penyelenggara', Icon: Landmark },
+  { id: 'faqs', label: 'Tanya Jawab (Q&A)', Icon: HelpCircle },
   { id: 'social', label: 'Media Sosial', Icon: Share2 },
   { id: 'tools', label: 'Cadangan Data', Icon: Database }
 ]
@@ -351,6 +352,35 @@ function ListEditor({ items, title, template, fields, makeLabel, onChange }) {
 }
 
 export { ListEditor }
+
+/** Editor untuk daftar Tanya Jawab / Q&A (FAQ). */
+function FaqEditor({ faqs, onChange }) {
+  const fields = [
+    { key: 'category', label: 'Kategori Topik (mis. Jam & Lokasi Layanan, Biaya Pelayanan)' },
+    { key: 'question', label: 'Pertanyaan' },
+    { key: 'answer', label: 'Jawaban Lengkap', multiline: 'tall' }
+  ]
+  return (
+    <div className="admin-editor">
+      <div className="admin-editor-head">
+        <div>
+          <h3>Kelola Tanya Jawab / Q&amp;A (FAQ) Masyarakat</h3>
+          <p style={{ fontSize: '0.84rem', color: 'var(--text-3)', marginTop: '3px' }}>
+            Daftar pertanyaan dan jawaban ini ditampilkan pada bagian Tanya Jawab (Q&amp;A) di halaman beranda utama untuk membantu masyarakat memahami layanan Kemenag Wonosobo.
+          </p>
+        </div>
+      </div>
+      <ListEditor
+        title="Daftar Pertanyaan & Jawaban"
+        items={faqs}
+        onChange={onChange}
+        makeLabel={f => f.question || '(Pertanyaan baru)'}
+        template={{ id: `faq-${Date.now()}`, category: 'Informasi Layanan', question: '', answer: '' }}
+        fields={fields}
+      />
+    </div>
+  )
+}
 
 /** Editor untuk kanal media sosial (SOCIAL_MEDIA_CONTACTS). */
 function SocialEditor({ contacts, onChange }) {
@@ -811,6 +841,13 @@ export default function AdminApp() {
               </div>
             )}
           </div>
+        )}
+
+        {tab === 'faqs' && (
+          <FaqEditor
+            faqs={draft.faqs || []}
+            onChange={next => setSection('faqs', next)}
+          />
         )}
 
         {tab === 'social' && (

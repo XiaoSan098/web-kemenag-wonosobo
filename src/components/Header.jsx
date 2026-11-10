@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import {
   MapPin, Clock, Moon, Sun, Menu, X, ChevronRight,
-  Phone, Home, FileText, Grid
+  Phone, Home, FileText, Grid, HelpCircle
 } from 'lucide-react'
 
 function useTheme() {
@@ -128,6 +128,15 @@ export function Header({ onOpenSocial, onGoHome }) {
                 <button
                   type="button"
                   className="nav-link-btn"
+                  onClick={() => handleNavClick('tanya-jawab')}
+                >
+                  Tanya Jawab
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className="nav-link-btn"
                   onClick={() => {
                     setMobileMenuOpen(false)
                     if (onOpenSocial) onOpenSocial()
@@ -214,6 +223,17 @@ export function Header({ onOpenSocial, onGoHome }) {
                 >
                   <Grid size={18} />
                   <span>Menu Layanan Utama</span>
+                  <ChevronRight size={16} className="arrow" />
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className="mobile-nav-item"
+                  onClick={() => handleNavClick('tanya-jawab')}
+                >
+                  <HelpCircle size={18} />
+                  <span>Tanya Jawab (Q&amp;A)</span>
                   <ChevronRight size={16} className="arrow" />
                 </button>
               </li>

@@ -8,7 +8,7 @@
  */
 import { useEffect, useState } from 'react'
 import {
-  SUBBAG_TU_UNITS, SEKSI_DATA, SOCIAL_MEDIA_CONTACTS, DEFAULT_KEPALA_KANTOR
+  SUBBAG_TU_UNITS, SEKSI_DATA, SOCIAL_MEDIA_CONTACTS, DEFAULT_KEPALA_KANTOR, DEFAULT_FAQS
 } from './data.js'
 import { isSupabaseConfigured, supabaseLoadData } from './supabase.js'
 
@@ -19,7 +19,8 @@ const DEFAULT_DATA = {
   units: structuredClone(SUBBAG_TU_UNITS),
   seksi: structuredClone(SEKSI_DATA),
   social: structuredClone(SOCIAL_MEDIA_CONTACTS),
-  kepalaKantor: structuredClone(DEFAULT_KEPALA_KANTOR)
+  kepalaKantor: structuredClone(DEFAULT_KEPALA_KANTOR),
+  faqs: structuredClone(DEFAULT_FAQS)
 }
 
 let memoryData = null
@@ -40,7 +41,8 @@ function normalizeData(parsed) {
     social: Array.isArray(parsed.social) ? parsed.social : DEFAULT_DATA.social,
     kepalaKantor: (parsed.kepalaKantor && typeof parsed.kepalaKantor === 'object')
       ? { ...DEFAULT_DATA.kepalaKantor, ...parsed.kepalaKantor }
-      : structuredClone(DEFAULT_DATA.kepalaKantor)
+      : structuredClone(DEFAULT_DATA.kepalaKantor),
+    faqs: Array.isArray(parsed.faqs) && parsed.faqs.length ? parsed.faqs : structuredClone(DEFAULT_DATA.faqs)
   }
 }
 
@@ -122,7 +124,8 @@ export function useData() {
             units: server.units || [],
             seksi: server.seksi || [],
             social: server.social || [],
-            kepalaKantor: server.kepalaKantor || current.kepalaKantor || DEFAULT_DATA.kepalaKantor
+            kepalaKantor: server.kepalaKantor || current.kepalaKantor || DEFAULT_DATA.kepalaKantor,
+            faqs: server.faqs || current.faqs || DEFAULT_DATA.faqs
           })
           memoryData = structuredClone(next)
           if (hasStorage()) {
