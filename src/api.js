@@ -185,7 +185,7 @@ function fileToDataUrl(file) {
   })
 }
 
-async function compressImageToDataUrl(file, maxDim = 800, quality = 0.84) {
+async function compressImageToDataUrl(file, maxDim = 1200, quality = 0.92) {
   const rawDataUrl = await fileToDataUrl(file)
   if (!file.type.startsWith('image/') || file.type === 'image/svg+xml' || file.size <= 60 * 1024) {
     return rawDataUrl

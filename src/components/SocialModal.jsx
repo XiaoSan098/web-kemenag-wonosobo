@@ -42,7 +42,11 @@ export function SocialModal({ contacts, onClose }) {
                   >
                     <span className={`social-item-icon ic-${item.id}`}><Icon size={20} /></span>
                     <span className="social-item-text">
-                      <strong>{item.name}</strong>
+                      <strong>
+                        {item.id === 'whatsapp' && /PTSP/i.test(item.name || '')
+                          ? 'Tanya Via WA'
+                          : item.name}
+                      </strong>
                       <span className="social-item-handle">{item.handle}</span>
                       <span className="social-item-desc">{item.desc}</span>
                     </span>

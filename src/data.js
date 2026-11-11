@@ -1468,12 +1468,12 @@ export const SOCIAL_MEDIA_CONTACTS = [
   },
   {
     id: 'whatsapp',
-    name: 'Kontak WA 1 (Helpdesk & PTSP)',
+    name: 'Tanya Via WA',
     handle: '+62 812-3005-5633',
     desc: 'Layanan konsultasi resmi, informasi rekomendasi, dan pengaduan terpadu.',
     url: 'https://api.whatsapp.com/send?phone=6281230055633&text=Halo%20Admin%20Kemenag%20Wonosobo,%20saya%20ingin%20berkonsultasi.',
     badge: 'WhatsApp Langsung',
-    btnText: 'Chat WhatsApp Sekarang',
+    btnText: 'Tanya Via WA',
     iconKey: 'whatsapp'
   }
 ];

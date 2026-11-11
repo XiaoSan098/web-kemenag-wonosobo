@@ -15,7 +15,7 @@ const SOCIALS = [
   { name: 'Instagram', url: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw==', Icon: Instagram, iconKey: 'instagram' },
   { name: 'TikTok', url: 'https://www.tiktok.com/@kemenag.wonosobo?is_from_webapp=1&sender_device=pc', Icon: TikTokIcon, iconKey: 'tiktok' },
   { name: 'Facebook', url: 'https://web.facebook.com/kemenagwonosobo', Icon: Facebook, iconKey: 'facebook' },
-  { name: 'WhatsApp PTSP', url: 'https://api.whatsapp.com/send?phone=6281230055633', Icon: WhatsAppIcon, iconKey: 'whatsapp' }
+  { name: 'Tanya Via WA', url: 'https://api.whatsapp.com/send?phone=6281230055633', Icon: WhatsAppIcon, iconKey: 'whatsapp' }
 ]
 
 export function Footer({ seksi = [], social = [], onOpenUnit, onOpenSocial }) {

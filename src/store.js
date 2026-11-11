@@ -35,10 +35,16 @@ export const hasStorage = () => {
 
 function normalizeData(parsed) {
   if (!parsed || typeof parsed !== 'object') return null
+  const rawSocial = Array.isArray(parsed.social) ? parsed.social : DEFAULT_DATA.social
+  const social = rawSocial.map(item =>
+    item?.id === 'whatsapp' && /PTSP/i.test(item.name || '')
+      ? { ...item, name: 'Tanya Via WA', btnText: 'Tanya Via WA' }
+      : item
+  )
   return {
     units: Array.isArray(parsed.units) ? parsed.units : DEFAULT_DATA.units,
     seksi: Array.isArray(parsed.seksi) ? parsed.seksi : DEFAULT_DATA.seksi,
-    social: Array.isArray(parsed.social) ? parsed.social : DEFAULT_DATA.social,
+    social,
     kepalaKantor: (parsed.kepalaKantor && typeof parsed.kepalaKantor === 'object')
       ? { ...DEFAULT_DATA.kepalaKantor, ...parsed.kepalaKantor }
       : structuredClone(DEFAULT_DATA.kepalaKantor),

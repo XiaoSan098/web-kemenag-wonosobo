@@ -7,7 +7,7 @@ import { WhatsAppIcon } from '../icons.jsx'
 export function FaqSection({ onOpenSocial }) {
   const { faqs } = useData()
   const list = Array.isArray(faqs) && faqs.length ? faqs : DEFAULT_FAQS
-  const [openIndex, setOpenIndex] = useState(0)
+  const [openIndex, setOpenIndex] = useState(-1)
 
   const toggleItem = (idx) => {
     setOpenIndex(prev => (prev === idx ? -1 : idx))
@@ -71,23 +71,18 @@ export function FaqSection({ onOpenSocial }) {
             </span>
             <div>
               <h4>Masih ada informasi layanan yang Anda bingungkan?</h4>
-              <p>Petugas Front Office PTSP Kemenag Wonosobo siap membantu konsultasi Anda pada jam kerja pelayanan.</p>
+              <p>Petugas layanan Kemenag Wonosobo siap membantu konsultasi Anda pada jam kerja pelayanan.</p>
             </div>
           </div>
           <div className="faq-cta-actions">
             <a
-              href="https://api.whatsapp.com/send?phone=6281230055633&text=Halo%20Petugas%20PTSP%20Kemenag%20Wonosobo,%20saya%20ingin%20bertanya%20mengenai%20layanan."
+              href="https://api.whatsapp.com/send?phone=6281230055633&text=Halo%20Admin%20Kemenag%20Wonosobo,%20saya%20ingin%20bertanya%20mengenai%20layanan."
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-primary"
             >
-              <WhatsAppIcon size={16} /> Tanya via WhatsApp PTSP
+              <WhatsAppIcon size={16} /> Tanya Via WA
             </a>
-            {onOpenSocial && (
-              <button type="button" className="btn btn-outline" onClick={onOpenSocial}>
-                Semua Kanal Kontak
-              </button>
-            )}
           </div>
         </div>
       </div>

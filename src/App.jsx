@@ -217,6 +217,7 @@ export default function App() {
         <Lightbox
           src={lightbox.src}
           caption={lightbox.caption}
+          subcaption={lightbox.subcaption}
           onClose={() => setLightbox(null)}
         />
       )}
