@@ -21,9 +21,11 @@ export function SocialModal({ contacts, onClose }) {
             <h3>Media Sosial &amp; Kontak</h3>
             <p>Kantor Kementerian Agama Kabupaten Wonosobo</p>
           </div>
-          <button type="button" className="icon-btn" onClick={onClose} aria-label="Tutup dialog">
-            <X size={18} />
-          </button>
+          <div className="modal-head-actions">
+            <button type="button" className="icon-btn" onClick={onClose} aria-label="Tutup dialog">
+              <X size={18} />
+            </button>
+          </div>
         </header>
 
         <div className="modal-body">
