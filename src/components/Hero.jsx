@@ -21,10 +21,14 @@ export function Hero() {
             Wonosobo — seluruh layanan bebas biaya.
           </p>
           <div className="hero-actions">
-            <a className="btn btn-primary" href="#layanan-utama">
+            <a className="btn btn-primary" href="#layanan-utama" onClick={(e) => {
+              e.preventDefault()
+              const el = document.getElementById('layanan-utama')
+              if (el) el.scrollIntoView({ behavior: 'smooth' })
+            }}>
               Menu Layanan Utama <ArrowRight size={16} />
             </a>
-            <a className="btn btn-outline" href="#profil-kemenag">
+            <a className="btn btn-outline" href="#/profil">
               Profil &amp; Maklumat
             </a>
           </div>

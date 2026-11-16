@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { ArrowLeft } from 'lucide-react'
 import { useData } from './store.js'
 import { Header } from './components/Header.jsx'
 import { Hero } from './components/Hero.jsx'
@@ -101,30 +102,60 @@ function useScrollReveal(routeKey) {
   }, [routeKey])
 }
 
-function parseUnitFromHash() {
+function parseRouteFromHash() {
   const hash = window.location.hash || ''
-  if (!hash.startsWith('#/unit/')) return { unitId: null, subId: null }
-  const raw = hash.slice('#/unit/'.length)
-  const [idPart, queryPart] = raw.split('?')
-  const params = new URLSearchParams(queryPart || '')
-  return {
-    unitId: idPart || null,
-    subId: params.get('sub') || null
+  if (hash.startsWith('#/unit/')) {
+    const raw = hash.slice('#/unit/'.length)
+    const [idPart, queryPart] = raw.split('?')
+    const params = new URLSearchParams(queryPart || '')
+    return {
+      page: 'unit',
+      unitId: idPart || null,
+      subId: params.get('sub') || null
+    }
   }
+  if (hash === '#/profil') {
+    return { page: 'profil', unitId: null, subId: null }
+  }
+  if (hash === '#/tanya-jawab') {
+    return { page: 'faq', unitId: null, subId: null }
+  }
+  return { page: 'home', unitId: null, subId: null }
+}
+
+function PageNavBar({ title, onBack }) {
+  return (
+    <div className="unit-page-nav-bar">
+      <div className="container unit-page-nav-inner">
+        <nav className="unit-breadcrumb" aria-label="Breadcrumb">
+          <a href="#/" onClick={(e) => { e.preventDefault(); onBack() }}>Beranda</a>
+          <span className="unit-breadcrumb-sep">/</span>
+          <span className="unit-breadcrumb-current">{title}</span>
+        </nav>
+
+        <div className="unit-page-actions">
+          <a href="#/" className="btn btn-primary btn-sm" onClick={(e) => { e.preventDefault(); onBack() }}>
+            <ArrowLeft size={14} /> Beranda
+          </a>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default function App() {
   const { units, seksi, social } = useData()
-  const [unitRoute, setUnitRoute] = useState(() => parseUnitFromHash())
+  const [route, setRoute] = useState(() => parseRouteFromHash())
   const [socialOpen, setSocialOpen] = useState(false)
   const [sop, setSop] = useState(null)         // { svc, seksi }
   const [lightbox, setLightbox] = useState(null) // { src, caption }
 
-  useScrollReveal(`${unitRoute.unitId || 'home'}-${unitRoute.subId || ''}`)
+  useScrollReveal(`${route.page}-${route.unitId || ''}-${route.subId || ''}`)
 
   useEffect(() => {
     const onHashChange = () => {
-      setUnitRoute(parseUnitFromHash())
+      setRoute(parseRouteFromHash())
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
     window.addEventListener('hashchange', onHashChange)
     return () => window.removeEventListener('hashchange', onHashChange)
@@ -171,30 +202,36 @@ export default function App() {
       />
 
       <main>
-        {unitRoute.unitId ? (
+        {route.page === 'unit' && route.unitId ? (
           <UnitPage
-            unitId={unitRoute.unitId}
-            subId={unitRoute.subId}
+            unitId={route.unitId}
+            subId={route.subId}
             units={units}
             seksi={seksi}
             onOpenSop={openSop}
             onOpenLightbox={setLightbox}
             onBack={goHome}
           />
+        ) : route.page === 'profil' ? (
+          <>
+            <PageNavBar title="Profil & Maklumat" onBack={goHome} />
+            <StaticProfileSection onOpenLightbox={setLightbox} />
+          </>
+        ) : route.page === 'faq' ? (
+          <>
+            <PageNavBar title="Tanya Jawab (Q&A)" onBack={goHome} />
+            <FaqSection onOpenSocial={() => setSocialOpen(true)} />
+          </>
         ) : (
           <>
             <Hero />
             <ServiceButtons onOpenUnit={openUnit} />
-            <StaticProfileSection onOpenLightbox={setLightbox} />
-            <FaqSection onOpenSocial={() => setSocialOpen(true)} />
           </>
         )}
       </main>
 
       <Footer
-        seksi={seksi}
         social={social}
-        onOpenUnit={openUnit}
         onOpenSocial={() => setSocialOpen(true)}
       />
 

@@ -43,8 +43,19 @@ export function Header({ onOpenSocial, onGoHome }) {
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
-    // Jika sedang di halaman detail unit, kembali ke beranda dulu baru scroll
-    if (window.location.hash.startsWith('#/unit/')) {
+    if (anchorId === 'profil-kemenag') {
+      window.location.hash = '#/profil'
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+    if (anchorId === 'tanya-jawab') {
+      window.location.hash = '#/tanya-jawab'
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+    // Jika sedang di halaman selain beranda, kembali ke beranda dulu baru scroll ke layanan-utama
+    const currentHash = window.location.hash || ''
+    if (currentHash && currentHash !== '#/' && !currentHash.startsWith('#layanan-utama')) {
       window.location.hash = '#/'
       setTimeout(() => {
         const el = document.getElementById(anchorId)

@@ -3,7 +3,7 @@ import {
   ArrowLeft, Users, FileText, Images, PlayCircle, Calendar,
   CheckCircle2, Timer, Download, Eye, Share2, Check,
   Building2, BookHeart, GraduationCap, BookOpenCheck, Landmark,
-  Coins, Compass, Cross, Newspaper, ZoomIn
+  Coins, Compass, Cross, Newspaper, ShieldCheck, ZoomIn
 } from 'lucide-react'
 import { findUnit, toRawPhone } from '../store.js'
 import { WhatsAppIcon } from '../icons.jsx'
@@ -18,6 +18,7 @@ const ICONS = {
   'compass': Compass,
   'cross': Cross,
   'newspaper': Newspaper,
+  'shield-check': ShieldCheck,
   'users': Users
 }
 

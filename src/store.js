@@ -41,9 +41,21 @@ function normalizeData(parsed) {
       ? { ...item, name: 'Tanya Via WA', btnText: 'Tanya Via WA' }
       : item
   )
+  const units = Array.isArray(parsed.units) ? [...parsed.units] : structuredClone(DEFAULT_DATA.units)
+  for (const defUnit of DEFAULT_DATA.units) {
+    if (!units.some(u => u && u.id === defUnit.id)) {
+      units.push(structuredClone(defUnit))
+    }
+  }
+  const seksi = Array.isArray(parsed.seksi) ? [...parsed.seksi] : structuredClone(DEFAULT_DATA.seksi)
+  for (const defSeksi of DEFAULT_DATA.seksi) {
+    if (!seksi.some(s => s && s.id === defSeksi.id)) {
+      seksi.push(structuredClone(defSeksi))
+    }
+  }
   return {
-    units: Array.isArray(parsed.units) ? parsed.units : DEFAULT_DATA.units,
-    seksi: Array.isArray(parsed.seksi) ? parsed.seksi : DEFAULT_DATA.seksi,
+    units,
+    seksi,
     social,
     kepalaKantor: (parsed.kepalaKantor && typeof parsed.kepalaKantor === 'object')
       ? { ...DEFAULT_DATA.kepalaKantor, ...parsed.kepalaKantor }

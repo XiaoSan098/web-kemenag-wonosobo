@@ -1,7 +1,7 @@
 import {
   Building2, BookHeart, GraduationCap,
   Coins, BookOpenCheck, Landmark,
-  Cross, Church, Sparkles, ChevronRight
+  Cross, Church, Sparkles, ShieldCheck, ChevronRight
 } from 'lucide-react'
 
 export function ServiceButtons({ onOpenUnit }) {
@@ -85,6 +85,14 @@ export function ServiceButtons({ onOpenUnit }) {
       icon: Sparkles,
       badge: 'Hindu',
       badgeColor: 'badge--amber'
+    },
+    {
+      id: 'keamanan',
+      title: 'Bagian Keamanan',
+      desc: 'Satuan Pengamanan (Satpam), ketertiban lingkungan kantor, penerimaan tamu, dan pengamanan aset instansi',
+      icon: ShieldCheck,
+      badge: 'Satpam',
+      badgeColor: 'badge--emerald'
     }
   ]
 

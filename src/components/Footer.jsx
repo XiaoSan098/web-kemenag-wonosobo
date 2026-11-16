@@ -18,7 +18,7 @@ const SOCIALS = [
   { name: 'Tanya Via WA', url: 'https://api.whatsapp.com/send?phone=6281230055633', Icon: WhatsAppIcon, iconKey: 'whatsapp' }
 ]
 
-export function Footer({ seksi = [], social = [], onOpenUnit, onOpenSocial }) {
+export function Footer({ social = [], onOpenSocial }) {
   return (
     <footer className="footer">
       <div className="container footer-grid">
@@ -37,17 +37,6 @@ export function Footer({ seksi = [], social = [], onOpenUnit, onOpenSocial }) {
             <li><Mail size={15} aria-hidden="true" /> kabwonosobo@kemenag.go.id</li>
           </ul>
         </div>
-
-        <nav className="footer-nav" aria-label="Tautan unit dan seksi">
-          <h4>Unit &amp; Seksi</h4>
-          <ul>
-            {seksi.map(item => (
-              <li key={item.id}>
-                <button type="button" onClick={() => onOpenUnit(item.id)}>{item.title}</button>
-              </li>
-            ))}
-          </ul>
-        </nav>
 
         <div className="footer-social">
           <h4>Kanal Resmi</h4>

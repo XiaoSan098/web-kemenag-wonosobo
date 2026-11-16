@@ -1421,6 +1421,95 @@ export const SEKSI_DATA = [
         embedUrl: ''
       }
     ]
+  },
+
+  // 11. BAGIAN KEAMANAN (SATUAN PENGAMANAN / SATPAM)
+  {
+    id: 'keamanan',
+    title: 'Bagian Keamanan',
+    fullTitle: 'Bagian Keamanan (Satuan Pengamanan / Satpam)',
+    subtitle: 'Pengamanan Kantor, Ketertiban Lingkungan & Pelayanan Tamu Kemenag Wonosobo',
+    badge: 'Satuan Pengamanan',
+    icon: 'shield-check',
+    color: 'emerald',
+    description: 'Unit Satuan Pengamanan (Satpam) yang bertugas menjaga keamanan dan ketertiban lingkungan kantor selama 24 jam, pengamanan aset negara, pengaturan lalu lintas dan parkir kendaraan, serta membantu mengarahkan tamu dan masyarakat yang berkunjung ke Kantor Kementerian Agama Kabupaten Wonosobo.',
+    contact: {
+      officer: 'Petugas Piket Satpam Kemenag Wonosobo',
+      role: 'Keamanan Kantor, Penerimaan Tamu & Ketertiban Lingkungan',
+      phone: '+62 812-3005-5633',
+      rawPhone: '6281230055633',
+      hours: 'Siaga 24 Jam (Pergantian Shift Pagi, Sore & Malam)'
+    },
+    structure: [
+      {
+        name: 'Anggota Satpam 1',
+        role: 'Koordinator / Komandan Regu Satpam (Danru)',
+        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+        badge: 'Koordinator Satpam'
+      },
+      {
+        name: 'Anggota Satpam 2',
+        role: 'Anggota Satuan Pengamanan (Satpam)',
+        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
+        badge: 'Personil Satpam'
+      },
+      {
+        name: 'Anggota Satpam 3',
+        role: 'Anggota Satuan Pengamanan (Satpam)',
+        photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80',
+        badge: 'Personil Satpam'
+      }
+    ],
+    services: [
+      {
+        id: 'keamanan-1',
+        title: 'Penerimaan, Registrasi & Pengarahan Tamu Kantor',
+        desc: 'Pelayanan ramah di pos jaga utama untuk menyambut masyarakat/tamu dinas, pencatatan buku tamu, serta mengarahkan pengunjung ke loket PTSP atau seksi terkait.',
+        syarat: [
+          'Menyampaikan keperluan kunjungan kepada petugas jaga di Pos Satpam',
+          'Menunjukkan identitas diri (KTP/Kartu Pengenal) bila diperlukan untuk kunjungan kedinasan'
+        ],
+        prosedur: 'Lapor di Pos Satpam -> Pengarahan ramah oleh petugas -> Menuju ruang pelayanan PTSP atau seksi tujuan.',
+        waktu: 'Langsung Dilayani (2 - 5 Menit)',
+        biaya: 'Gratis (Rp 0,-)',
+        pdfName: 'SOP-Penerimaan-dan-Pengarahan-Tamu.pdf',
+        pdfCode: 'SOP/KEAMANAN/01/2026'
+      },
+      {
+        id: 'keamanan-2',
+        title: 'Pengamanan Lingkungan Kantor, Ketertiban & Penataan Parkir',
+        desc: 'Penjagaan keamanan gedung, ketertiban area pelayanan, pengawasan CCTV, serta bantuan pengaturan keluar-masuk dan parkir kendaraan tamu maupun pegawai.',
+        syarat: [
+          'Mematuhi tata tertib keamanan dan ketertiban di lingkungan Kantor Kemenag Wonosobo',
+          'Memarkirkan kendaraan pada area parkir yang telah disediakan dengan rapi'
+        ],
+        prosedur: 'Pengaturan area parkir oleh petugas -> Patroli berkala lingkungan kantor -> Penjagaan keamanan 24 jam.',
+        waktu: 'Siaga 24 Jam',
+        biaya: 'Gratis (Rp 0,-)',
+        pdfName: 'SOP-Pengamanan-Lingkungan-dan-Parkir.pdf',
+        pdfCode: 'SOP/KEAMANAN/02/2026'
+      }
+    ],
+    photos: [
+      {
+        title: 'Kesiapsiagaan Personil Satpam dalam Menyambut Masyarakat dan Menjaga Keamanan Kantor',
+        date: '15 Oktober 2026',
+        image: 'https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&w=700&q=80',
+        caption: 'Komitmen Satuan Pengamanan Kemenag Wonosobo memberikan pelayanan prima yang ramah, sigap, dan humanis bagi setiap pengunjung.',
+        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
+      }
+    ],
+    videos: [
+      {
+        title: 'Apel Kesiapsiagaan & Pelayanan Ramah Tamu Satpam Kemenag Wonosobo',
+        date: '10 Oktober 2026',
+        duration: '02:30',
+        thumbnail: 'https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&w=700&q=80',
+        platform: 'YouTube',
+        videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
+        embedUrl: ''
+      }
+    ]
   }
 ];
 
