@@ -633,6 +633,36 @@ export default function AdminApp() {
 
   const setSection = (key, value) => setDraft(d => ({ ...d, [key]: value }))
 
+  const handleUnitChange = (next) => {
+    const prev = units.find(u => u.id === next.id)
+    const changedPhotos = new Map()
+    if (prev && Array.isArray(prev.structure) && Array.isArray(next.structure)) {
+      const prevByName = new Map(prev.structure.filter(m => m?.name).map(m => [m.name, m.photo]))
+      for (const member of next.structure) {
+        if (!member?.name || !member.photo) continue
+        if (prevByName.has(member.name) && prevByName.get(member.name) !== member.photo) {
+          changedPhotos.set(member.name, member.photo)
+        }
+      }
+    }
+
+    const updatedUnits = units.map(u => {
+      if (u.id === next.id) return next
+      if (!changedPhotos.size || !Array.isArray(u.structure)) return u
+      let touched = false
+      const nextStructure = u.structure.map(m => {
+        if (!m?.name || !changedPhotos.has(m.name)) return m
+        const syncedPhoto = changedPhotos.get(m.name)
+        if (m.photo === syncedPhoto) return m
+        touched = true
+        return { ...m, photo: syncedPhoto }
+      })
+      return touched ? { ...u, structure: nextStructure } : u
+    })
+
+    setSection('units', updatedUnits)
+  }
+
   const save = async () => {
     if (busy) return
     setBusy(true)
@@ -789,7 +819,7 @@ export default function AdminApp() {
             {activeUnitId ? (
               <UnitEditor
                 unit={units.find(u => u.id === activeUnitId)}
-                onChange={next => setSection('units', units.map(u => u.id === next.id ? next : u))}
+                onChange={handleUnitChange}
                 onDelete={() => {
                   if (!confirm(`Hapus unit "${activeUnitId}"?`)) return
                   setSection('units', units.filter(u => u.id !== activeUnitId))

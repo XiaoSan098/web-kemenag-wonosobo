@@ -33,6 +33,44 @@ export const hasStorage = () => {
   }
 }
 
+function getDefaultPhoto(unitId, name) {
+  const defUnit = DEFAULT_DATA.units.find(u => u.id === unitId)
+  const defMember = defUnit?.structure?.find(m => m?.name === name)
+  return defMember?.photo || null
+}
+
+function syncSubbagTuPhotos(units) {
+  const ptsp = units.find(u => u && u.id === 'ptsp')
+  if (!ptsp || !Array.isArray(ptsp.structure)) return units
+
+  const customPhotosByName = new Map()
+  for (const member of ptsp.structure) {
+    if (!member?.name || !member.photo) continue
+    const defPhoto = getDefaultPhoto('ptsp', member.name)
+    if (member.photo !== defPhoto) {
+      customPhotosByName.set(member.name, member.photo)
+    }
+  }
+  if (!customPhotosByName.size) return units
+
+  return units.map(unit => {
+    if (!unit || unit.id === 'ptsp' || !Array.isArray(unit.structure)) return unit
+    let changed = false
+    const nextStructure = unit.structure.map(member => {
+      if (!member?.name) return member
+      const ptspPhoto = customPhotosByName.get(member.name)
+      if (!ptspPhoto || member.photo === ptspPhoto) return member
+      const defPhoto = getDefaultPhoto(unit.id, member.name)
+      if (!member.photo || member.photo === defPhoto) {
+        changed = true
+        return { ...member, photo: ptspPhoto }
+      }
+      return member
+    })
+    return changed ? { ...unit, structure: nextStructure } : unit
+  })
+}
+
 function normalizeData(parsed) {
   if (!parsed || typeof parsed !== 'object') return null
   const rawSocial = Array.isArray(parsed.social) ? parsed.social : DEFAULT_DATA.social
@@ -41,12 +79,13 @@ function normalizeData(parsed) {
       ? { ...item, name: 'Tanya Via WA', btnText: 'Tanya Via WA' }
       : item
   )
-  const units = Array.isArray(parsed.units) ? [...parsed.units] : structuredClone(DEFAULT_DATA.units)
+  const rawUnits = Array.isArray(parsed.units) ? [...parsed.units] : structuredClone(DEFAULT_DATA.units)
   for (const defUnit of DEFAULT_DATA.units) {
-    if (!units.some(u => u && u.id === defUnit.id)) {
-      units.push(structuredClone(defUnit))
+    if (!rawUnits.some(u => u && u.id === defUnit.id)) {
+      rawUnits.push(structuredClone(defUnit))
     }
   }
+  const units = syncSubbagTuPhotos(rawUnits)
   const seksi = Array.isArray(parsed.seksi) ? [...parsed.seksi] : structuredClone(DEFAULT_DATA.seksi)
   for (const defSeksi of DEFAULT_DATA.seksi) {
     if (!seksi.some(s => s && s.id === defSeksi.id)) {
