@@ -8,7 +8,8 @@
  */
 import { useEffect, useState } from 'react'
 import {
-  SUBBAG_TU_UNITS, SEKSI_DATA, SOCIAL_MEDIA_CONTACTS, DEFAULT_KEPALA_KANTOR, DEFAULT_FAQS
+  SUBBAG_TU_UNITS, SEKSI_DATA, SOCIAL_MEDIA_CONTACTS, DEFAULT_KEPALA_KANTOR, DEFAULT_FAQS,
+  DEFAULT_HERO, DEFAULT_VISI_MISI
 } from './data.js'
 import { isSupabaseConfigured, supabaseLoadData } from './supabase.js'
 
@@ -20,7 +21,9 @@ const DEFAULT_DATA = {
   seksi: structuredClone(SEKSI_DATA),
   social: structuredClone(SOCIAL_MEDIA_CONTACTS),
   kepalaKantor: structuredClone(DEFAULT_KEPALA_KANTOR),
-  faqs: structuredClone(DEFAULT_FAQS)
+  faqs: structuredClone(DEFAULT_FAQS),
+  hero: structuredClone(DEFAULT_HERO),
+  visiMisi: structuredClone(DEFAULT_VISI_MISI)
 }
 
 let memoryData = null
@@ -86,7 +89,8 @@ function normalizeData(parsed) {
     }
   }
   const units = syncSubbagTuPhotos(rawUnits)
-  const seksi = Array.isArray(parsed.seksi) ? [...parsed.seksi] : structuredClone(DEFAULT_DATA.seksi)
+  const seksi = (Array.isArray(parsed.seksi) ? [...parsed.seksi] : structuredClone(DEFAULT_DATA.seksi))
+    .filter(s => s && s.id !== 'hindu')
   for (const defSeksi of DEFAULT_DATA.seksi) {
     if (!seksi.some(s => s && s.id === defSeksi.id)) {
       seksi.push(structuredClone(defSeksi))
@@ -99,7 +103,19 @@ function normalizeData(parsed) {
     kepalaKantor: (parsed.kepalaKantor && typeof parsed.kepalaKantor === 'object')
       ? { ...DEFAULT_DATA.kepalaKantor, ...parsed.kepalaKantor }
       : structuredClone(DEFAULT_DATA.kepalaKantor),
-    faqs: Array.isArray(parsed.faqs) && parsed.faqs.length ? parsed.faqs : structuredClone(DEFAULT_DATA.faqs)
+    faqs: Array.isArray(parsed.faqs) && parsed.faqs.length ? parsed.faqs : structuredClone(DEFAULT_DATA.faqs),
+    hero: (parsed.hero && typeof parsed.hero === 'object')
+      ? { ...DEFAULT_DATA.hero, ...parsed.hero }
+      : structuredClone(DEFAULT_DATA.hero),
+    visiMisi: (parsed.visiMisi && typeof parsed.visiMisi === 'object')
+      ? {
+          ...DEFAULT_DATA.visiMisi,
+          ...parsed.visiMisi,
+          misiList: Array.isArray(parsed.visiMisi.misiList) && parsed.visiMisi.misiList.length
+            ? parsed.visiMisi.misiList
+            : structuredClone(DEFAULT_DATA.visiMisi.misiList)
+        }
+      : structuredClone(DEFAULT_DATA.visiMisi)
   }
 }
 
@@ -182,7 +198,9 @@ export function useData() {
             seksi: server.seksi || [],
             social: server.social || [],
             kepalaKantor: server.kepalaKantor || current.kepalaKantor || DEFAULT_DATA.kepalaKantor,
-            faqs: server.faqs || current.faqs || DEFAULT_DATA.faqs
+            faqs: server.faqs || current.faqs || DEFAULT_DATA.faqs,
+            hero: server.hero || current.hero || DEFAULT_DATA.hero,
+            visiMisi: server.visiMisi || current.visiMisi || DEFAULT_DATA.visiMisi
           })
           memoryData = structuredClone(next)
           if (hasStorage()) {
@@ -221,7 +239,7 @@ export function toRawPhone(phone) {
   return String(phone || '').replace(/\D/g, '')
 }
 
-export { EMPTY }
+export { EMPTY, DEFAULT_HERO, DEFAULT_VISI_MISI }
 export const DEFAULT_UNITS = SUBBAG_TU_UNITS
 export const DEFAULT_SEKSI = SEKSI_DATA
 export const DEFAULT_SOCIAL = SOCIAL_MEDIA_CONTACTS

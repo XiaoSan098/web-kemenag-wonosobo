@@ -105,7 +105,10 @@ app.put('/api/data', requireAdmin, wrap(async (req, res) => {
     units: body.units,
     seksi: body.seksi,
     social: body.social,
-    kepalaKantor: body.kepalaKantor
+    kepalaKantor: body.kepalaKantor,
+    faqs: body.faqs,
+    hero: body.hero,
+    visiMisi: body.visiMisi
   })
   res.json({ ok: true })
 }))

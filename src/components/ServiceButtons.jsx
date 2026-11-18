@@ -79,14 +79,6 @@ export function ServiceButtons({ onOpenUnit }) {
       badgeColor: 'badge--gold'
     },
     {
-      id: 'hindu',
-      title: 'Layanan Hindu',
-      desc: 'Pelayanan keagamaan dan pembinaan umat Hindu di Kabupaten Wonosobo',
-      icon: Sparkles,
-      badge: 'Hindu',
-      badgeColor: 'badge--amber'
-    },
-    {
       id: 'keamanan',
       title: 'Bagian Keamanan',
       desc: 'Satuan Pengamanan (Satpam), ketertiban lingkungan kantor, penerimaan tamu, dan pengamanan aset instansi',

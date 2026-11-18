@@ -14,9 +14,9 @@ import {
   ArrowDown, ArrowLeft, ArrowUp, Database, Download, FileJson, KeyRound, LayoutDashboard,
   LogOut, Loader2, Plus, RotateCcw, Save, Share2, Trash2, Upload, Users,
   Building2, Landmark, Globe, Lock, ChevronDown, WifiOff, Moon, Sun, Pencil,
-  Eye, EyeOff, HelpCircle
+  Eye, EyeOff, HelpCircle, Compass
 } from 'lucide-react'
-import { getData, resetData, saveData, useData, DEFAULT_KEPALA } from '../store.js'
+import { getData, resetData, saveData, useData, DEFAULT_KEPALA, DEFAULT_HERO, DEFAULT_VISI_MISI } from '../store.js'
 import {
   isSupabaseConfigured, login, logout, markLocalSession, probeServer,
   resetServer, restoreSession, saveSnapshot, uploadFile, verifyAdminSession
@@ -29,6 +29,7 @@ const ADMIN_USER = 'admin'
 const ADMIN_PIN = 'webkemenagwonosobo123'
 
 const TABS = [
+  { id: 'beranda-visi', label: 'Beranda & Visi Misi', Icon: Compass },
   { id: 'kepala', label: 'Kepala Kantor', Icon: Users },
   { id: 'units', label: 'Unit Subbag TU', Icon: Building2 },
   { id: 'seksi', label: 'Seksi & Penyelenggara', Icon: Landmark },
@@ -480,6 +481,290 @@ function KepalaKantorEditor({ kepala, onChange }) {
   )
 }
 
+function BerandaVisiMisiEditor({ hero, visiMisi, onChangeHero, onChangeVisiMisi }) {
+  const currentHero = { ...DEFAULT_HERO, ...(hero || {}) }
+  const currentVm = {
+    ...DEFAULT_VISI_MISI,
+    ...(visiMisi || {}),
+    misiList: Array.isArray(visiMisi?.misiList) && visiMisi.misiList.length
+      ? visiMisi.misiList
+      : DEFAULT_VISI_MISI.misiList
+  }
+
+  const updateHero = (key, val) => {
+    onChangeHero({ ...currentHero, [key]: val })
+  }
+
+  const updateVm = (key, val) => {
+    onChangeVisiMisi({ ...currentVm, [key]: val })
+  }
+
+  const updateMisiItem = (idx, val) => {
+    const next = currentVm.misiList.map((item, i) => (i === idx ? val : item))
+    updateVm('misiList', next)
+  }
+
+  const addMisiItem = () => {
+    updateVm('misiList', [...currentVm.misiList, ''])
+  }
+
+  const removeMisiItem = (idx) => {
+    const next = currentVm.misiList.filter((_, i) => i !== idx)
+    updateVm('misiList', next.length ? next : [''])
+  }
+
+  const moveMisiItem = (idx, dir) => {
+    const target = idx + dir
+    if (target < 0 || target >= currentVm.misiList.length) return
+    const next = [...currentVm.misiList]
+    const [picked] = next.splice(idx, 1)
+    next.splice(target, 0, picked)
+    updateVm('misiList', next)
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      {/* Bagian 1: Banner Beranda ("Portal Layanan Resmi" & Foto Latar) */}
+      <div className="admin-editor">
+        <div className="admin-editor-head">
+          <div>
+            <h3>Pengaturan Banner Beranda Utama (Portal Layanan Resmi &amp; Foto)</h3>
+            <p style={{ fontSize: '0.84rem', color: 'var(--text-3)', marginTop: '3px' }}>
+              Ubah tulisan label &quot;Portal Layanan Resmi&quot;, judul sambutan utama, deskripsi singkat, serta foto latar gedung/banner yang tampil paling atas di halaman beranda.
+            </p>
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '14px', marginTop: '14px' }}>
+          <Field
+            label="Tulisan Label Atas (Eyebrow Banner)"
+            value={currentHero.eyebrow}
+            placeholder="Contoh: Portal Layanan Resmi"
+            onChange={v => updateHero('eyebrow', v)}
+          />
+          <Field
+            label="Teks Tombol Aksi Banner"
+            value={currentHero.btnText}
+            placeholder="Contoh: Profil & Maklumat"
+            onChange={v => updateHero('btnText', v)}
+          />
+        </div>
+
+        <div style={{ marginTop: '14px' }}>
+          <Field
+            label="Judul Utama Banner Beranda"
+            value={currentHero.title}
+            multiline
+            placeholder="Contoh: Layanan keagamaan dan pendidikan yang cepat, gratis, dan akuntabel"
+            onChange={v => updateHero('title', v)}
+          />
+        </div>
+
+        <div style={{ marginTop: '14px' }}>
+          <Field
+            label="Deskripsi / Subjudul Banner Beranda"
+            value={currentHero.lead}
+            multiline="tall"
+            placeholder="Tuliskan penjelasan singkat layanan beranda..."
+            onChange={v => updateHero('lead', v)}
+          />
+        </div>
+
+        <div style={{ marginTop: '14px' }}>
+          <UploadField
+            label="Foto Latar / Banner Beranda (URL atau Unggah Foto Baru dari Perangkat)"
+            value={currentHero.banner}
+            onChange={v => updateHero('banner', v || '/hero_banner.jpg')}
+            accept="image/*"
+          />
+        </div>
+      </div>
+
+      {/* Bagian 2: Visi & Misi Instansi */}
+      <div className="admin-editor">
+        <div className="admin-editor-head">
+          <div>
+            <h3>Pengaturan Visi, Misi &amp; Profil Instansi</h3>
+            <p style={{ fontSize: '0.84rem', color: 'var(--text-3)', marginTop: '3px' }}>
+              Kelola teks Visi Utama, daftar poin Misi Strategis, serta pengantar halaman Profil &amp; Maklumat Kantor Kementerian Agama Kabupaten Wonosobo.
+            </p>
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '14px', marginTop: '14px' }}>
+          <Field
+            label="Label Badge Halaman Profil"
+            value={currentVm.pill}
+            placeholder="Contoh: Profil & Legalitas Instansi"
+            onChange={v => updateVm('pill', v)}
+          />
+          <Field
+            label="Nama / Judul Instansi pada Halaman Profil"
+            value={currentVm.officeTitle}
+            placeholder="Contoh: Kantor Kementerian Agama Kabupaten Wonosobo"
+            onChange={v => updateVm('officeTitle', v)}
+          />
+        </div>
+
+        <div style={{ marginTop: '14px' }}>
+          <Field
+            label="Deskripsi Singkat Profil Instansi"
+            value={currentVm.officeDesc}
+            multiline
+            placeholder="Komitmen pelayanan publik instansi..."
+            onChange={v => updateVm('officeDesc', v)}
+          />
+        </div>
+
+        {/* Kotak Visi Utama */}
+        <div style={{ marginTop: '18px', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
+          <h4 style={{ fontSize: '0.96rem', marginBottom: '12px', color: 'var(--text-1)' }}>Bagian Visi Instansi</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '14px' }}>
+            <Field
+              label="Label Tag Visi"
+              value={currentVm.visiTag}
+              placeholder="Contoh: Visi Utama"
+              onChange={v => updateVm('visiTag', v)}
+            />
+            <Field
+              label="Judul Visi"
+              value={currentVm.visiTitle}
+              placeholder="Contoh: Kementerian Agama yang Profesional dan Andal"
+              onChange={v => updateVm('visiTitle', v)}
+            />
+          </div>
+          <div style={{ marginTop: '12px' }}>
+            <Field
+              label="Isi Teks / Kalimat Visi"
+              value={currentVm.visiText}
+              multiline="tall"
+              placeholder='Contoh: "Terwujudnya Masyarakat Kabupaten Wonosobo yang Taat Beragama..."'
+              onChange={v => updateVm('visiText', v)}
+            />
+          </div>
+        </div>
+
+        {/* Kotak Misi Strategis */}
+        <div style={{ marginTop: '18px', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: '12px' }}>
+            <h4 style={{ fontSize: '0.96rem', margin: 0, color: 'var(--text-1)' }}>
+              Bagian Misi Instansi ({currentVm.misiList.length} Poin)
+            </h4>
+            <button type="button" className="btn btn-ghost btn-sm" onClick={addMisiItem}>
+              <Plus size={14} /> Tambah Poin Misi
+            </button>
+          </div>
+
+          <div style={{ marginBottom: '12px', maxWidth: '360px' }}>
+            <Field
+              label="Label Tag Misi"
+              value={currentVm.misiTag}
+              placeholder="Contoh: Misi Strategis"
+              onChange={v => updateVm('misiTag', v)}
+            />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {currentVm.misiList.map((poin, idx) => (
+              <div
+                key={idx}
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '8px',
+                  background: 'var(--surface-2)',
+                  padding: '10px 12px',
+                  borderRadius: '10px',
+                  border: '1px solid var(--border)'
+                }}
+              >
+                <span
+                  style={{
+                    fontWeight: 700,
+                    fontSize: '0.82rem',
+                    color: 'var(--green-700)',
+                    minWidth: '24px',
+                    paddingTop: '8px'
+                  }}
+                >
+                  {idx + 1}.
+                </span>
+                <textarea
+                  className="admin-input"
+                  rows={2}
+                  style={{ flex: 1 }}
+                  value={poin}
+                  placeholder={`Tuliskan poin misi ke-${idx + 1}...`}
+                  onChange={e => updateMisiItem(idx, e.target.value)}
+                />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-sm"
+                    style={{ padding: '4px 6px' }}
+                    disabled={idx === 0}
+                    title="Pindahkan ke atas"
+                    onClick={() => moveMisiItem(idx, -1)}
+                  >
+                    <ArrowUp size={13} />
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-sm"
+                    style={{ padding: '4px 6px' }}
+                    disabled={idx === currentVm.misiList.length - 1}
+                    title="Pindahkan ke bawah"
+                    onClick={() => moveMisiItem(idx, 1)}
+                  >
+                    <ArrowDown size={13} />
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-outline btn-sm"
+                  style={{ padding: '6px 8px', color: 'var(--danger, #dc2626)' }}
+                  title="Hapus poin misi ini"
+                  onClick={() => removeMisiItem(idx)}
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Kotak Maklumat Pelayanan */}
+        <div style={{ marginTop: '18px', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
+          <h4 style={{ fontSize: '0.96rem', marginBottom: '12px', color: 'var(--text-1)' }}>Bagian Maklumat Pelayanan</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '14px' }}>
+            <Field
+              label="Label Badge Maklumat"
+              value={currentVm.maklumatBadge}
+              placeholder="Contoh: Janji Layanan Resmi"
+              onChange={v => updateVm('maklumatBadge', v)}
+            />
+            <Field
+              label="Judul Maklumat Pelayanan"
+              value={currentVm.maklumatTitle}
+              placeholder="Contoh: MAKLUMAT PELAYANAN KEMENAG KABUPATEN WONOSOBO"
+              onChange={v => updateVm('maklumatTitle', v)}
+            />
+          </div>
+          <div style={{ marginTop: '12px' }}>
+            <Field
+              label="Isi Pernyataan Maklumat Pelayanan"
+              value={currentVm.maklumatQuote}
+              multiline="tall"
+              placeholder="Tuliskan isi maklumat pelayanan..."
+              onChange={v => updateVm('maklumatQuote', v)}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function BackupTab({ draft, onImport, onReset }) {
   const fileRef = useRef(null)
   const jsonString = useMemo(() => JSON.stringify(draft, null, 2), [draft])
@@ -552,13 +837,14 @@ export default function AdminApp() {
     const { id, tab: t } = parseHashParams()
     if (t) return t
     if (id) {
+      if (id === 'beranda-visi' || id === 'visi-misi' || id === 'hero') return 'beranda-visi'
       if (id === 'kepala') return 'kepala'
       if (id === 'subbag-tu') return 'units'
       const d = getData()
       if (d.seksi?.some(s => s.id === id && s.id !== 'subbag-tu')) return 'seksi'
       if (d.units?.some(u => u.id === id)) return 'units'
     }
-    return 'kepala'
+    return 'beranda-visi'
   })
   const [activeUnitId, setActiveUnitId] = useState(() => {
     const { id } = parseHashParams()
@@ -720,7 +1006,9 @@ export default function AdminApp() {
   const doImport = (parsed) => setDraft(d => ({
     ...d,
     ...parsed,
-    kepalaKantor: parsed.kepalaKantor || d.kepalaKantor || DEFAULT_KEPALA
+    kepalaKantor: parsed.kepalaKantor || d.kepalaKantor || DEFAULT_KEPALA,
+    hero: parsed.hero || d.hero || DEFAULT_HERO,
+    visiMisi: parsed.visiMisi || d.visiMisi || DEFAULT_VISI_MISI
   }))
 
   const doLogout = async () => {
@@ -792,6 +1080,15 @@ export default function AdminApp() {
       </nav>
 
       <main className="admin-main container">
+        {tab === 'beranda-visi' && (
+          <BerandaVisiMisiEditor
+            hero={draft.hero}
+            visiMisi={draft.visiMisi}
+            onChangeHero={next => setSection('hero', next)}
+            onChangeVisiMisi={next => setSection('visiMisi', next)}
+          />
+        )}
+
         {tab === 'kepala' && (
           <KepalaKantorEditor
             kepala={draft.kepalaKantor}

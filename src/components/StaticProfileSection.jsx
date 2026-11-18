@@ -1,10 +1,17 @@
 import { useState } from 'react'
 import { Award, Compass, HeartHandshake, ShieldCheck, CheckCircle2, ChevronRight, FileText, ZoomIn } from 'lucide-react'
-import { useData } from '../store.js'
+import { useData, DEFAULT_VISI_MISI } from '../store.js'
 
 export function StaticProfileSection({ onOpenLightbox }) {
   const [activeTab, setActiveTab] = useState('visi-misi')
-  const { kepalaKantor } = useData()
+  const { kepalaKantor, visiMisi: rawVisiMisi } = useData()
+  const vm = {
+    ...DEFAULT_VISI_MISI,
+    ...(rawVisiMisi || {}),
+    misiList: Array.isArray(rawVisiMisi?.misiList) && rawVisiMisi.misiList.length
+      ? rawVisiMisi.misiList
+      : DEFAULT_VISI_MISI.misiList
+  }
 
   return (
     <section className="static-profile-section" id="profil-kemenag">
@@ -14,12 +21,11 @@ export function StaticProfileSection({ onOpenLightbox }) {
             <div className="profile-header-top">
               <div className="profile-header-info">
                 <span className="profile-pill">
-                  <ShieldCheck size={14} /> Profil &amp; Legalitas Instansi
+                  <ShieldCheck size={14} /> {vm.pill || DEFAULT_VISI_MISI.pill}
                 </span>
-                <h2>Kantor Kementerian Agama Kabupaten Wonosobo</h2>
+                <h2>{vm.officeTitle || DEFAULT_VISI_MISI.officeTitle}</h2>
                 <p>
-                  Komitmen kami dalam menghadirkan pelayanan publik bidang keagamaan dan pendidikan Islam
-                  yang profesional, transparan, akuntabel, dan berintegritas tinggi.
+                  {vm.officeDesc || DEFAULT_VISI_MISI.officeDesc}
                 </p>
 
                 <div className="profile-tabs" role="tablist">
@@ -90,32 +96,21 @@ export function StaticProfileSection({ onOpenLightbox }) {
               <div className="profile-panel">
                 <div className="profile-panel-grid">
                   <div className="profile-box profile-box--highlight">
-                    <div className="profile-box-tag">Visi Utama</div>
-                    <h3>Kementerian Agama yang Profesional dan Andal</h3>
+                    <div className="profile-box-tag">{vm.visiTag || DEFAULT_VISI_MISI.visiTag}</div>
+                    <h3>{vm.visiTitle || DEFAULT_VISI_MISI.visiTitle}</h3>
                     <p>
-                      "Terwujudnya Masyarakat Kabupaten Wonosobo yang Taat Beragama, Rukun, Cerdas,
-                      dan Mandiri serta Sejahtera Lahir Batin dalam bingkai Negara Kesatuan Republik Indonesia."
+                      {vm.visiText || DEFAULT_VISI_MISI.visiText}
                     </p>
                   </div>
                   <div className="profile-box">
-                    <div className="profile-box-tag">Misi Strategis</div>
+                    <div className="profile-box-tag">{vm.misiTag || DEFAULT_VISI_MISI.misiTag}</div>
                     <ul className="profile-list">
-                      <li>
-                        <CheckCircle2 size={16} className="profile-list-icon" />
-                        <span>Meningkatkan kualitas pemahaman dan pengamalan ajaran agama dalam kehidupan bermasyarakat.</span>
-                      </li>
-                      <li>
-                        <CheckCircle2 size={16} className="profile-list-icon" />
-                        <span>Memperkukuh kerukunan umat beragama dan moderasi beragama di wilayah Kabupaten Wonosobo.</span>
-                      </li>
-                      <li>
-                        <CheckCircle2 size={16} className="profile-list-icon" />
-                        <span>Meningkatkan akses dan mutu pendidikan keagamaan serta madrasah yang unggul dan kompetitif.</span>
-                      </li>
-                      <li>
-                        <CheckCircle2 size={16} className="profile-list-icon" />
-                        <span>Mewujudkan tata kelola kepemerintahan yang bersih, transparan, dan bebas dari korupsi melalui PTSP.</span>
-                      </li>
+                      {vm.misiList.map((item, idx) => (
+                        <li key={idx}>
+                          <CheckCircle2 size={16} className="profile-list-icon" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>
@@ -125,10 +120,10 @@ export function StaticProfileSection({ onOpenLightbox }) {
             {activeTab === 'maklumat' && (
               <div className="profile-panel">
                 <div className="maklumat-card">
-                  <div className="maklumat-badge">Janji Layanan Resmi</div>
-                  <h3 className="maklumat-title">MAKLUMAT PELAYANAN KEMENAG KABUPATEN WONOSOBO</h3>
+                  <div className="maklumat-badge">{vm.maklumatBadge || DEFAULT_VISI_MISI.maklumatBadge}</div>
+                  <h3 className="maklumat-title">{vm.maklumatTitle || DEFAULT_VISI_MISI.maklumatTitle}</h3>
                   <p className="maklumat-quote">
-                    "Dengan ini kami segenap pimpinan dan aparatur sipil negara Kantor Kementerian Agama Kabupaten Wonosobo menyatakan sanggup menyelenggarakan pelayanan sesuai standar pelayanan yang telah ditetapkan, dan apabila tidak menepati janji ini, kami siap menerima sanksi sesuai dengan peraturan perundang-undangan yang berlaku."
+                    {vm.maklumatQuote || DEFAULT_VISI_MISI.maklumatQuote}
                   </p>
                   <div className="maklumat-features">
                     <div className="maklumat-feat-item">

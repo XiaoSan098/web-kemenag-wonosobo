@@ -20,7 +20,8 @@
 
 import mysql from 'mysql2/promise'
 import {
-  SEKSI_DATA, SUBBAG_TU_UNITS, SOCIAL_MEDIA_CONTACTS, DEFAULT_KEPALA_KANTOR
+  SEKSI_DATA, SUBBAG_TU_UNITS, SOCIAL_MEDIA_CONTACTS, DEFAULT_KEPALA_KANTOR,
+  DEFAULT_FAQS, DEFAULT_HERO, DEFAULT_VISI_MISI
 } from '../src/data.js'
 
 const DB = {
@@ -288,8 +289,15 @@ export async function loadSnapshot() {
   const anak = await muatAnak(semuaId)
 
   const [sosialRows] = await pool.query('SELECT * FROM sosial ORDER BY urutan')
-  const [pengaturanRows] = await pool.query('SELECT nilai FROM pengaturan WHERE kunci = ?', ['kepalaKantor']).catch(() => [[]])
-  const kepalaRow = pengaturanRows?.[0]?.nilai ? pars(pengaturanRows[0].nilai) : null
+  const [pengaturanRows] = await pool.query(
+    'SELECT kunci, nilai FROM pengaturan WHERE kunci IN (?,?,?,?)',
+    ['kepalaKantor', 'faqs', 'hero', 'visiMisi']
+  ).catch(() => [[]])
+  const mapPengaturan = new Map(array(pengaturanRows).map(r => [r.kunci, pars(r.nilai)]))
+  const kepalaRow = mapPengaturan.get('kepalaKantor')
+  const faqsRow = mapPengaturan.get('faqs')
+  const heroRow = mapPengaturan.get('hero')
+  const visiMisiRow = mapPengaturan.get('visiMisi')
 
   return {
     units: subbag.map(r => susunUnit(r, anak)),
@@ -299,7 +307,14 @@ export async function loadSnapshot() {
     )),
     kepalaKantor: (kepalaRow && typeof kepalaRow === 'object')
       ? { ...DEFAULT_KEPALA_KANTOR, ...kepalaRow }
-      : structuredClone(DEFAULT_KEPALA_KANTOR)
+      : structuredClone(DEFAULT_KEPALA_KANTOR),
+    faqs: Array.isArray(faqsRow) && faqsRow.length ? faqsRow : structuredClone(DEFAULT_FAQS),
+    hero: (heroRow && typeof heroRow === 'object')
+      ? { ...DEFAULT_HERO, ...heroRow }
+      : structuredClone(DEFAULT_HERO),
+    visiMisi: (visiMisiRow && typeof visiMisiRow === 'object')
+      ? { ...DEFAULT_VISI_MISI, ...visiMisiRow }
+      : structuredClone(DEFAULT_VISI_MISI)
   }
 }
 
@@ -365,7 +380,10 @@ const dataBawaan = () => ({
   units: structuredClone(SUBBAG_TU_UNITS),
   seksi: structuredClone(SEKSI_DATA),
   social: structuredClone(SOCIAL_MEDIA_CONTACTS),
-  kepalaKantor: structuredClone(DEFAULT_KEPALA_KANTOR)
+  kepalaKantor: structuredClone(DEFAULT_KEPALA_KANTOR),
+  faqs: structuredClone(DEFAULT_FAQS),
+  hero: structuredClone(DEFAULT_HERO),
+  visiMisi: structuredClone(DEFAULT_VISI_MISI)
 })
 
 /**
@@ -444,6 +462,27 @@ export async function saveSnapshot(db) {
         `INSERT INTO pengaturan (kunci, nilai) VALUES (?, ?)
          ON DUPLICATE KEY UPDATE nilai = VALUES(nilai)`,
         ['kepalaKantor', JSON.stringify(db.kepalaKantor)]
+      )
+    }
+    if (Array.isArray(db.faqs)) {
+      await conn.query(
+        `INSERT INTO pengaturan (kunci, nilai) VALUES (?, ?)
+         ON DUPLICATE KEY UPDATE nilai = VALUES(nilai)`,
+        ['faqs', JSON.stringify(db.faqs)]
+      )
+    }
+    if (db.hero && typeof db.hero === 'object') {
+      await conn.query(
+        `INSERT INTO pengaturan (kunci, nilai) VALUES (?, ?)
+         ON DUPLICATE KEY UPDATE nilai = VALUES(nilai)`,
+        ['hero', JSON.stringify(db.hero)]
+      )
+    }
+    if (db.visiMisi && typeof db.visiMisi === 'object') {
+      await conn.query(
+        `INSERT INTO pengaturan (kunci, nilai) VALUES (?, ?)
+         ON DUPLICATE KEY UPDATE nilai = VALUES(nilai)`,
+        ['visiMisi', JSON.stringify(db.visiMisi)]
       )
     }
 

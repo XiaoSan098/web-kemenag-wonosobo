@@ -1337,93 +1337,7 @@ export const SEKSI_DATA = [
     ]
   },
 
-  // 10. LAYANAN HINDU
-  {
-    id: 'hindu',
-    title: 'Layanan Hindu',
-    fullTitle: 'Layanan Hindu',
-    subtitle: 'Bimbingan Masyarakat & Pembinaan Umat Hindu',
-    badge: 'Pura & Umat Hindu',
-    icon: 'compass',
-    color: 'amber',
-    contact: {
-      officer: 'Petugas Layanan Hindu',
-      role: 'Pelayanan Umat Hindu, Pura & Bimbingan Keagamaan Hindu',
-      phone: '+62 812-3005-5633',
-      rawPhone: '6281230055633',
-      hours: 'Senin - Jumat (08.00 - 15.30 WIB)'
-    },
-    structure: [
-      {
-        name: 'I Made Surya Dharma, S.Ag',
-        role: 'Pembina Layanan Umat Hindu Kemenag Wonosobo',
-        pangkat: 'Penata (III/c)',
-        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
-        badge: 'Layanan Hindu'
-      },
-      {
-        name: 'Ni Luh Putu Ayu, S.Pd.H',
-        role: 'Penyuluh Agama Hindu',
-        pangkat: 'Penata Muda Tk. I (III/b)',
-        photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
-        badge: 'Penyuluh Agama'
-      }
-    ],
-    services: [
-      {
-        id: 'hindu-1',
-        title: 'Rekomendasi Bantuan Rumah Ibadah Pura & Lembaga Keagamaan Hindu',
-        desc: 'Penerbitan surat rekomendasi permohonan bantuan rehabilitasi dan sarana ibadah Pura bagi umat Hindu di Kabupaten Wonosobo.',
-        syarat: [
-          'Surat Permohonan Pengurus Pura / PHDI Kabupaten Wonosobo',
-          'Proposal teknis perbaikan bangunan atau pengadaan sarana ibadah Pura',
-          'Tanda Daftar Rumah Ibadah Pura resmi Kemenag RI'
-        ],
-        prosedur: 'Pengajuan proposal -> Verifikasi berkas & lokasi Pura -> Penerbitan Surat Rekomendasi Resmi.',
-        waktu: '2 Hari Kerja',
-        biaya: 'Gratis (Rp 0,-)',
-        pdfName: 'Layanan-Rekomendasi-Pura-Hindu.pdf',
-        pdfCode: 'LAYANAN/HINDU/01/2026'
-      },
-      {
-        id: 'hindu-2',
-        title: 'Pendaftaran Tanda Daftar Lembaga & Rumah Ibadah Pura',
-        desc: 'Layanan penerbitan tanda daftar resmi bagi tempat ibadah Pura dan lembaga keagamaan Hindu di Kabupaten Wonosobo.',
-        syarat: [
-          'Surat Permohonan Pengurus Pura / Lembaga Hindu',
-          'Susunan Pengurus yang disahkan',
-          'Bukti status tanah / domisili tempat ibadah'
-        ],
-        prosedur: 'Pemeriksaan berkas administrasi -> Validasi lapangan -> Penerbitan Tanda Daftar Resmi.',
-        waktu: '3 Hari Kerja',
-        biaya: 'Gratis (Rp 0,-)',
-        pdfName: 'Layanan-Tanda-Daftar-Pura-Hindu.pdf',
-        pdfCode: 'LAYANAN/HINDU/02/2026'
-      }
-    ],
-    photos: [
-      {
-        title: 'Pembinaan Kerukunan dan Dharma Santi Umat Hindu di Kabupaten Wonosobo',
-        date: '22 September 2026',
-        image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=700&q=80',
-        caption: 'Merawat harmoni, moderasi beragama, dan kelestarian budaya spiritual di dataran tinggi Dieng Wonosobo.',
-        igUrl: 'https://www.instagram.com/kemenag_wonosobo?utm_source=ig_web_button_share_sheet&vrfl=ZDNlZDc0MzIxNw=='
-      }
-    ],
-    videos: [
-      {
-        title: 'Dokumentasi Pembinaan & Moderasi Beragama Umat Hindu di Wonosobo',
-        date: '19 September 2026',
-        duration: '04:05',
-        thumbnail: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=700&q=80',
-        platform: 'YouTube',
-        videoUrl: 'https://www.youtube.com/channel/UCmhZJ0jgT-WXxRdbBz1gCkA',
-        embedUrl: ''
-      }
-    ]
-  },
-
-  // 11. BAGIAN KEAMANAN (SATUAN PENGAMANAN / SATPAM)
+  // 10. BAGIAN KEAMANAN (SATUAN PENGAMANAN / SATPAM)
   {
     id: 'keamanan',
     title: 'Bagian Keamanan',
@@ -1617,3 +1531,32 @@ export const DEFAULT_FAQS = [
     answer: 'Anda dapat melihat rincian persyaratan setiap layanan pada bagian Menu Layanan Utama di halaman ini, atau langsung menghubungi petugas Front Office PTSP melalui WhatsApp resmi di nomor +62 812-3005-5633 pada jam kerja. Untuk aspirasi dan pengaduan masyarakat, tersedia pula layanan pengaduan terpadu SP4N-LAPOR! yang transparan dan bebas pungli.'
   }
 ];
+
+// DATA BANNER UTAMA BERANDA (HERO) KEMENAG WONOSOBO
+export const DEFAULT_HERO = {
+  eyebrow: 'Portal Layanan Resmi',
+  title: 'Layanan keagamaan dan pendidikan yang cepat, gratis, dan akuntabel',
+  lead: 'Akses informasi layanan, struktur pengelola, serta dokumentasi kegiatan dari seluruh seksi dan Subbag Tata Usaha Kantor Kementerian Agama Kabupaten Wonosobo — seluruh layanan bebas biaya.',
+  banner: '/hero_banner.jpg',
+  btnText: 'Profil & Maklumat'
+};
+
+// DATA VISI, MISI & PROFIL INSTANSI KEMENAG WONOSOBO
+export const DEFAULT_VISI_MISI = {
+  pill: 'Profil & Legalitas Instansi',
+  officeTitle: 'Kantor Kementerian Agama Kabupaten Wonosobo',
+  officeDesc: 'Komitmen kami dalam menghadirkan pelayanan publik bidang keagamaan dan pendidikan Islam yang profesional, transparan, akuntabel, dan berintegritas tinggi.',
+  visiTag: 'Visi Utama',
+  visiTitle: 'Kementerian Agama yang Profesional dan Andal',
+  visiText: '"Terwujudnya Masyarakat Kabupaten Wonosobo yang Taat Beragama, Rukun, Cerdas, dan Mandiri serta Sejahtera Lahir Batin dalam bingkai Negara Kesatuan Republik Indonesia."',
+  misiTag: 'Misi Strategis',
+  misiList: [
+    'Meningkatkan kualitas pemahaman dan pengamalan ajaran agama dalam kehidupan bermasyarakat.',
+    'Memperkukuh kerukunan umat beragama dan moderasi beragama di wilayah Kabupaten Wonosobo.',
+    'Meningkatkan akses dan mutu pendidikan keagamaan serta madrasah yang unggul dan kompetitif.',
+    'Mewujudkan tata kelola kepemerintahan yang bersih, transparan, dan bebas dari korupsi melalui PTSP.'
+  ],
+  maklumatBadge: 'Janji Layanan Resmi',
+  maklumatTitle: 'MAKLUMAT PELAYANAN KEMENAG KABUPATEN WONOSOBO',
+  maklumatQuote: '"Dengan ini kami segenap pimpinan dan aparatur sipil negara Kantor Kementerian Agama Kabupaten Wonosobo menyatakan sanggup menyelenggarakan pelayanan sesuai standar pelayanan yang telah ditetapkan, dan apabila tidak menepati janji ini, kami siap menerima sanksi sesuai dengan peraturan perundang-undangan yang berlaku."'
+};
