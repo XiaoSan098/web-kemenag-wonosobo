@@ -9,7 +9,7 @@
 import { useEffect, useState } from 'react'
 import {
   SUBBAG_TU_UNITS, SEKSI_DATA, SOCIAL_MEDIA_CONTACTS, DEFAULT_KEPALA_KANTOR, DEFAULT_FAQS,
-  DEFAULT_HERO, DEFAULT_VISI_MISI
+  DEFAULT_HERO, DEFAULT_VISI_MISI, DEFAULT_MAINTENANCE
 } from './data.js'
 import { isSupabaseConfigured, supabaseLoadData } from './supabase.js'
 
@@ -23,7 +23,8 @@ const DEFAULT_DATA = {
   kepalaKantor: structuredClone(DEFAULT_KEPALA_KANTOR),
   faqs: structuredClone(DEFAULT_FAQS),
   hero: structuredClone(DEFAULT_HERO),
-  visiMisi: structuredClone(DEFAULT_VISI_MISI)
+  visiMisi: structuredClone(DEFAULT_VISI_MISI),
+  maintenance: structuredClone(DEFAULT_MAINTENANCE)
 }
 
 let memoryData = null
@@ -115,7 +116,10 @@ function normalizeData(parsed) {
             ? parsed.visiMisi.misiList
             : structuredClone(DEFAULT_DATA.visiMisi.misiList)
         }
-      : structuredClone(DEFAULT_DATA.visiMisi)
+      : structuredClone(DEFAULT_DATA.visiMisi),
+    maintenance: (parsed.maintenance && typeof parsed.maintenance === 'object')
+      ? { ...DEFAULT_DATA.maintenance, ...parsed.maintenance }
+      : structuredClone(DEFAULT_DATA.maintenance)
   }
 }
 
@@ -200,7 +204,8 @@ export function useData() {
             kepalaKantor: server.kepalaKantor || current.kepalaKantor || DEFAULT_DATA.kepalaKantor,
             faqs: server.faqs || current.faqs || DEFAULT_DATA.faqs,
             hero: server.hero || current.hero || DEFAULT_DATA.hero,
-            visiMisi: server.visiMisi || current.visiMisi || DEFAULT_DATA.visiMisi
+            visiMisi: server.visiMisi || current.visiMisi || DEFAULT_DATA.visiMisi,
+            maintenance: server.maintenance || current.maintenance || DEFAULT_DATA.maintenance
           })
           memoryData = structuredClone(next)
           if (hasStorage()) {
@@ -239,7 +244,7 @@ export function toRawPhone(phone) {
   return String(phone || '').replace(/\D/g, '')
 }
 
-export { EMPTY, DEFAULT_HERO, DEFAULT_VISI_MISI }
+export { EMPTY, DEFAULT_HERO, DEFAULT_VISI_MISI, DEFAULT_MAINTENANCE }
 export const DEFAULT_UNITS = SUBBAG_TU_UNITS
 export const DEFAULT_SEKSI = SEKSI_DATA
 export const DEFAULT_SOCIAL = SOCIAL_MEDIA_CONTACTS

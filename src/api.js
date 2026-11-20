@@ -22,10 +22,41 @@ const TOKEN_KEY = 'kew_admin_token'
 const SERVER_USER_KEY = 'kew_admin_username'
 const LOCAL_KEY = 'kew_admin_local'
 const LOCAL_CREDS_KEY = 'kew_admin_local_creds'
+const DEVICE_ID_KEY = 'kew_device_id'
 const DEFAULT_LOCAL_USER = 'admin'
 const DEFAULT_LOCAL_PASS = 'webkemenagwonosobo123'
 
 export { isSupabaseConfigured, supabaseLoadData }
+
+/** ID unik per-browser/perangkat untuk menandai perangkat utama (Owner) Mode Update. */
+export function getDeviceId() {
+  try {
+    let id = localStorage.getItem(DEVICE_ID_KEY)
+    if (!id) {
+      id = `dev-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`
+      localStorage.setItem(DEVICE_ID_KEY, id)
+    }
+    return id
+  } catch {
+    return 'dev-ephemeral'
+  }
+}
+
+/** Mengambil status maintenance terbaru langsung dari Supabase / Server (untuk polling real-time). */
+export async function fetchRemoteMaintenance() {
+  try {
+    if (isSupabaseConfigured()) {
+      const data = await supabaseLoadData()
+      return data?.maintenance || null
+    }
+    const res = await fetch('/api/data')
+    if (!res.ok) return null
+    const data = await res.json().catch(() => null)
+    return data?.maintenance || null
+  } catch {
+    return null
+  }
+}
 
 export function getLocalCredentials() {
   try {

@@ -146,7 +146,8 @@ app.put('/api/data', requireAdmin, wrap(async (req, res) => {
     kepalaKantor: body.kepalaKantor,
     faqs: body.faqs,
     hero: body.hero,
-    visiMisi: body.visiMisi
+    visiMisi: body.visiMisi,
+    maintenance: body.maintenance
   })
   res.json({ ok: true })
 }))

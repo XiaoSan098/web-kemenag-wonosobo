@@ -21,7 +21,7 @@
 import mysql from 'mysql2/promise'
 import {
   SEKSI_DATA, SUBBAG_TU_UNITS, SOCIAL_MEDIA_CONTACTS, DEFAULT_KEPALA_KANTOR,
-  DEFAULT_FAQS, DEFAULT_HERO, DEFAULT_VISI_MISI
+  DEFAULT_FAQS, DEFAULT_HERO, DEFAULT_VISI_MISI, DEFAULT_MAINTENANCE
 } from '../src/data.js'
 
 const DB = {
@@ -290,14 +290,15 @@ export async function loadSnapshot() {
 
   const [sosialRows] = await pool.query('SELECT * FROM sosial ORDER BY urutan')
   const [pengaturanRows] = await pool.query(
-    'SELECT kunci, nilai FROM pengaturan WHERE kunci IN (?,?,?,?)',
-    ['kepalaKantor', 'faqs', 'hero', 'visiMisi']
+    'SELECT kunci, nilai FROM pengaturan WHERE kunci IN (?,?,?,?,?)',
+    ['kepalaKantor', 'faqs', 'hero', 'visiMisi', 'maintenance']
   ).catch(() => [[]])
   const mapPengaturan = new Map(array(pengaturanRows).map(r => [r.kunci, pars(r.nilai)]))
   const kepalaRow = mapPengaturan.get('kepalaKantor')
   const faqsRow = mapPengaturan.get('faqs')
   const heroRow = mapPengaturan.get('hero')
   const visiMisiRow = mapPengaturan.get('visiMisi')
+  const maintenanceRow = mapPengaturan.get('maintenance')
 
   return {
     units: subbag.map(r => susunUnit(r, anak)),
@@ -314,7 +315,10 @@ export async function loadSnapshot() {
       : structuredClone(DEFAULT_HERO),
     visiMisi: (visiMisiRow && typeof visiMisiRow === 'object')
       ? { ...DEFAULT_VISI_MISI, ...visiMisiRow }
-      : structuredClone(DEFAULT_VISI_MISI)
+      : structuredClone(DEFAULT_VISI_MISI),
+    maintenance: (maintenanceRow && typeof maintenanceRow === 'object')
+      ? { ...DEFAULT_MAINTENANCE, ...maintenanceRow }
+      : structuredClone(DEFAULT_MAINTENANCE)
   }
 }
 
@@ -383,7 +387,8 @@ const dataBawaan = () => ({
   kepalaKantor: structuredClone(DEFAULT_KEPALA_KANTOR),
   faqs: structuredClone(DEFAULT_FAQS),
   hero: structuredClone(DEFAULT_HERO),
-  visiMisi: structuredClone(DEFAULT_VISI_MISI)
+  visiMisi: structuredClone(DEFAULT_VISI_MISI),
+  maintenance: structuredClone(DEFAULT_MAINTENANCE)
 })
 
 /**
@@ -483,6 +488,13 @@ export async function saveSnapshot(db) {
         `INSERT INTO pengaturan (kunci, nilai) VALUES (?, ?)
          ON DUPLICATE KEY UPDATE nilai = VALUES(nilai)`,
         ['visiMisi', JSON.stringify(db.visiMisi)]
+      )
+    }
+    if (db.maintenance && typeof db.maintenance === 'object') {
+      await conn.query(
+        `INSERT INTO pengaturan (kunci, nilai) VALUES (?, ?)
+         ON DUPLICATE KEY UPDATE nilai = VALUES(nilai)`,
+        ['maintenance', JSON.stringify(db.maintenance)]
       )
     }
 

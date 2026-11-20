@@ -14,13 +14,17 @@ import {
   ArrowDown, ArrowLeft, ArrowUp, Database, Download, FileJson, KeyRound, LayoutDashboard,
   LogOut, Loader2, Plus, RotateCcw, Save, Share2, Trash2, Upload, Users,
   Building2, Landmark, Globe, Lock, ChevronDown, WifiOff, Moon, Sun, Pencil,
-  Eye, EyeOff, HelpCircle, Compass
+  Eye, EyeOff, HelpCircle, Compass, Clock, ShieldCheck, AlertTriangle, CheckCircle2
 } from 'lucide-react'
-import { getData, resetData, saveData, useData, DEFAULT_KEPALA, DEFAULT_HERO, DEFAULT_VISI_MISI } from '../store.js'
 import {
-  getCurrentAdminIdentity, getLocalCredentials, isSupabaseConfigured, login, logout,
-  markLocalSession, probeServer, resetServer, restoreSession, saveSnapshot,
-  updateAdminAccount, uploadFile, verifyAdminSession, verifyLocalCredentials
+  getData, resetData, saveData, useData,
+  DEFAULT_KEPALA, DEFAULT_HERO, DEFAULT_VISI_MISI, DEFAULT_MAINTENANCE
+} from '../store.js'
+import {
+  fetchRemoteMaintenance, getCurrentAdminIdentity, getDeviceId, getLocalCredentials,
+  isSupabaseConfigured, login, logout, markLocalSession, probeServer, resetServer,
+  restoreSession, saveSnapshot, supabaseLoadData, updateAdminAccount, uploadFile,
+  verifyAdminSession, verifyLocalCredentials
 } from '../api.js'
 import { UnitEditor } from './UnitEditor.jsx'
 import { readBackup } from '../backup.js'
@@ -57,16 +61,117 @@ function ThemeToggle({ theme, onToggle }) {
   )
 }
 
-function Gate({ onUnlock, theme, onToggleTheme }) {
+function formatCountdown(ms) {
+  const totalSec = Math.max(0, Math.ceil(ms / 1000))
+  const mins = Math.floor(totalSec / 60)
+  const secs = totalSec % 60
+  return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+}
+
+function useMaintenanceMonitor() {
+  const [maintenance, setMaintenance] = useState(() => ({
+    ...DEFAULT_MAINTENANCE,
+    ...(getData().maintenance || {})
+  }))
+  const [now, setNow] = useState(() => Date.now())
+  const deviceId = useMemo(() => getDeviceId(), [])
+
+  const applyUpdate = useCallback((next) => {
+    if (!next || typeof next !== 'object') return
+    setMaintenance(prev => {
+      const merged = { ...DEFAULT_MAINTENANCE, ...next }
+      if (JSON.stringify(prev) === JSON.stringify(merged)) return prev
+      return merged
+    })
+  }, [])
+
+  // Polling berkala ke Supabase / Server tiap 4 detik + sinkronisasi antar tab lokal
+  useEffect(() => {
+    let alive = true
+    const syncRemote = async () => {
+      const remote = await fetchRemoteMaintenance()
+      if (alive && remote) {
+        applyUpdate(remote)
+      }
+    }
+    const syncLocal = () => {
+      const localM = getData().maintenance
+      if (alive && localM) applyUpdate(localM)
+    }
+
+    syncRemote()
+    const poll = setInterval(syncRemote, 4000)
+    window.addEventListener('storage', syncLocal)
+    window.addEventListener('kew-data-change', syncLocal)
+
+    return () => {
+      alive = false
+      clearInterval(poll)
+      window.removeEventListener('storage', syncLocal)
+      window.removeEventListener('kew-data-change', syncLocal)
+    }
+  }, [applyUpdate])
+
+  const remainingMs = maintenance.active
+    ? Math.max(0, Number(maintenance.endsAt || 0) - now)
+    : 0
+  const isLive = Boolean(maintenance.active && remainingMs > 0)
+
+  // Detak timer per 1 detik selama mode update masih berjalan
+  useEffect(() => {
+    if (!maintenance.active) return
+    setNow(Date.now())
+    const tick = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(tick)
+  }, [maintenance.active, maintenance.endsAt])
+
+  const hasOwner = Boolean(maintenance.ownerDeviceId)
+  const isOwner = hasOwner && maintenance.ownerDeviceId === deviceId
+  const totalMs = Math.max(
+    1000,
+    Number(maintenance.endsAt || 0) - Number(maintenance.startedAt || 0)
+  )
+  const progressPct = isLive
+    ? Math.min(100, Math.max(0, ((totalMs - remainingMs) / totalMs) * 100))
+    : 100
+
+  return {
+    maintenance,
+    setMaintenance: applyUpdate,
+    deviceId,
+    hasOwner,
+    isOwner,
+    remainingMs,
+    isLive,
+    progressPct
+  }
+}
+
+function Gate({ onUnlock, theme, onToggleTheme, maint }) {
   const sbActive = isSupabaseConfigured()
   const [username, setUsername] = useState(() => getLocalCredentials().username || 'admin')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [justFinished, setJustFinished] = useState(false)
+  const wasBlockedRef = useRef(false)
+
+  const blocked = Boolean(maint?.isLive && !maint?.isOwner)
+
+  useEffect(() => {
+    if (blocked) {
+      wasBlockedRef.current = true
+      setJustFinished(false)
+    } else if (wasBlockedRef.current) {
+      wasBlockedRef.current = false
+      setJustFinished(true)
+    }
+  }, [blocked])
 
   const submit = async (e) => {
     e.preventDefault()
+    if (blocked) return
     const uVal = username.trim()
     const pVal = password.trim()
     if (!uVal || !pVal || busy) return
@@ -99,61 +204,157 @@ function Gate({ onUnlock, theme, onToggleTheme }) {
           />
         </div>
         <h1>Panel Admin Kemenag Wonosobo</h1>
-        <p>
-          {sbActive
-            ? 'Masuk menggunakan akun resmi Supabase Auth operator Kemenag Wonosobo.'
-            : 'Masuk menggunakan kombinasi nama pengguna dan kata sandi operator.'}
-        </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', marginTop: '6px' }}>
-          <div>
-            <label className="admin-field-label" style={{ textAlign: 'left', display: 'block', marginBottom: '5px', fontSize: '0.8rem' }}>
-              {sbActive ? 'Email atau Username Admin' : 'Nama Pengguna (Username)'}
-            </label>
-            <input
-              className={`admin-input ${error ? 'admin-input--error' : ''}`}
-              type="text"
-              autoComplete="username"
-              placeholder={sbActive ? 'admin@kemenagwonosobo.id atau admin' : 'Contoh: admin'}
-              value={username}
-              onChange={e => { setUsername(e.target.value); setError('') }}
-              required
-            />
-          </div>
-
-          <div>
-            <label className="admin-field-label" style={{ textAlign: 'left', display: 'block', marginBottom: '5px', fontSize: '0.8rem' }}>
-              Kata Sandi (Password)
-            </label>
-            <div className="admin-password-wrap">
-              <input
-                className={`admin-input ${error ? 'admin-input--error' : ''}`}
-                type={showPassword ? 'text' : 'password'}
-                autoFocus
-                autoComplete="current-password"
-                placeholder="Kata sandi"
-                value={password}
-                onChange={e => { setPassword(e.target.value); setError('') }}
-                required
-              />
-              <button
-                type="button"
-                className="admin-password-toggle"
-                onClick={() => setShowPassword(!showPassword)}
-                aria-label={showPassword ? 'Sembunyikan sandi' : 'Lihat sandi'}
-                title={showPassword ? 'Sembunyikan sandi' : 'Lihat sandi'}
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
+        {blocked ? (
+          <div
+            style={{
+              width: '100%',
+              marginTop: '8px',
+              padding: '18px 16px',
+              borderRadius: '14px',
+              background: 'rgba(245, 158, 11, 0.1)',
+              border: '1px solid rgba(245, 158, 11, 0.38)',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '10px'
+            }}
+          >
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', fontWeight: 700, color: '#b45309', fontSize: '0.92rem' }}>
+              <Clock size={18} /> Sistem Sedang Dalam Pembaruan
             </div>
+            <p style={{ margin: 0, fontSize: '0.84rem', color: 'var(--text-2)', lineHeight: 1.5 }}>
+              {maint.maintenance.message || DEFAULT_MAINTENANCE.message}
+            </p>
+            <div
+              style={{
+                fontSize: '2.2rem',
+                fontWeight: 800,
+                fontVariantNumeric: 'tabular-nums',
+                letterSpacing: '0.06em',
+                color: 'var(--text-1)',
+                padding: '6px 18px',
+                borderRadius: '10px',
+                background: 'var(--surface)',
+                border: '1px solid var(--border)'
+              }}
+            >
+              {formatCountdown(maint.remainingMs)}
+            </div>
+            <div style={{ width: '100%', height: '7px', borderRadius: '999px', background: 'var(--border)', overflow: 'hidden' }}>
+              <div
+                style={{
+                  width: `${maint.progressPct}%`,
+                  height: '100%',
+                  background: 'var(--green-600, #059669)',
+                  transition: 'width 0.9s linear'
+                }}
+              />
+            </div>
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-3)' }}>
+              Halaman login akan terbuka otomatis setelah hitungan mundur selesai.
+            </span>
           </div>
-        </div>
+        ) : (
+          <>
+            {justFinished && (
+              <div
+                role="status"
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  borderRadius: '10px',
+                  background: 'var(--green-50, #ecfdf5)',
+                  border: '1px solid var(--green-200, #a7f3d0)',
+                  color: 'var(--green-800, #065f46)',
+                  fontSize: '0.84rem',
+                  fontWeight: 600,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '7px'
+                }}
+              >
+                <CheckCircle2 size={16} /> Pembaruan selesai! Silakan login kembali.
+              </div>
+            )}
 
-        {error && <p className="admin-error" style={{ marginTop: '10px' }}>{error}</p>}
-        <button type="submit" className="btn btn-primary" style={{ marginTop: '8px' }} disabled={busy}>
-          {busy ? <Loader2 size={16} className="admin-spin" /> : <KeyRound size={16} />}
-          {busy ? 'Memeriksa…' : 'Masuk ke Panel'}
-        </button>
+            {maint?.isLive && maint?.isOwner && (
+              <div
+                style={{
+                  width: '100%',
+                  padding: '9px 12px',
+                  borderRadius: '10px',
+                  background: 'rgba(245, 158, 11, 0.12)',
+                  border: '1px solid rgba(245, 158, 11, 0.35)',
+                  color: '#b45309',
+                  fontSize: '0.8rem',
+                  fontWeight: 600
+                }}
+              >
+                Mode Update aktif (Sisa {formatCountdown(maint.remainingMs)}) · Perangkat Utama tetap diizinkan masuk.
+              </div>
+            )}
+
+            <p>
+              {sbActive
+                ? 'Masuk menggunakan akun resmi Supabase Auth operator Kemenag Wonosobo.'
+                : 'Masuk menggunakan kombinasi nama pengguna dan kata sandi operator.'}
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', marginTop: '6px' }}>
+              <div>
+                <label className="admin-field-label" style={{ textAlign: 'left', display: 'block', marginBottom: '5px', fontSize: '0.8rem' }}>
+                  {sbActive ? 'Email atau Username Admin' : 'Nama Pengguna (Username)'}
+                </label>
+                <input
+                  className={`admin-input ${error ? 'admin-input--error' : ''}`}
+                  type="text"
+                  autoComplete="username"
+                  placeholder={sbActive ? 'admin@kemenagwonosobo.id atau admin' : 'Contoh: admin'}
+                  value={username}
+                  onChange={e => { setUsername(e.target.value); setError('') }}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="admin-field-label" style={{ textAlign: 'left', display: 'block', marginBottom: '5px', fontSize: '0.8rem' }}>
+                  Kata Sandi (Password)
+                </label>
+                <div className="admin-password-wrap">
+                  <input
+                    className={`admin-input ${error ? 'admin-input--error' : ''}`}
+                    type={showPassword ? 'text' : 'password'}
+                    autoFocus
+                    autoComplete="current-password"
+                    placeholder="Kata sandi"
+                    value={password}
+                    onChange={e => { setPassword(e.target.value); setError('') }}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="admin-password-toggle"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? 'Sembunyikan sandi' : 'Lihat sandi'}
+                    title={showPassword ? 'Sembunyikan sandi' : 'Lihat sandi'}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {error && <p className="admin-error" style={{ marginTop: '10px' }}>{error}</p>}
+            <button type="submit" className="btn btn-primary" style={{ marginTop: '8px' }} disabled={busy}>
+              {busy ? <Loader2 size={16} className="admin-spin" /> : <KeyRound size={16} />}
+              {busy ? 'Memeriksa…' : 'Masuk ke Panel'}
+            </button>
+          </>
+        )}
+
         <a className="admin-back-home" href="#/">← Kembali ke situs publik</a>
       </form>
     </div>
@@ -728,7 +929,294 @@ function BerandaVisiMisiEditor({ hero, visiMisi, onChangeHero, onChangeVisiMisi 
   )
 }
 
-function AccountSettingsTab({ session }) {
+function MaintenanceControlCard({ session, maint, onSaveMaintenance }) {
+  const [minutes, setMinutes] = useState(() => maint.maintenance.durationMinutes || 3)
+  const [message, setMessage] = useState(() => maint.maintenance.message || DEFAULT_MAINTENANCE.message)
+  const [busy, setBusy] = useState(false)
+  const [feedback, setFeedback] = useState({ type: '', text: '' })
+
+  const runAction = async (nextMaint, okText) => {
+    setBusy(true)
+    setFeedback({ type: '', text: '' })
+    try {
+      await onSaveMaintenance(nextMaint)
+      setFeedback({ type: 'ok', text: okText })
+    } catch (err) {
+      setFeedback({ type: 'err', text: err?.message || 'Gagal memperbarui status Mode Update.' })
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const claimOwner = () => {
+    runAction(
+      {
+        ...maint.maintenance,
+        ownerDeviceId: maint.deviceId,
+        ownerLabel: 'Laptop Utama Pengembang'
+      },
+      'Berhasil! Laptop/browser ini sekarang ditetapkan sebagai Perangkat Utama untuk mengontrol Mode Update.'
+    )
+  }
+
+  const releaseOwner = () => {
+    if (!confirm('Lepas kunci Perangkat Utama dari laptop ini? Setelah dilepas, perangkat lain bisa mengklaim sebagai Perangkat Utama.')) return
+    runAction(
+      {
+        ...maint.maintenance,
+        active: false,
+        startedAt: 0,
+        endsAt: 0,
+        ownerDeviceId: '',
+        ownerLabel: ''
+      },
+      'Kunci Perangkat Utama telah dilepas.'
+    )
+  }
+
+  const startUpdate = () => {
+    const dur = Math.max(1, Math.min(120, Number(minutes) || 3))
+    const startedAt = Date.now()
+    const endsAt = startedAt + dur * 60 * 1000
+    runAction(
+      {
+        ...maint.maintenance,
+        active: true,
+        startedAt,
+        endsAt,
+        durationMinutes: dur,
+        message: message.trim() || DEFAULT_MAINTENANCE.message,
+        ownerDeviceId: maint.deviceId
+      },
+      `Mode Update aktif selama ${dur} menit! Pengguna di perangkat lain akan menerima notifikasi 5 detik lalu keluar otomatis.`
+    )
+  }
+
+  const extendTwoMinutes = () => {
+    const baseEnd = Math.max(Date.now(), Number(maint.maintenance.endsAt || 0))
+    const nextEnd = baseEnd + 2 * 60 * 1000
+    runAction(
+      {
+        ...maint.maintenance,
+        active: true,
+        endsAt: nextEnd,
+        message: message.trim() || maint.maintenance.message || DEFAULT_MAINTENANCE.message
+      },
+      'Waktu estimasi pembaruan berhasil diperpanjang +2 menit.'
+    )
+  }
+
+  const finishNow = () => {
+    runAction(
+      {
+        ...maint.maintenance,
+        active: false,
+        startedAt: 0,
+        endsAt: 0
+      },
+      'Mode Update selesai! Seluruh pengguna sekarang dapat langsung login kembali.'
+    )
+  }
+
+  return (
+    <div className="admin-editor">
+      <div className="admin-editor-head">
+        <div>
+          <h3>Mode Update &amp; Pemeliharaan Sistem (Khusus Laptop Utama)</h3>
+          <p style={{ fontSize: '0.84rem', color: 'var(--text-3)', marginTop: '3px' }}>
+            Keluarkan pengguna di perangkat lain secara otomatis (dengan notifikasi 5 detik dan hitungan mundur berjalan) saat Anda melakukan pembaruan web.
+          </p>
+        </div>
+        {maint.isOwner && (
+          <span
+            className="admin-offline-chip"
+            style={{ background: 'var(--green-50, #ecfdf5)', color: 'var(--green-800, #065f46)', borderColor: 'var(--green-200, #a7f3d0)' }}
+          >
+            <ShieldCheck size={14} style={{ marginRight: '4px', verticalAlign: '-2px' }} />
+            Perangkat Utama
+          </span>
+        )}
+      </div>
+
+      {!maint.hasOwner ? (
+        <div
+          style={{
+            marginTop: '14px',
+            padding: '16px',
+            borderRadius: '12px',
+            background: 'var(--surface-2)',
+            border: '1px solid var(--border)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px'
+          }}
+        >
+          <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-2)', lineHeight: 1.6 }}>
+            Belum ada perangkat utama yang terdaftar. Klik tombol di bawah <strong>dari laptop Anda sendiri</strong> agar hanya laptop ini yang memiliki kendali Mode Update dan tetap bisa masuk saat pembaruan berlangsung.
+          </p>
+          <div>
+            <button type="button" className="btn btn-primary" disabled={busy} onClick={claimOwner}>
+              {busy ? <Loader2 size={16} className="admin-spin" /> : <ShieldCheck size={16} />}
+              Tetapkan Laptop Ini sebagai Perangkat Utama
+            </button>
+          </div>
+        </div>
+      ) : !maint.isOwner ? (
+        <div
+          style={{
+            marginTop: '14px',
+            padding: '14px 16px',
+            borderRadius: '12px',
+            background: 'var(--surface-2)',
+            border: '1px solid var(--border)',
+            fontSize: '0.86rem',
+            color: 'var(--text-2)'
+          }}
+        >
+          <Lock size={15} style={{ marginRight: '6px', verticalAlign: '-2px' }} />
+          Kendali Mode Update dikunci khusus untuk <strong>Perangkat Utama (Laptop Pengembang)</strong>. Perangkat ini tidak dapat mengaktifkan atau mengubah status pembaruan.
+        </div>
+      ) : (
+        <div style={{ marginTop: '14px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {maint.isLive ? (
+            <div
+              style={{
+                padding: '16px',
+                borderRadius: '12px',
+                background: 'rgba(245, 158, 11, 0.1)',
+                border: '1px solid rgba(245, 158, 11, 0.4)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontWeight: 700, color: '#b45309' }}>
+                  <AlertTriangle size={18} /> Mode Update Sedang Aktif
+                </div>
+                <div
+                  style={{
+                    fontSize: '1.45rem',
+                    fontWeight: 800,
+                    fontVariantNumeric: 'tabular-nums',
+                    padding: '4px 14px',
+                    borderRadius: '8px',
+                    background: 'var(--surface)',
+                    border: '1px solid var(--border)',
+                    color: 'var(--text-1)'
+                  }}
+                >
+                  Sisa {formatCountdown(maint.remainingMs)}
+                </div>
+              </div>
+
+              <div style={{ width: '100%', height: '7px', borderRadius: '999px', background: 'var(--border)', overflow: 'hidden' }}>
+                <div
+                  style={{
+                    width: `${maint.progressPct}%`,
+                    height: '100%',
+                    background: 'var(--green-600, #059669)',
+                    transition: 'width 0.9s linear'
+                  }}
+                />
+              </div>
+
+              <p style={{ margin: 0, fontSize: '0.84rem', color: 'var(--text-2)' }}>
+                Pengguna lain sedang menunggu di layar hitung mundur. Akses login otomatis terbuka saat timer mencapai <strong>00:00</strong>, atau klik tombol di bawah untuk membuka lebih awal.
+              </p>
+
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                <button type="button" className="btn btn-primary btn-sm" disabled={busy} onClick={finishNow}>
+                  {busy ? <Loader2 size={14} className="admin-spin" /> : <CheckCircle2 size={14} />}
+                  Selesai Update (Buka Akses Sekarang)
+                </button>
+                <button type="button" className="btn btn-outline btn-sm" disabled={busy} onClick={extendTwoMinutes}>
+                  <Clock size={14} /> Perpanjang +2 Menit
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', maxWidth: '640px' }}>
+              <div>
+                <span className="admin-field-label" style={{ display: 'block', marginBottom: '8px' }}>
+                  Estimasi Durasi Update (Menit)
+                </span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
+                  {[1, 2, 3, 5, 10].map(m => (
+                    <button
+                      key={m}
+                      type="button"
+                      className={`btn btn-sm ${Number(minutes) === m ? 'btn-primary' : 'btn-outline'}`}
+                      onClick={() => setMinutes(m)}
+                    >
+                      {m} Menit
+                    </button>
+                  ))}
+                  <input
+                    type="number"
+                    min={1}
+                    max={120}
+                    className="admin-input"
+                    style={{ width: '92px' }}
+                    value={minutes}
+                    onChange={e => setMinutes(e.target.value)}
+                    aria-label="Durasi custom dalam menit"
+                  />
+                  <span style={{ fontSize: '0.82rem', color: 'var(--text-3)' }}>menit</span>
+                </div>
+              </div>
+
+              <Field
+                label="Pesan Notifikasi untuk Pengguna Lain"
+                value={message}
+                multiline
+                placeholder={DEFAULT_MAINTENANCE.message}
+                onChange={setMessage}
+              />
+
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
+                <button type="button" className="btn btn-primary" disabled={busy} onClick={startUpdate}>
+                  {busy ? <Loader2 size={16} className="admin-spin" /> : <Clock size={16} />}
+                  {busy ? 'Mengaktifkan…' : `Mulai Mode Update (${Math.max(1, Number(minutes) || 1)} Menit)`}
+                </button>
+              </div>
+            </div>
+          )}
+
+          <div style={{ paddingTop: '12px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-3)' }}>
+              Mode sinkronisasi: <strong>{session === 'supabase' ? 'Supabase Cloud (Real-Time)' : session === 'server' ? 'Server Express' : 'Lokal Browser'}</strong>
+            </span>
+            <button type="button" className="btn btn-outline btn-sm" disabled={busy} onClick={releaseOwner}>
+              Lepas Kunci Perangkat Utama
+            </button>
+          </div>
+        </div>
+      )}
+
+      {feedback.text && (
+        <p
+          role="status"
+          style={{
+            marginTop: '12px',
+            marginBottom: 0,
+            padding: '10px 14px',
+            borderRadius: '10px',
+            fontSize: '0.85rem',
+            fontWeight: 600,
+            background: feedback.type === 'ok' ? 'var(--green-50, #ecfdf5)' : 'rgba(220, 38, 38, 0.08)',
+            color: feedback.type === 'ok' ? 'var(--green-800, #065f46)' : '#b91c1c',
+            border: `1px solid ${feedback.type === 'ok' ? 'var(--green-200, #a7f3d0)' : 'rgba(220, 38, 38, 0.25)'}`
+          }}
+        >
+          {feedback.text}
+        </p>
+      )}
+    </div>
+  )
+}
+
+function AccountSettingsTab({ session, maint, onSaveMaintenance }) {
   const [identity, setIdentity] = useState(() => getCurrentAdminIdentity(session))
   const [currentPassword, setCurrentPassword] = useState('')
   const [newIdentifier, setNewIdentifier] = useState('')
@@ -811,8 +1299,15 @@ function AccountSettingsTab({ session }) {
   }
 
   return (
-    <div className="admin-editor">
-      <div className="admin-editor-head">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <MaintenanceControlCard
+        session={session}
+        maint={maint}
+        onSaveMaintenance={onSaveMaintenance}
+      />
+
+      <div className="admin-editor">
+        <div className="admin-editor-head">
         <div>
           <h3>Pengaturan Akun &amp; Keamanan Admin</h3>
           <p style={{ fontSize: '0.84rem', color: 'var(--text-3)', marginTop: '3px' }}>
@@ -962,6 +1457,7 @@ function AccountSettingsTab({ session }) {
           </button>
         </div>
       </form>
+      </div>
     </div>
   )
 }
@@ -1068,6 +1564,56 @@ export default function AdminApp() {
   const [savedFlash, setSavedFlash] = useState(false)
   const [busy, setBusy] = useState(false)
   const [saveError, setSaveError] = useState('')
+  const maint = useMaintenanceMonitor()
+  const [kickSeconds, setKickSeconds] = useState(null)
+
+  // Jika Mode Update aktif dari Laptop Utama, pengguna di perangkat lain mendapat notif 5 detik lalu otomatis keluar
+  useEffect(() => {
+    if (!session || !maint.isLive || maint.isOwner) {
+      setKickSeconds(null)
+      return
+    }
+    setKickSeconds(prev => (prev === null ? 5 : prev))
+  }, [session, maint.isLive, maint.isOwner])
+
+  useEffect(() => {
+    if (kickSeconds === null) return
+    if (kickSeconds <= 0) {
+      logout().finally(() => {
+        setSession(null)
+        setKickSeconds(null)
+      })
+      return
+    }
+    const timer = setTimeout(() => setKickSeconds(s => (s === null ? null : s - 1)), 1000)
+    return () => clearTimeout(timer)
+  }, [kickSeconds])
+
+  const saveMaintenanceOnly = useCallback(async (nextMaint) => {
+    let base = getData()
+    try {
+      if (isSupabaseConfigured()) {
+        const remote = await supabaseLoadData()
+        if (remote && Array.isArray(remote.seksi)) {
+          base = { ...base, ...remote }
+        }
+      } else if (session === 'server') {
+        const res = await fetch('/api/data')
+        if (res.ok) {
+          const remote = await res.json().catch(() => null)
+          if (remote && Array.isArray(remote.seksi)) base = { ...base, ...remote }
+        }
+      }
+    } catch { /* gunakan snapshot lokal terbaru */ }
+
+    const merged = { ...base, maintenance: nextMaint }
+    if (session === 'supabase' || session === 'server') {
+      await saveSnapshot(merged)
+    }
+    saveData(structuredClone(merged))
+    maint.setMaintenance(nextMaint)
+    setDraft(d => ({ ...d, maintenance: nextMaint }))
+  }, [session, maint])
 
   // Sinkronkan pilihan unit jika URL hash berubah (mis. tombol Edit di klik dari halaman lain)
   useEffect(() => {
@@ -1155,9 +1701,10 @@ export default function AdminApp() {
     setBusy(true)
     setSaveError('')
     try {
+      const payloadToSave = { ...draft, maintenance: maint.maintenance }
       if (session === 'supabase' || session === 'server') {
         try {
-          await saveSnapshot(draft)
+          await saveSnapshot(payloadToSave)
         } catch (serverErr) {
           if (session === 'supabase' && serverErr?.status === 401) {
             setSession(null)
@@ -1174,7 +1721,8 @@ export default function AdminApp() {
         }
       }
       // Perbarui cache luring + broadcast ke komponen lain.
-      saveData(structuredClone(draft))
+      saveData(structuredClone(payloadToSave))
+      setDraft(payloadToSave)
       setSavedFlash(true)
       setTimeout(() => setSavedFlash(false), 1600)
     } catch (err) {
@@ -1220,10 +1768,83 @@ export default function AdminApp() {
     window.location.hash = '#/'
   }
 
-  if (!session) return <Gate onUnlock={setSession} theme={theme} onToggleTheme={toggleTheme} />
+  if (!session) return <Gate onUnlock={setSession} theme={theme} onToggleTheme={toggleTheme} maint={maint} />
 
   return (
     <div className="admin">
+      {kickSeconds !== null && (
+        <div
+          role="alertdialog"
+          aria-modal="true"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            background: 'rgba(15, 23, 42, 0.78)',
+            backdropFilter: 'blur(6px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px'
+          }}
+        >
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '460px',
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              borderRadius: '18px',
+              padding: '28px 24px',
+              textAlign: 'center',
+              boxShadow: '0 24px 60px rgba(0, 0, 0, 0.35)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '12px'
+            }}
+          >
+            <div
+              style={{
+                width: '54px',
+                height: '54px',
+                borderRadius: '14px',
+                background: 'rgba(245, 158, 11, 0.14)',
+                color: '#d97706',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <AlertTriangle size={28} />
+            </div>
+            <h3 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--text-1)' }}>
+              Pembaruan Sistem Sedang Dimulai
+            </h3>
+            <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-2)', lineHeight: 1.55 }}>
+              {maint.maintenance.message || DEFAULT_MAINTENANCE.message}
+            </p>
+            <div
+              style={{
+                marginTop: '4px',
+                padding: '10px 22px',
+                borderRadius: '12px',
+                background: 'rgba(220, 38, 38, 0.1)',
+                border: '1px solid rgba(220, 38, 38, 0.28)',
+                color: '#dc2626',
+                fontWeight: 800,
+                fontSize: '1.05rem',
+                fontVariantNumeric: 'tabular-nums'
+              }}
+            >
+              Otomatis keluar dalam {kickSeconds} detik…
+            </div>
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-3)' }}>
+              Mohon hentikan pengeditan sementara. Anda dapat login kembali setelah hitungan mundur pembaruan selesai.
+            </span>
+          </div>
+        </div>
+      )}
       <header className="admin-topbar">
         <a className="admin-home" href="#/"><ArrowLeft size={15} /> Situs Publik</a>
         <div className="admin-topbar-title">
@@ -1386,7 +2007,11 @@ export default function AdminApp() {
         )}
 
         {tab === 'account' && (
-          <AccountSettingsTab session={session} />
+          <AccountSettingsTab
+            session={session}
+            maint={maint}
+            onSaveMaintenance={saveMaintenanceOnly}
+          />
         )}
 
         {tab === 'tools' && (

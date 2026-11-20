@@ -1560,3 +1560,14 @@ export const DEFAULT_VISI_MISI = {
   maklumatTitle: 'MAKLUMAT PELAYANAN KEMENAG KABUPATEN WONOSOBO',
   maklumatQuote: '"Dengan ini kami segenap pimpinan dan aparatur sipil negara Kantor Kementerian Agama Kabupaten Wonosobo menyatakan sanggup menyelenggarakan pelayanan sesuai standar pelayanan yang telah ditetapkan, dan apabila tidak menepati janji ini, kami siap menerima sanksi sesuai dengan peraturan perundang-undangan yang berlaku."'
 };
+
+// STATUS MODE UPDATE & PEMELIHARAAN SISTEM (Khusus Perangkat Utama / Owner)
+export const DEFAULT_MAINTENANCE = {
+  active: false,
+  startedAt: 0,
+  endsAt: 0,
+  durationMinutes: 3,
+  message: 'Sedang dilakukan pembaruan sistem portal. Mohon tunggu hingga hitungan mundur selesai, lalu silakan login kembali.',
+  ownerDeviceId: '',
+  ownerLabel: ''
+};
