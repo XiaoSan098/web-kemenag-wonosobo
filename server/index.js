@@ -27,8 +27,8 @@ if (fs.existsSync(envPath)) process.loadEnvFile(envPath)
 
 fs.mkdirSync(UPLOAD_DIR, { recursive: true })
 
-const ADMIN_PASSWORD = requireAdminPassword()
-const ADMIN_USERNAME = getAdminUsername()
+let adminPassword = requireAdminPassword()
+let adminUsername = getAdminUsername()
 requireDatabasePassword()
 const tokens = new Set() // token aktif (memori; cukup untuk admin tunggal)
 const loginLimiter = createLoginLimiter()
@@ -59,22 +59,60 @@ app.post('/api/login', (req, res) => {
 
   const { username, password } = req.body || {}
   const uUser = Buffer.from(String(username ?? ''))
-  const uExpected = Buffer.from(ADMIN_USERNAME)
+  const uExpected = Buffer.from(adminUsername)
   const isUserValid = uUser.length === uExpected.length && crypto.timingSafeEqual(uUser, uExpected)
 
   const a = Buffer.from(String(password ?? ''))
-  const b = Buffer.from(ADMIN_PASSWORD)
+  const b = Buffer.from(adminPassword)
   const isPassValid = password && a.length === b.length && crypto.timingSafeEqual(a, b)
 
   if (isUserValid && isPassValid) {
     loginLimiter.clear(ip)
     const token = crypto.randomBytes(24).toString('hex')
     tokens.add(token)
-    res.json({ token, username: ADMIN_USERNAME })
+    res.json({ token, username: adminUsername })
   } else {
     loginLimiter.recordFailure(ip)
     res.status(401).json({ error: 'Nama pengguna (username) atau kata sandi salah' })
   }
+})
+
+app.put('/api/account', requireAdmin, (req, res) => {
+  const { currentPassword, newUsername, newPassword } = req.body || {}
+  const a = Buffer.from(String(currentPassword ?? ''))
+  const b = Buffer.from(adminPassword)
+  const isPassValid = currentPassword && a.length === b.length && crypto.timingSafeEqual(a, b)
+  if (!isPassValid) {
+    return res.status(401).json({ error: 'Kata sandi saat ini salah.' })
+  }
+
+  const cleanUser = String(newUsername || '').trim()
+  const cleanPass = String(newPassword || '')
+  if (cleanPass && cleanPass.length < 6) {
+    return res.status(400).json({ error: 'Kata sandi baru minimal 6 karakter.' })
+  }
+  if ((!cleanUser || cleanUser === adminUsername) && !cleanPass) {
+    return res.status(400).json({ error: 'Tidak ada perubahan username atau kata sandi.' })
+  }
+
+  if (cleanUser) adminUsername = cleanUser
+  if (cleanPass) adminPassword = cleanPass
+
+  try {
+    if (fs.existsSync(envPath)) {
+      let content = fs.readFileSync(envPath, 'utf8')
+      const setEnvLine = (src, key, val) => {
+        const re = new RegExp(`^${key}=.*$`, 'm')
+        const line = `${key}=${val}`
+        return re.test(src) ? src.replace(re, line) : `${src.replace(/\s*$/, '')}\n${line}\n`
+      }
+      if (cleanUser) content = setEnvLine(content, 'ADMIN_USERNAME', adminUsername)
+      if (cleanPass) content = setEnvLine(content, 'ADMIN_PASSWORD', adminPassword)
+      fs.writeFileSync(envPath, content, 'utf8')
+    }
+  } catch { /* tetap berlaku di memori jika .env hanya-baca */ }
+
+  res.json({ ok: true, username: adminUsername })
 })
 
 app.post('/api/logout', requireAdmin, (req, res) => {

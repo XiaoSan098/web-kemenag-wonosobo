@@ -18,15 +18,12 @@ import {
 } from 'lucide-react'
 import { getData, resetData, saveData, useData, DEFAULT_KEPALA, DEFAULT_HERO, DEFAULT_VISI_MISI } from '../store.js'
 import {
-  isSupabaseConfigured, login, logout, markLocalSession, probeServer,
-  resetServer, restoreSession, saveSnapshot, uploadFile, verifyAdminSession
+  getCurrentAdminIdentity, getLocalCredentials, isSupabaseConfigured, login, logout,
+  markLocalSession, probeServer, resetServer, restoreSession, saveSnapshot,
+  updateAdminAccount, uploadFile, verifyAdminSession, verifyLocalCredentials
 } from '../api.js'
 import { UnitEditor } from './UnitEditor.jsx'
 import { readBackup } from '../backup.js'
-
-// Kredensial masuk panel admin (mode luring)
-const ADMIN_USER = 'admin'
-const ADMIN_PIN = 'webkemenagwonosobo123'
 
 const TABS = [
   { id: 'beranda-visi', label: 'Beranda & Visi Misi', Icon: Compass },
@@ -35,6 +32,7 @@ const TABS = [
   { id: 'seksi', label: 'Seksi & Penyelenggara', Icon: Landmark },
   { id: 'faqs', label: 'Tanya Jawab (Q&A)', Icon: HelpCircle },
   { id: 'social', label: 'Media Sosial', Icon: Share2 },
+  { id: 'account', label: 'Akun Admin', Icon: Lock },
   { id: 'tools', label: 'Cadangan Data', Icon: Database }
 ]
 
@@ -61,7 +59,7 @@ function ThemeToggle({ theme, onToggle }) {
 
 function Gate({ onUnlock, theme, onToggleTheme }) {
   const sbActive = isSupabaseConfigured()
-  const [username, setUsername] = useState('admin')
+  const [username, setUsername] = useState(() => getLocalCredentials().username || 'admin')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
@@ -78,7 +76,7 @@ function Gate({ onUnlock, theme, onToggleTheme }) {
       const res = await login(uVal, pVal) // Supabase Auth atau Backend Express
       onUnlock(res?.mode || (sbActive ? 'supabase' : 'server'))
     } catch (err) {
-      if (uVal === ADMIN_USER && pVal === ADMIN_PIN) {
+      if (verifyLocalCredentials(uVal, pVal)) {
         markLocalSession()
         onUnlock('local')
       } else {
@@ -524,50 +522,15 @@ function BerandaVisiMisiEditor({ hero, visiMisi, onChangeHero, onChangeVisiMisi 
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-      {/* Bagian 1: Banner Beranda ("Portal Layanan Resmi" & Foto Latar) */}
+      {/* Bagian 1: Banner Beranda (Foto Latar / Banner Utama) */}
       <div className="admin-editor">
         <div className="admin-editor-head">
           <div>
-            <h3>Pengaturan Banner Beranda Utama (Portal Layanan Resmi &amp; Foto)</h3>
+            <h3>Pengaturan Foto Banner Beranda Utama</h3>
             <p style={{ fontSize: '0.84rem', color: 'var(--text-3)', marginTop: '3px' }}>
-              Ubah tulisan label &quot;Portal Layanan Resmi&quot;, judul sambutan utama, deskripsi singkat, serta foto latar gedung/banner yang tampil paling atas di halaman beranda.
+              Unggah atau ganti foto banner utama yang tampil jernih dan utuh di bagian paling atas halaman beranda (tanpa teks atau efek buram/overlay).
             </p>
           </div>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '14px', marginTop: '14px' }}>
-          <Field
-            label="Tulisan Label Atas (Eyebrow Banner)"
-            value={currentHero.eyebrow}
-            placeholder="Contoh: Portal Layanan Resmi"
-            onChange={v => updateHero('eyebrow', v)}
-          />
-          <Field
-            label="Teks Tombol Aksi Banner"
-            value={currentHero.btnText}
-            placeholder="Contoh: Profil & Maklumat"
-            onChange={v => updateHero('btnText', v)}
-          />
-        </div>
-
-        <div style={{ marginTop: '14px' }}>
-          <Field
-            label="Judul Utama Banner Beranda"
-            value={currentHero.title}
-            multiline
-            placeholder="Contoh: Layanan keagamaan dan pendidikan yang cepat, gratis, dan akuntabel"
-            onChange={v => updateHero('title', v)}
-          />
-        </div>
-
-        <div style={{ marginTop: '14px' }}>
-          <Field
-            label="Deskripsi / Subjudul Banner Beranda"
-            value={currentHero.lead}
-            multiline="tall"
-            placeholder="Tuliskan penjelasan singkat layanan beranda..."
-            onChange={v => updateHero('lead', v)}
-          />
         </div>
 
         <div style={{ marginTop: '14px' }}>
@@ -761,6 +724,244 @@ function BerandaVisiMisiEditor({ hero, visiMisi, onChangeHero, onChangeVisiMisi 
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+function AccountSettingsTab({ session }) {
+  const [identity, setIdentity] = useState(() => getCurrentAdminIdentity(session))
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newIdentifier, setNewIdentifier] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [showCurrent, setShowCurrent] = useState(false)
+  const [showNew, setShowNew] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+
+  useEffect(() => {
+    setIdentity(getCurrentAdminIdentity(session))
+  }, [session])
+
+  const modeLabel =
+    session === 'supabase'
+      ? 'Supabase Auth (Cloud)'
+      : session === 'server'
+        ? 'Server Express'
+        : 'Mode Lokal (Browser)'
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (busy) return
+    setError('')
+    setSuccess('')
+
+    const cleanId = newIdentifier.trim()
+    if (!currentPassword.trim()) {
+      setError('Masukkan kata sandi saat ini terlebih dahulu untuk verifikasi.')
+      return
+    }
+    if (!cleanId && !newPassword) {
+      setError('Isi Username/Email baru atau Kata Sandi baru yang ingin diganti.')
+      return
+    }
+    if (newPassword && newPassword.length < 6) {
+      setError('Kata sandi baru minimal 6 karakter.')
+      return
+    }
+    if (newPassword && newPassword !== confirmPassword) {
+      setError('Konfirmasi kata sandi baru tidak cocok.')
+      return
+    }
+
+    setBusy(true)
+    try {
+      const res = await updateAdminAccount({
+        mode: session,
+        currentPassword,
+        newIdentifier: cleanId,
+        newPassword
+      })
+
+      const updatedParts = []
+      if (cleanId) {
+        if (res?.emailPendingConfirmation && res?.newEmail) {
+          updatedParts.push(`permintaan ganti email ke ${res.newEmail} telah dikirim (cek kotak masuk email baru untuk konfirmasi)`)
+        } else {
+          updatedParts.push(`username/email berhasil diperbarui menjadi "${res?.email || res?.username || cleanId}"`)
+        }
+      }
+      if (newPassword) {
+        updatedParts.push('kata sandi berhasil diperbarui')
+      }
+
+      setIdentity(getCurrentAdminIdentity(session))
+      setCurrentPassword('')
+      setNewIdentifier('')
+      setNewPassword('')
+      setConfirmPassword('')
+      setSuccess(`Berhasil: ${updatedParts.join(' dan ')}.`)
+    } catch (err) {
+      setError(err?.message || 'Gagal memperbarui akun admin.')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div className="admin-editor">
+      <div className="admin-editor-head">
+        <div>
+          <h3>Pengaturan Akun &amp; Keamanan Admin</h3>
+          <p style={{ fontSize: '0.84rem', color: 'var(--text-3)', marginTop: '3px' }}>
+            Ubah username / email masuk dan kata sandi (password) untuk mengakses Panel Admin Kemenag Wonosobo.
+          </p>
+        </div>
+        <span className="admin-offline-chip" style={{ alignSelf: 'flex-start' }}>
+          {modeLabel}
+        </span>
+      </div>
+
+      <div
+        style={{
+          marginTop: '14px',
+          padding: '12px 14px',
+          borderRadius: '10px',
+          background: 'var(--surface-2)',
+          border: '1px solid var(--border)',
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '8px 20px',
+          fontSize: '0.86rem'
+        }}
+      >
+        <div>
+          <span style={{ color: 'var(--text-3)' }}>Akun aktif saat ini: </span>
+          <strong style={{ color: 'var(--text-1)' }}>{identity || 'admin'}</strong>
+        </div>
+        {session === 'supabase' && (
+          <div style={{ color: 'var(--text-3)' }}>
+            Tip: Jika mengisi username tanpa tanda <code>@</code>, otomatis menjadi <code>username@kemenagwonosobo.id</code>.
+          </div>
+        )}
+      </div>
+
+      <form onSubmit={handleSubmit} style={{ marginTop: '18px', display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '580px' }}>
+        <div className="admin-field">
+          <span className="admin-field-label">Kata Sandi Saat Ini (Wajib untuk Verifikasi)</span>
+          <div className="admin-password-wrap">
+            <input
+              className="admin-input"
+              type={showCurrent ? 'text' : 'password'}
+              autoComplete="current-password"
+              placeholder="Masukkan kata sandi Anda saat ini"
+              value={currentPassword}
+              onChange={e => { setCurrentPassword(e.target.value); setError(''); setSuccess('') }}
+              required
+            />
+            <button
+              type="button"
+              className="admin-password-toggle"
+              onClick={() => setShowCurrent(v => !v)}
+              aria-label={showCurrent ? 'Sembunyikan sandi' : 'Lihat sandi'}
+            >
+              {showCurrent ? <EyeOff size={17} /> : <Eye size={17} />}
+            </button>
+          </div>
+        </div>
+
+        <div className="admin-field" style={{ paddingTop: '12px', borderTop: '1px solid var(--border)' }}>
+          <span className="admin-field-label">
+            {session === 'supabase' ? 'Email atau Username Baru (Kosongkan jika tidak diubah)' : 'Username / Email Baru (Kosongkan jika tidak diubah)'}
+          </span>
+          <input
+            className="admin-input"
+            type="text"
+            autoComplete="username"
+            placeholder={session === 'supabase' ? 'Contoh: adminbaru@kemenagwonosobo.id atau nama@gmail.com' : 'Contoh: admin_kemenag'}
+            value={newIdentifier}
+            onChange={e => { setNewIdentifier(e.target.value); setError(''); setSuccess('') }}
+          />
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px' }}>
+          <div className="admin-field">
+            <span className="admin-field-label">Kata Sandi Baru (Kosongkan jika tidak diubah)</span>
+            <div className="admin-password-wrap">
+              <input
+                className="admin-input"
+                type={showNew ? 'text' : 'password'}
+                autoComplete="new-password"
+                placeholder="Minimal 6 karakter"
+                value={newPassword}
+                onChange={e => { setNewPassword(e.target.value); setError(''); setSuccess('') }}
+              />
+              <button
+                type="button"
+                className="admin-password-toggle"
+                onClick={() => setShowNew(v => !v)}
+                aria-label={showNew ? 'Sembunyikan sandi baru' : 'Lihat sandi baru'}
+              >
+                {showNew ? <EyeOff size={17} /> : <Eye size={17} />}
+              </button>
+            </div>
+          </div>
+
+          <div className="admin-field">
+            <span className="admin-field-label">Konfirmasi Kata Sandi Baru</span>
+            <div className="admin-password-wrap">
+              <input
+                className="admin-input"
+                type={showConfirm ? 'text' : 'password'}
+                autoComplete="new-password"
+                placeholder="Ulangi kata sandi baru"
+                value={confirmPassword}
+                onChange={e => { setConfirmPassword(e.target.value); setError(''); setSuccess('') }}
+                disabled={!newPassword}
+              />
+              <button
+                type="button"
+                className="admin-password-toggle"
+                onClick={() => setShowConfirm(v => !v)}
+                aria-label={showConfirm ? 'Sembunyikan konfirmasi sandi' : 'Lihat konfirmasi sandi'}
+              >
+                {showConfirm ? <EyeOff size={17} /> : <Eye size={17} />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {error && (
+          <p className="admin-error" role="alert" style={{ margin: 0 }}>{error}</p>
+        )}
+
+        {success && (
+          <p
+            role="status"
+            style={{
+              margin: 0,
+              padding: '10px 14px',
+              borderRadius: '10px',
+              background: 'var(--green-50, #ecfdf5)',
+              color: 'var(--green-800, #065f46)',
+              border: '1px solid var(--green-200, #a7f3d0)',
+              fontSize: '0.86rem',
+              fontWeight: 600
+            }}
+          >
+            {success}
+          </p>
+        )}
+
+        <div>
+          <button type="submit" className="btn btn-primary" disabled={busy}>
+            {busy ? <Loader2 size={16} className="admin-spin" /> : <KeyRound size={16} />}
+            {busy ? 'Menyimpan Perubahan…' : 'Simpan Perubahan Akun'}
+          </button>
+        </div>
+      </form>
     </div>
   )
 }
@@ -1182,6 +1383,10 @@ export default function AdminApp() {
             contacts={draft.social || []}
             onChange={next => setSection('social', next)}
           />
+        )}
+
+        {tab === 'account' && (
+          <AccountSettingsTab session={session} />
         )}
 
         {tab === 'tools' && (

@@ -187,6 +187,86 @@ export async function supabaseSignIn(identifier, password) {
 }
 
 /**
+ * Memperbarui email (username) dan/atau kata sandi akun admin yang sedang login di Supabase Auth.
+ * Memverifikasi kata sandi saat ini terlebih dahulu demi keamanan.
+ */
+export async function supabaseUpdateUser({ currentPassword, newIdentifier, newPassword }) {
+  if (!isSupabaseConfigured()) {
+    throw new Error('Supabase belum dikonfigurasi.')
+  }
+  const session = getSupabaseSession()
+  let currentEmail = session?.user?.email || ''
+  if (!currentEmail) {
+    const verified = await verifySupabaseSession()
+    currentEmail = verified?.email || ''
+  }
+  if (!currentEmail) {
+    const err = new Error('Sesi Supabase Auth tidak ditemukan. Silakan masuk kembali.')
+    err.status = 401
+    throw err
+  }
+
+  // Verifikasi kata sandi saat ini lewat login ulang ke Supabase Auth
+  const verifyRes = await fetch(`${RAW_URL}/auth/v1/token?grant_type=password`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_KEY,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email: currentEmail, password: String(currentPassword || '') })
+  })
+  const verifyData = await verifyRes.json().catch(() => null)
+  if (!verifyRes.ok || !verifyData?.access_token) {
+    throw new Error('Kata sandi saat ini salah. Silakan periksa kembali.')
+  }
+  saveSupabaseSession(verifyData)
+
+  const payload = {}
+  const cleanId = String(newIdentifier || '').trim()
+  if (cleanId) {
+    const targetEmail = cleanId.includes('@')
+      ? cleanId
+      : (cleanId.toLowerCase() === 'admin' ? DEFAULT_ADMIN_EMAIL : `${cleanId}@kemenagwonosobo.id`)
+    if (targetEmail.toLowerCase() !== currentEmail.toLowerCase()) {
+      payload.email = targetEmail
+    }
+  }
+  if (newPassword) {
+    payload.password = String(newPassword)
+  }
+
+  if (!Object.keys(payload).length) {
+    throw new Error('Tidak ada perubahan email/username atau kata sandi yang dimasukkan.')
+  }
+
+  const res = await fetch(`${RAW_URL}/auth/v1/user`, {
+    method: 'PUT',
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${verifyData.access_token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+  const updated = await res.json().catch(() => null)
+  if (!res.ok) {
+    const msg = updated?.msg || updated?.message || updated?.error_description || updated?.error || `Gagal memperbarui akun (HTTP ${res.status})`
+    const err = new Error(msg)
+    err.status = res.status
+    throw err
+  }
+
+  saveSupabaseSession({ ...verifyData, user: updated || verifyData.user })
+  const emailPending = Boolean(updated?.new_email && updated.new_email !== updated.email)
+  return {
+    user: updated,
+    email: updated?.email || currentEmail,
+    newEmail: updated?.new_email || '',
+    emailPendingConfirmation: emailPending
+  }
+}
+
+/**
  * Logout dari Supabase Auth & hapus token dari penyimpanan sesi.
  */
 export async function supabaseSignOut() {

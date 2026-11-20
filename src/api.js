@@ -13,14 +13,62 @@ import {
   supabaseSaveData,
   supabaseSignIn,
   supabaseSignOut,
+  supabaseUpdateUser,
   supabaseUploadFile,
   verifySupabaseSession
 } from './supabase.js'
 
 const TOKEN_KEY = 'kew_admin_token'
+const SERVER_USER_KEY = 'kew_admin_username'
 const LOCAL_KEY = 'kew_admin_local'
+const LOCAL_CREDS_KEY = 'kew_admin_local_creds'
+const DEFAULT_LOCAL_USER = 'admin'
+const DEFAULT_LOCAL_PASS = 'webkemenagwonosobo123'
 
 export { isSupabaseConfigured, supabaseLoadData }
+
+export function getLocalCredentials() {
+  try {
+    const raw = localStorage.getItem(LOCAL_CREDS_KEY)
+    if (raw) {
+      const parsed = JSON.parse(raw)
+      if (parsed && typeof parsed.username === 'string' && typeof parsed.password === 'string') {
+        return {
+          username: parsed.username || DEFAULT_LOCAL_USER,
+          password: parsed.password || DEFAULT_LOCAL_PASS
+        }
+      }
+    }
+  } catch { /* abaikan */ }
+  return { username: DEFAULT_LOCAL_USER, password: DEFAULT_LOCAL_PASS }
+}
+
+export function saveLocalCredentials({ username, password }) {
+  const current = getLocalCredentials()
+  const next = {
+    username: String(username || '').trim() || current.username,
+    password: String(password || '') || current.password
+  }
+  try {
+    localStorage.setItem(LOCAL_CREDS_KEY, JSON.stringify(next))
+  } catch { /* abaikan */ }
+  return next
+}
+
+export function verifyLocalCredentials(username, password) {
+  const creds = getLocalCredentials()
+  return String(username || '').trim() === creds.username && String(password || '') === creds.password
+}
+
+export function getCurrentAdminIdentity(mode) {
+  if (mode === 'supabase') {
+    return getSupabaseSession()?.user?.email || ''
+  }
+  if (mode === 'server') {
+    try { return sessionStorage.getItem(SERVER_USER_KEY) || 'admin' } catch { return 'admin' }
+  }
+  return getLocalCredentials().username
+}
 
 export class ApiError extends Error {
   constructor(message, status = 0) {
@@ -136,11 +184,61 @@ export async function login(username, password) {
     return { mode: 'supabase', token: session.access_token, user: session.user }
   }
 
-  const { token } = await request('/api/login', { method: 'POST', body: { username: user, password: pass } })
+  const { token, username: serverUser } = await request('/api/login', { method: 'POST', body: { username: user, password: pass } })
   if (!token) throw new ApiError('Server tidak mengirim token masuk.', 0)
-  try { store()?.setItem(TOKEN_KEY, token) } catch { /* abaikan */ }
+  try {
+    store()?.setItem(TOKEN_KEY, token)
+    store()?.setItem(SERVER_USER_KEY, serverUser || user)
+  } catch { /* abaikan */ }
   clearLocalSession()
   return { mode: 'server', token }
+}
+
+/**
+ * Perbarui username/email dan/atau kata sandi admin sesuai mode autentikasi aktif.
+ */
+export async function updateAdminAccount({ mode, currentPassword, newIdentifier, newPassword }) {
+  if (!String(currentPassword || '').trim()) {
+    throw new ApiError('Kata sandi saat ini wajib diisi.', 400)
+  }
+  if (newPassword && String(newPassword).length < 6) {
+    throw new ApiError('Kata sandi baru minimal 6 karakter.', 400)
+  }
+
+  if (mode === 'supabase') {
+    const res = await supabaseUpdateUser({ currentPassword, newIdentifier, newPassword })
+    return { ok: true, mode: 'supabase', ...res }
+  }
+
+  if (mode === 'server') {
+    const res = await request('/api/account', {
+      method: 'PUT',
+      body: {
+        currentPassword,
+        newUsername: String(newIdentifier || '').trim(),
+        newPassword: String(newPassword || '')
+      }
+    })
+    if (res?.username) {
+      try { store()?.setItem(SERVER_USER_KEY, res.username) } catch { /* abaikan */ }
+    }
+    return { ok: true, mode: 'server', ...res }
+  }
+
+  // Mode lokal
+  const creds = getLocalCredentials()
+  if (String(currentPassword) !== creds.password) {
+    throw new ApiError('Kata sandi saat ini salah. Silakan periksa kembali.', 401)
+  }
+  const cleanUser = String(newIdentifier || '').trim()
+  if ((!cleanUser || cleanUser === creds.username) && !newPassword) {
+    throw new ApiError('Tidak ada perubahan username/email atau kata sandi yang dimasukkan.', 400)
+  }
+  const next = saveLocalCredentials({
+    username: cleanUser || creds.username,
+    password: newPassword || creds.password
+  })
+  return { ok: true, mode: 'local', username: next.username }
 }
 
 /** Akhiri sesi di Supabase / server (token juga dibuang dari sisi klien). */

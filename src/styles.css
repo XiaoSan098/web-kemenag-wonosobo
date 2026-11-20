@@ -344,6 +344,33 @@ button { font: inherit; color: inherit; }
   background: var(--bg);
 }
 
+.hero--banner-only {
+  width: 100%;
+}
+
+.hero-banner-wrap {
+  width: 100%;
+  line-height: 0;
+  overflow: hidden;
+}
+
+.hero-banner-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 560px;
+  object-fit: cover;
+  object-position: center;
+  opacity: 1;
+  filter: none;
+}
+
+@media (max-width: 768px) {
+  .hero-banner-img {
+    max-height: 360px;
+  }
+}
+
 .hero-bg {
   position: absolute;
   inset: 0;
