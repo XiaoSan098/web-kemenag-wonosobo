@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   X, Users, FileText, Images, PlayCircle, Calendar, CheckCircle2,
-  Timer, Download, Eye, Building2, BookHeart, GraduationCap,
+  Timer, Download, Building2, BookHeart, GraduationCap,
   BookOpenCheck, Landmark, Coins, Compass, Cross, Newspaper, ZoomIn
 } from 'lucide-react'
 import { findUnit, toRawPhone } from '../store.js'
@@ -74,7 +74,7 @@ function StrukturTab({ unit, onOpenLightbox }) {
   )
 }
 
-function LayananTab({ unit, onOpenSop }) {
+function LayananTab({ unit }) {
   const services = unit.services || []
   if (!services.length) {
     return <p className="empty-note">Belum ada daftar layanan yang dipublikasikan.</p>
@@ -104,12 +104,6 @@ function LayananTab({ unit, onOpenSop }) {
               <p className="service-time"><Timer size={14} aria-hidden="true" /> Estimasi selesai: <strong>{svc.waktu}</strong></p>
             </div>
           </div>
-
-          <footer className="service-actions">
-            <button type="button" className="btn btn-ghost" onClick={() => onOpenSop(svc, unit)}>
-              <Eye size={15} /> Pratinjau Layanan
-            </button>
-          </footer>
         </article>
       ))}
     </div>
@@ -194,7 +188,7 @@ function VideoTab({ unit }) {
   )
 }
 
-export function UnitModal({ unitId, units = [], seksi = [], onClose, onOpenSop, onOpenLightbox }) {
+export function UnitModal({ unitId, units = [], seksi = [], onClose, onOpenLightbox }) {
   const [tab, setTab] = useState('struktur')
   const [subUnitId, setSubUnitId] = useState('ptsp')
 
@@ -260,7 +254,7 @@ export function UnitModal({ unitId, units = [], seksi = [], onClose, onOpenSop, 
 
         <div className="modal-body">
           {tab === 'struktur' && <StrukturTab unit={unit} onOpenLightbox={onOpenLightbox} />}
-          {tab === 'layanan' && <LayananTab unit={unit} onOpenSop={onOpenSop} />}
+          {tab === 'layanan' && <LayananTab unit={unit} />}
           {tab === 'foto' && <FotoTab unit={unit} onOpenLightbox={onOpenLightbox} />}
           {tab === 'video' && <VideoTab unit={unit} />}
         </div>

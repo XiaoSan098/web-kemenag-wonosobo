@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import {
   ArrowLeft, Users, FileText, Images, PlayCircle, Calendar,
-  CheckCircle2, Timer, Download, Eye, Share2, Check,
+  CheckCircle2, Timer, Download, Share2, Check,
   Building2, BookHeart, GraduationCap, BookOpenCheck, Landmark,
   Coins, Compass, Cross, Newspaper, ShieldCheck, ZoomIn
 } from 'lucide-react'
@@ -78,7 +78,7 @@ function StrukturTab({ unit, onOpenLightbox }) {
   )
 }
 
-function LayananTab({ unit, onOpenSop }) {
+function LayananTab({ unit }) {
   const services = unit.services || []
   if (!services.length) {
     return <p className="empty-note">Belum ada daftar layanan yang dipublikasikan.</p>
@@ -108,12 +108,6 @@ function LayananTab({ unit, onOpenSop }) {
               <p className="service-time"><Timer size={14} aria-hidden="true" /> Estimasi selesai: <strong>{svc.waktu}</strong></p>
             </div>
           </div>
-
-          <footer className="service-actions">
-            <button type="button" className="btn btn-ghost" onClick={() => onOpenSop(svc, unit)}>
-              <Eye size={15} /> Pratinjau Layanan
-            </button>
-          </footer>
         </article>
       ))}
     </div>
@@ -196,7 +190,7 @@ function VideoTab({ unit }) {
   )
 }
 
-export function UnitPage({ unitId, subId, units = [], seksi = [], onOpenSop, onOpenLightbox, onBack }) {
+export function UnitPage({ unitId, subId, units = [], seksi = [], onOpenLightbox, onBack }) {
   const [tab, setTab] = useState('struktur')
   const [subUnitId, setSubUnitId] = useState(subId || 'ptsp')
   const [copied, setCopied] = useState(false)
@@ -331,7 +325,7 @@ export function UnitPage({ unitId, subId, units = [], seksi = [], onOpenSop, onO
         {/* Konten Tab */}
         <main className="unit-page-body">
           {tab === 'struktur' && <StrukturTab unit={unit} onOpenLightbox={onOpenLightbox} />}
-          {tab === 'layanan' && <LayananTab unit={unit} onOpenSop={onOpenSop} />}
+          {tab === 'layanan' && <LayananTab unit={unit} />}
           {tab === 'foto' && <FotoTab unit={unit} onOpenLightbox={onOpenLightbox} />}
           {tab === 'video' && <VideoTab unit={unit} />}
         </main>

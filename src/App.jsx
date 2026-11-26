@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { useData } from './store.js'
 import { Header } from './components/Header.jsx'
@@ -7,7 +7,6 @@ import { ServiceButtons } from './components/ServiceButtons.jsx'
 import { StaticProfileSection } from './components/StaticProfileSection.jsx'
 import { FaqSection } from './components/FaqSection.jsx'
 import { UnitPage } from './components/UnitPage.jsx'
-import { SopModal } from './components/SopModal.jsx'
 import { SocialModal } from './components/SocialModal.jsx'
 import { Lightbox } from './components/Lightbox.jsx'
 import { Footer } from './components/Footer.jsx'
@@ -147,7 +146,6 @@ export default function App() {
   const { units, seksi, social } = useData()
   const [route, setRoute] = useState(() => parseRouteFromHash())
   const [socialOpen, setSocialOpen] = useState(false)
-  const [sop, setSop] = useState(null)         // { svc, seksi }
   const [lightbox, setLightbox] = useState(null) // { src, caption }
 
   useScrollReveal(`${route.page}-${route.unitId || ''}-${route.subId || ''}`)
@@ -161,9 +159,9 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
 
-  const anyModalOpen = !!(socialOpen || sop || lightbox)
+  const anyModalOpen = !!(socialOpen || lightbox)
 
-  // Kunci scroll body saat ada modal pop-up (SOP, Sosial, Lightbox) terbuka
+  // Kunci scroll body saat ada modal pop-up (Sosial, Lightbox) terbuka
   useEffect(() => {
     document.body.style.overflow = anyModalOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -175,14 +173,11 @@ export default function App() {
     const onKey = (e) => {
       if (e.key !== 'Escape') return
       if (lightbox) setLightbox(null)
-      else if (sop) setSop(null)
       else if (socialOpen) setSocialOpen(false)
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [anyModalOpen, lightbox, sop, socialOpen])
-
-  const openSop = useCallback((svc, seksi) => setSop({ svc, seksi }), [])
+  }, [anyModalOpen, lightbox, socialOpen])
 
   const openUnit = (id) => {
     window.location.hash = `#/unit/${id}`
@@ -208,7 +203,6 @@ export default function App() {
             subId={route.subId}
             units={units}
             seksi={seksi}
-            onOpenSop={openSop}
             onOpenLightbox={setLightbox}
             onBack={goHome}
           />
@@ -234,14 +228,6 @@ export default function App() {
         social={social}
         onOpenSocial={() => setSocialOpen(true)}
       />
-
-      {sop && (
-        <SopModal
-          svc={sop.svc}
-          seksi={sop.seksi}
-          onClose={() => setSop(null)}
-        />
-      )}
 
       {socialOpen && (
         <SocialModal
