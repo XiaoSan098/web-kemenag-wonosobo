@@ -959,11 +959,6 @@ function MaintenanceControlCard({ session, maint, onSaveMaintenance }) {
     )
   }
 
-  const reclaimOwner = () => {
-    if (!confirm('Ambil alih kendali Perangkat Utama ke laptop/browser yang sedang Anda gunakan ini?')) return
-    claimOwner()
-  }
-
   const releaseOwner = () => {
     if (!confirm('Lepas kunci Perangkat Utama dari laptop ini? Setelah dilepas, perangkat lain bisa mengklaim sebagai Perangkat Utama.')) return
     runAction(
@@ -1070,27 +1065,16 @@ function MaintenanceControlCard({ session, maint, onSaveMaintenance }) {
         <div
           style={{
             marginTop: '14px',
-            padding: '16px',
+            padding: '14px 16px',
             borderRadius: '12px',
             background: 'var(--surface-2)',
             border: '1px solid var(--border)',
             fontSize: '0.86rem',
-            color: 'var(--text-2)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px'
+            color: 'var(--text-2)'
           }}
         >
-          <p style={{ margin: 0, lineHeight: 1.6 }}>
-            <Lock size={15} style={{ marginRight: '6px', verticalAlign: '-2px' }} />
-            Kendali Mode Update saat ini terdaftar pada sesi browser lain sebagai <strong>Perangkat Utama (Laptop Pengembang)</strong>. Jika Anda sedang menggunakan laptop utama (misalnya berganti browser, domain, atau setelah menghapus cache), klik tombol di bawah untuk mengambil alih kendali ke browser ini.
-          </p>
-          <div>
-            <button type="button" className="btn btn-primary btn-sm" disabled={busy} onClick={reclaimOwner}>
-              {busy ? <Loader2 size={15} className="admin-spin" /> : <ShieldCheck size={15} />}
-              Ambil Alih sebagai Perangkat Utama
-            </button>
-          </div>
+          <Lock size={15} style={{ marginRight: '6px', verticalAlign: '-2px' }} />
+          Kendali Mode Update dikunci khusus untuk <strong>Perangkat Utama (Laptop Pengembang)</strong>. Perangkat ini tidak dapat mengaktifkan atau mengubah status pembaruan.
         </div>
       ) : (
         <div style={{ marginTop: '14px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
