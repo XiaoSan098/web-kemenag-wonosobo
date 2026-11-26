@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kemenagwonosobo.web.id/sitemap.xml
