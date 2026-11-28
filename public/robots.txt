@@ -1,4 +1,21 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /api/
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
 
 Sitemap: https://kemenagwonosobo.web.id/sitemap.xml
